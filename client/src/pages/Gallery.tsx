@@ -24,17 +24,17 @@ export default function Gallery() {
   return (
     <div className="min-h-screen bg-black">
       <div className="container mx-auto px-6 py-20">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-serif text-white mb-4">Our Portfolio</h1>
+          <h1 className="text-4xl md:text-6xl font-serif text-white mb-4">Our <span className="text-primary">Portfolio</span></h1>
           <p className="text-gray-400 font-light max-w-2xl mx-auto">
             A glimpse into the moments of distinction we've crafted for our clients.
           </p>
         </motion.div>
-        
+
         <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
           {photos.map((photo, i) => (
             <motion.div
@@ -43,19 +43,21 @@ export default function Gallery() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="break-inside-avoid relative group cursor-pointer overflow-hidden border border-white/10 rounded-sm"
+              className="break-inside-avoid relative group cursor-pointer overflow-hidden premium-border"
               onClick={() => setSelectedPhoto(photo.src)}
             >
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-primary/20 transition-all duration-300 z-10 flex items-center justify-center">
-                <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm tracking-widest uppercase font-light bg-primary/80 px-4 py-2">
-                  View Project
-                </span>
+              <div className="premium-border-inner">
+                <div className="absolute inset-2 bg-black/0 group-hover:bg-primary/20 transition-all duration-300 z-10 flex items-center justify-center pointer-events-none">
+                  <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs tracking-widest uppercase font-light bg-primary px-3 py-1">
+                    View
+                  </span>
+                </div>
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  className="w-full h-auto transition-all duration-700 ease-in-out group-hover:scale-105"
+                />
               </div>
-              <img 
-                src={photo.src} 
-                alt={photo.alt} 
-                className="w-full h-auto transition-all duration-700 ease-in-out group-hover:scale-105"
-              />
             </motion.div>
           ))}
         </div>
@@ -64,16 +66,16 @@ export default function Gallery() {
       <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
         <DialogContent className="max-w-5xl bg-black/95 border-white/10 p-0 overflow-hidden outline-none">
           <div className="relative flex items-center justify-center">
-            <button 
-              onClick={() => setSelectedPhoto(null)} 
+            <button
+              onClick={() => setSelectedPhoto(null)}
               className="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-white hover:text-black rounded-full text-white transition-all duration-300"
             >
               <X className="w-5 h-5" />
             </button>
             {selectedPhoto && (
-              <img 
-                src={selectedPhoto} 
-                alt="Portfolio view" 
+              <img
+                src={selectedPhoto}
+                alt="Portfolio view"
                 className="w-full h-auto max-h-[90vh] object-contain"
               />
             )}

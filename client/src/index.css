@@ -35,25 +35,25 @@
   --popover-foreground: 45 30% 95%;
   --popover-border: 45 20% 20%;
 
-  --primary: 45 60% 52%; /* Premium Gold */
+  --primary: 45 70% 55%; /* More vibrant Gold */
   --primary-foreground: 0 0% 0%;
 
   --secondary: 45 10% 20%;
-  --secondary-foreground: 45 60% 52%;
+  --secondary-foreground: 45 70% 55%;
 
   --muted: 0 0% 15%;
   --muted-foreground: 45 10% 60%;
 
-  --accent: 45 60% 52%;
+  --accent: 45 70% 55%;
   --accent-foreground: 0 0% 0%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
   --input: 45 20% 20%;
-  --ring: 45 60% 52%;
+  --ring: 45 70% 55%;
   
-  --chart-1: 45 60% 52%;
+  --chart-1: 45 70% 55%;
   --chart-2: 45 30% 40%;
   --chart-3: 45 10% 20%;
   --chart-4: 0 0% 15%;
@@ -64,10 +64,10 @@
   --font-mono: Menlo, monospace;
   --radius: .25rem;
   
-  --shadow-2xs: 0px 2px 0px 0px hsl(45 60% 52% / 0.05);
-  --shadow-xs: 0px 2px 0px 0px hsl(45 60% 52% / 0.05);
-  --shadow-sm: 0px 2px 0px 0px hsl(45 60% 52% / 0.05);
-  --shadow: 0px 2px 0px 0px hsl(45 60% 52% / 0.05);
+  --shadow-2xs: 0px 2px 0px 0px hsl(45 70% 55% / 0.05);
+  --shadow-xs: 0px 2px 0px 0px hsl(45 70% 55% / 0.05);
+  --shadow-sm: 0px 2px 0px 0px hsl(45 70% 55% / 0.05);
+  --shadow: 0px 2px 0px 0px hsl(45 70% 55% / 0.05);
   --shadow-md: 0px 4px 12px -2px hsl(0 0% 0% / 0.5);
   --shadow-lg: 0px 12px 24px -4px hsl(0 0% 0% / 0.6);
   --shadow-xl: 0px 20px 32px -8px hsl(0 0% 0% / 0.7);
@@ -98,7 +98,7 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-white/90;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -112,5 +112,11 @@
   }
   .active-elevate-2:active::after {
     background-color: var(--elevate-2);
+  }
+  .premium-border {
+    @apply border-2 border-primary/30 p-2 transition-all duration-500 hover:border-primary/60;
+  }
+  .premium-border-inner {
+    @apply border border-primary/20 p-1 transition-all duration-500 hover:border-primary/40;
   }
 }

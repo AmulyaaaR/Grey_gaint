@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 
 export default function Contact() {
   const { mutate, isPending } = useCreateInquiry();
-  
+
   const form = useForm<InsertInquiry>({
     resolver: zodResolver(insertInquirySchema),
     defaultValues: {
@@ -33,7 +33,7 @@ export default function Contact() {
   return (
     <div className="pt-20 min-h-screen bg-background">
       <div className="grid lg:grid-cols-2 min-h-[calc(100vh-80px)]">
-        
+
         {/* Contact Info Side */}
         <div className="bg-neutral-900 p-10 lg:p-20 flex flex-col justify-center border-r border-primary/10">
           <motion.div
@@ -42,14 +42,14 @@ export default function Contact() {
             transition={{ delay: 0.2 }}
           >
             <h1 className="text-4xl md:text-6xl font-serif text-white mb-12">Get in <span className="text-primary">Touch</span></h1>
-            
+
             <div className="space-y-12">
               <div className="flex gap-6">
                 <MapPin className="w-6 h-6 text-primary mt-1 shrink-0" />
                 <div>
                   <h3 className="text-white font-medium uppercase tracking-widest mb-2">Location</h3>
                   <p className="text-white/60 font-light leading-relaxed">
-                    Post-office, Kamakshipalya,<br/>
+                    Post-office, Kamakshipalya,<br />
                     Bengaluru, Karnataka 560079
                   </p>
                   <div className="mt-4 flex gap-4 text-sm text-primary/60">
@@ -64,7 +64,7 @@ export default function Contact() {
                 <div>
                   <h3 className="text-white font-medium uppercase tracking-widest mb-2">Hours</h3>
                   <p className="text-white/60 font-light">
-                    Open 24 Hours<br/>
+                    Open 24 Hours<br />
                     Monday - Sunday
                   </p>
                 </div>
@@ -75,7 +75,7 @@ export default function Contact() {
                 <div>
                   <h3 className="text-white font-medium uppercase tracking-widest mb-2">Contact</h3>
                   <p className="text-white/60 font-light">
-                    +91 98765 43210<br/>
+                    +91 98765 43210<br />
                     hello@greygiant.com
                   </p>
                 </div>
@@ -92,7 +92,7 @@ export default function Contact() {
             transition={{ delay: 0.4 }}
           >
             <h2 className="text-2xl font-serif text-white mb-8">Send an <span className="text-primary">Inquiry</span></h2>
-            
+
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -178,8 +178,8 @@ export default function Contact() {
                   )}
                 />
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   size="lg"
                   disabled={isPending}
                   className="w-full h-14 bg-primary text-black hover:bg-primary/90 rounded-none text-base tracking-wide uppercase font-medium border-primary"

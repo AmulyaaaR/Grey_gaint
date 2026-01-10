@@ -24,7 +24,7 @@ export default function Reviews() {
       <div className="container mx-auto px-6 py-20 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div>
-            <h1 className="text-4xl md:text-6xl font-serif text-white mb-4">Client Voices</h1>
+            <h1 className="text-4xl md:text-6xl font-serif text-white mb-4">Client <span className="text-primary">Voices</span></h1>
             <p className="text-white/60 max-w-lg">Hear from those who have experienced the Grey Giant standard of excellence.</p>
           </div>
           <ReviewDialog open={open} onOpenChange={setOpen} />
@@ -51,9 +51,9 @@ export default function Reviews() {
                 <div className="mt-auto">
                   <div className="flex gap-1 mb-2">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star 
-                        key={i} 
-                        className={`w-4 h-4 ${i < review.rating ? "text-white fill-white" : "text-white/20"}`} 
+                      <Star
+                        key={i}
+                        className={`w-4 h-4 ${i < review.rating ? "text-white fill-white" : "text-white/20"}`}
                       />
                     ))}
                   </div>
@@ -70,7 +70,7 @@ export default function Reviews() {
 
 function ReviewDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (o: boolean) => void }) {
   const { mutate, isPending } = useCreateReview();
-  
+
   const form = useForm<InsertReview>({
     resolver: zodResolver(insertReviewSchema),
     defaultValues: {
@@ -100,7 +100,7 @@ function ReviewDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (o:
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl">Share Your Experience</DialogTitle>
         </DialogHeader>
-        
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-4">
             <FormField
@@ -116,7 +116,7 @@ function ReviewDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (o:
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="rating"
@@ -132,10 +132,9 @@ function ReviewDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (o:
                           className="focus:outline-none"
                           onClick={() => field.onChange(star)}
                         >
-                          <Star 
-                            className={`w-6 h-6 transition-colors ${
-                              star <= field.value ? "text-white fill-white" : "text-white/20"
-                            }`} 
+                          <Star
+                            className={`w-6 h-6 transition-colors ${star <= field.value ? "text-white fill-white" : "text-white/20"
+                              }`}
                           />
                         </button>
                       ))}
@@ -160,8 +159,8 @@ function ReviewDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (o:
               )}
             />
 
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isPending}
               className="w-full bg-white text-black hover:bg-white/90 rounded-none"
             >

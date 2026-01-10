@@ -5,13 +5,13 @@ export default function About() {
     <div className="bg-background">
       {/* HERO */}
       <section className="py-20 md:py-32 container mx-auto px-6">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-4xl"
         >
           <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-8">
-            About The Giant
+            About The <span className="text-primary">Giant</span>
           </h1>
           <div className="w-24 h-1 bg-white/20 mb-12" />
         </motion.div>
@@ -29,10 +29,10 @@ export default function About() {
             </p>
           </div>
           <div className="relative">
-             {/* minimalist stage setup black and white */}
-            <img 
+            {/* minimalist stage setup black and white */}
+            <img
               src="https://images.unsplash.com/photo-1478147427282-58a87a120781?w=800&auto=format&fit=crop&q=60"
-              alt="Event Setup" 
+              alt="Event Setup"
               className="w-full h-full object-cover opacity-90"
             />
             <div className="absolute -bottom-8 -left-8 bg-neutral-900 p-8 border border-white/10 hidden md:block">
@@ -53,7 +53,7 @@ export default function About() {
               { title: "Elegance", desc: "We believe in refined aesthetics that speak volumes." },
               { title: "Excellence", desc: "Delivering beyond expectations is our standard." }
             ].map((item, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
