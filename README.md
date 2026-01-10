@@ -51,17 +51,6 @@ npm run dev
 ```
 The application will be accessible at: **[http://localhost:5000](http://localhost:5000)**
 
-## 📜 Work Accomplished
-Our team has refined the project with the following enhancements:
-- **Aesthetic Unification**: Applied the Gold/White theme across all pages (`Home`, `About`, `Services`, `Gallery`, `Reviews`, `Contact`).
-- **Home Page Makeover**: 
-    - Transformed the services overview into immersive 700px tall cards.
-    - Added high-quality "live" background images with zoom-on-hover effects.
-    - Implemented large, minimalist all-caps typography.
-- **Gallery Refinement**: Added decorative dual-layer gold borders to all portfolio images.
-- **Services Layout**: Optimized the "Catalogue" section into a compact 2x2 grid for better visibility.
-- **Windows Optimization**: Updated project scripts for seamless execution on Windows systems.
-
 ## 📁 Project Structure
 - `client/src/pages`: Component-based page layouts.
 - `client/src/assets`: Image assets and visual resources.
