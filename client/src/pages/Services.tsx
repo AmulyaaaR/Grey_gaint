@@ -67,11 +67,11 @@ export default function Services() {
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70" />
               
               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 transform translate-y-6 transition-transform duration-500 group-hover:translate-y-0">
-                <h3 className="text-3xl font-serif text-white mb-4 tracking-wide">{service.title}</h3>
+                <h3 className="text-3xl font-serif text-white mb-4 tracking-wide group-hover:text-primary transition-colors">{service.title}</h3>
                 <p className="text-gray-300 font-light mb-8 max-w-md opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
                   {service.desc}
                 </p>
-                <Link href="/contact" className="inline-flex items-center text-xs uppercase tracking-[0.2em] text-white border-b border-white/30 pb-2 hover:border-white transition-all duration-300">
+                <Link href="/contact" className="inline-flex items-center text-xs uppercase tracking-[0.2em] text-primary border-b border-primary/30 pb-2 hover:border-primary transition-all duration-300">
                   Inquire Now <ArrowUpRight className="ml-2 w-3 h-3" />
                 </Link>
               </div>

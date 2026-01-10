@@ -46,15 +46,15 @@ export default function Gallery() {
               className="break-inside-avoid relative group cursor-pointer overflow-hidden border border-white/10 rounded-sm"
               onClick={() => setSelectedPhoto(photo.src)}
             >
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 z-10 flex items-center justify-center">
-                <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm tracking-widest uppercase font-light">
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-primary/20 transition-all duration-300 z-10 flex items-center justify-center">
+                <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm tracking-widest uppercase font-light bg-primary/80 px-4 py-2">
                   View Project
                 </span>
               </div>
               <img 
                 src={photo.src} 
                 alt={photo.alt} 
-                className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-in-out"
+                className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-in-out group-hover:scale-105"
               />
             </motion.div>
           ))}

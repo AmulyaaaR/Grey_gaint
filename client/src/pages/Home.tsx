@@ -25,11 +25,11 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h2 className="text-sm md:text-base font-sans tracking-[0.3em] uppercase text-white/70 mb-6">
+            <h2 className="text-sm md:text-base font-sans tracking-[0.3em] uppercase text-primary/80 mb-6">
               Premium Event Management
             </h2>
             <h1 className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold text-white mb-8 leading-tight">
-              GREY GIANT
+              GREY <span className="text-primary">GIANT</span>
             </h1>
             <p className="max-w-xl mx-auto text-lg md:text-xl text-white/80 font-light leading-relaxed mb-10">
               Specializing in luxury corporate events, bespoke weddings, and exclusive gatherings. 
@@ -37,10 +37,10 @@ export default function Home() {
               Vision meets excellence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-white text-black hover:bg-white/90 rounded-none px-8 h-14 text-base tracking-wide">
+              <Button asChild size="lg" className="bg-primary text-black hover:bg-primary/90 rounded-none px-8 h-14 text-base tracking-wide border-primary">
                 <Link href="/contact">Get a Quote</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white rounded-none px-8 h-14 text-base tracking-wide">
+              <Button asChild size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10 hover:text-primary rounded-none px-8 h-14 text-base tracking-wide">
                 <Link href="/services">View Catalogue</Link>
               </Button>
             </div>

@@ -39,9 +39,9 @@ function Navbar() {
   };
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? "bg-black/90 backdrop-blur-md py-4" : "bg-transparent py-6"}`}>
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? "bg-black/95 backdrop-blur-md py-4 border-b border-primary/20" : "bg-transparent py-6"}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <button onClick={() => scrollToSection('home')} className="text-xl font-serif font-bold text-white tracking-widest">
+        <button onClick={() => scrollToSection('home')} className="text-xl font-serif font-bold text-primary tracking-widest">
           GREY GIANT
         </button>
 
@@ -51,7 +51,7 @@ function Navbar() {
             <button
               key={item.name}
               onClick={() => scrollToSection(item.href)}
-              className="text-xs uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors"
+              className="text-xs uppercase tracking-[0.2em] text-foreground/70 hover:text-primary transition-colors"
             >
               {item.name}
             </button>

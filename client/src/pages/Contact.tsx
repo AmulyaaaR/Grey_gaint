@@ -35,24 +35,24 @@ export default function Contact() {
       <div className="grid lg:grid-cols-2 min-h-[calc(100vh-80px)]">
         
         {/* Contact Info Side */}
-        <div className="bg-neutral-900 p-10 lg:p-20 flex flex-col justify-center border-r border-white/5">
+        <div className="bg-neutral-900 p-10 lg:p-20 flex flex-col justify-center border-r border-primary/10">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h1 className="text-4xl md:text-6xl font-serif text-white mb-12">Get in Touch</h1>
+            <h1 className="text-4xl md:text-6xl font-serif text-white mb-12">Get in <span className="text-primary">Touch</span></h1>
             
             <div className="space-y-12">
               <div className="flex gap-6">
-                <MapPin className="w-6 h-6 text-white mt-1 shrink-0" />
+                <MapPin className="w-6 h-6 text-primary mt-1 shrink-0" />
                 <div>
                   <h3 className="text-white font-medium uppercase tracking-widest mb-2">Location</h3>
                   <p className="text-white/60 font-light leading-relaxed">
                     Post-office, Kamakshipalya,<br/>
                     Bengaluru, Karnataka 560079
                   </p>
-                  <div className="mt-4 flex gap-4 text-sm text-white/40">
+                  <div className="mt-4 flex gap-4 text-sm text-primary/60">
                     <span className="flex items-center gap-2"><Navigation className="w-4 h-4" /> 1 hr 5 mins</span>
                     <span className="flex items-center gap-2">· 25 mins</span>
                   </div>
@@ -60,7 +60,7 @@ export default function Contact() {
               </div>
 
               <div className="flex gap-6">
-                <Clock className="w-6 h-6 text-white mt-1 shrink-0" />
+                <Clock className="w-6 h-6 text-primary mt-1 shrink-0" />
                 <div>
                   <h3 className="text-white font-medium uppercase tracking-widest mb-2">Hours</h3>
                   <p className="text-white/60 font-light">
@@ -71,7 +71,7 @@ export default function Contact() {
               </div>
 
               <div className="flex gap-6">
-                <Phone className="w-6 h-6 text-white mt-1 shrink-0" />
+                <Phone className="w-6 h-6 text-primary mt-1 shrink-0" />
                 <div>
                   <h3 className="text-white font-medium uppercase tracking-widest mb-2">Contact</h3>
                   <p className="text-white/60 font-light">
@@ -91,7 +91,7 @@ export default function Contact() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <h2 className="text-2xl font-serif text-white mb-8">Send an Inquiry</h2>
+            <h2 className="text-2xl font-serif text-white mb-8">Send an <span className="text-primary">Inquiry</span></h2>
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -101,9 +101,9 @@ export default function Contact() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel className="text-primary/80">Name</FormLabel>
                         <FormControl>
-                          <Input {...field} className="h-12 bg-white/5 border-white/10 rounded-none focus:border-white" />
+                          <Input {...field} className="h-12 bg-white/5 border-white/10 rounded-none focus:border-primary" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -114,9 +114,9 @@ export default function Contact() {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Phone</FormLabel>
+                        <FormLabel className="text-primary/80">Phone</FormLabel>
                         <FormControl>
-                          <Input {...field} value={field.value || ""} className="h-12 bg-white/5 border-white/10 rounded-none focus:border-white" />
+                          <Input {...field} value={field.value || ""} className="h-12 bg-white/5 border-white/10 rounded-none focus:border-primary" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -130,9 +130,9 @@ export default function Contact() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel className="text-primary/80">Email</FormLabel>
                         <FormControl>
-                          <Input {...field} value={field.value || ""} className="h-12 bg-white/5 border-white/10 rounded-none focus:border-white" />
+                          <Input {...field} value={field.value || ""} className="h-12 bg-white/5 border-white/10 rounded-none focus:border-primary" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -143,10 +143,10 @@ export default function Contact() {
                     name="eventType"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Event Type</FormLabel>
+                        <FormLabel className="text-primary/80">Event Type</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
                           <FormControl>
-                            <SelectTrigger className="h-12 bg-white/5 border-white/10 rounded-none focus:border-white">
+                            <SelectTrigger className="h-12 bg-white/5 border-white/10 rounded-none focus:border-primary">
                               <SelectValue placeholder="Select type" />
                             </SelectTrigger>
                           </FormControl>
@@ -169,9 +169,9 @@ export default function Contact() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Details</FormLabel>
+                      <FormLabel className="text-primary/80">Details</FormLabel>
                       <FormControl>
-                        <Textarea {...field} className="min-h-[150px] bg-white/5 border-white/10 rounded-none focus:border-white" placeholder="Tell us about your vision..." />
+                        <Textarea {...field} className="min-h-[150px] bg-white/5 border-white/10 rounded-none focus:border-primary" placeholder="Tell us about your vision..." />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -182,7 +182,7 @@ export default function Contact() {
                   type="submit" 
                   size="lg"
                   disabled={isPending}
-                  className="w-full h-14 bg-white text-black hover:bg-white/90 rounded-none text-base tracking-wide uppercase font-medium"
+                  className="w-full h-14 bg-primary text-black hover:bg-primary/90 rounded-none text-base tracking-wide uppercase font-medium border-primary"
                 >
                   {isPending ? "Sending..." : "Request Quote"}
                 </Button>
