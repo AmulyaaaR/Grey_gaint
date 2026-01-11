@@ -2,10 +2,18 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import heroImg from "@assets/stock_images/luxury_corporate_eve_632147c4.jpg";
-import corporateImg from "@assets/image_1768032170619.png";
-import weddingImg from "@assets/image_1768032128663.png";
-import thematicImg from "@assets/image_1768032149552.png";
+import corporateImg from "@assets/corporate_event_new.png";
+import weddingImg from "@assets/wedding_event_new.jpg";
+import thematicImg from "@assets/social_gathering_new.jpg";
 
 export default function Home() {
   return (
@@ -28,7 +36,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h2 className="text-sm md:text-base font-sans tracking-[0.3em] uppercase text-primary/80 mb-6">
+            <h2 className="text-sm md:text-base font-sans tracking-[0.3em] uppercase text-primary/80 mb-6 font-bold">
               Premium Event Management
             </h2>
             <h1 className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold text-white mb-8 leading-tight">
@@ -43,7 +51,7 @@ export default function Home() {
               <Button asChild size="lg" className="bg-primary text-black hover:bg-primary/90 rounded-none px-8 h-14 text-base tracking-wide border-primary">
                 <Link href="/contact">Get a Quote</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10 hover:text-primary rounded-none px-8 h-14 text-base tracking-wide">
+              <Button asChild size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10 hover:text-primary rounded-none px-8 h-14 text-base tracking-wide font-bold">
                 <Link href="/services">View Catalogue</Link>
               </Button>
             </div>
@@ -75,9 +83,33 @@ export default function Home() {
                 with precision and refined aesthetics.
               </p>
               <div className="pt-4">
-                <Link href="/about" className="inline-flex items-center text-white text-sm tracking-widest uppercase hover:text-white/70 transition-colors group">
-                  Read Our Story <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="inline-flex items-center text-white text-sm tracking-widest uppercase hover:text-white/70 transition-colors group">
+                      Read Our Story <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>About The Giant</DialogTitle>
+                      <DialogDescription>
+                        Grey Giant Events & Services — our story in brief.
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="prose prose-invert prose-lg text-white/70 font-light mt-4">
+                      <p className="lead text-white text-xl">
+                        "Grey Giant Events & Services is a premium event management company specializing in luxury corporate events, bespoke weddings, birthday celebrations, and exclusive social gatherings."
+                      </p>
+                      <p>
+                        We provide end-to-end planning, coordination, and execution, ensuring every event is seamless, elegant, and stress-free. From concept creation to flawless on-site management, every detail is thoughtfully curated with precision and refined aesthetics.
+                      </p>
+                      <p>
+                        Whether it is a high-profile corporate gathering or a personal milestone celebration, we deliver customized experiences that reflect class, professionalism, and timeless elegance. At Grey Giant, we craft moments of distinction where vision meets excellence and every event leaves a lasting impression.
+                      </p>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>
@@ -86,26 +118,31 @@ export default function Home() {
 
       {/* IMMERSIVE SERVICES OVERVIEW */}
       <section className="bg-black">
+        <div className="container mx-auto px-6 pt-20 pb-12 text-center">
+          <h2 className="text-5xl md:text-7xl font-sans font-bold uppercase tracking-tight text-white">
+            <span className="text-primary">What</span> We Do
+          </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
           {[
             {
               title: "CORPORATE EVENTS",
-              desc: "High-profile gatherings executed with precision.",
+              desc: "High-profile gatherings executed with precision. Full-service planning, AV, catering coordination and on-site management for seamless corporate experiences.",
               image: corporateImg
             },
             {
               title: "BESPOKE WEDDINGS",
-              desc: "Timeless elegance for your special day.",
+              desc: "Timeless elegance for your special day. Custom design, floral direction, vendor curation and timeline orchestration tailored to your vision.",
               image: weddingImg
             },
             {
               title: "SOCIAL GATHERINGS",
-              desc: "Exclusive parties and milestone celebrations.",
+              desc: "Exclusive parties and milestone celebrations. Intimate or large-scale events with bespoke themes, entertainment, and hospitality.",
               image: thematicImg
             }
           ].map((item, i) => (
             <Link key={i} href="/contact">
-              <div className="relative h-[600px] md:h-[700px] overflow-hidden group cursor-pointer border-r border-white/5 last:border-r-0">
+              <div className="relative h-[300px] md:h-[400px] overflow-hidden group cursor-pointer border-r border-white/5 last:border-r-0">
                 {/* Live Background Image */}
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
@@ -125,11 +162,11 @@ export default function Home() {
                     viewport={{ once: true }}
                     className="relative"
                   >
-                    <h3 className="text-3xl md:text-5xl font-sans font-light tracking-[0.15em] text-white transition-all duration-500 group-hover:tracking-[0.2em]">
+                    <h3 className="text-3xl md:text-5xl font-sans font-bold tracking-[0.15em] text-white transition-all duration-500 group-hover:tracking-[0.2em]">
                       {item.title}
                     </h3>
                     <div className="w-12 h-[1px] bg-primary mx-auto my-6 transition-all duration-500 group-hover:w-24" />
-                    <p className="text-white/70 text-sm md:text-base font-light max-w-xs mx-auto opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                    <p className="text-white/80 text-base md:text-lg font-normal max-w-md mx-auto">
                       {item.desc}
                     </p>
                   </motion.div>

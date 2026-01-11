@@ -61,7 +61,7 @@ export default function About() {
                 transition={{ delay: i * 0.2 }}
                 className="p-8 border border-white/5 bg-black hover:border-white/20 transition-colors"
               >
-                <h3 className="text-xl font-serif text-white mb-4">{item.title}</h3>
+                <h3 className="text-xl font-serif text-primary mb-4">{item.title}</h3>
                 <p className="text-white/50 font-light">{item.desc}</p>
               </motion.div>
             ))}

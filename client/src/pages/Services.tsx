@@ -77,13 +77,27 @@ export default function Services() {
                 <p className="text-gray-300 font-light mb-8 max-w-md opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
                   {service.desc}
                 </p>
-                <Link href="/contact" className="inline-flex items-center text-xs uppercase tracking-[0.2em] text-primary border-b border-primary/30 pb-2 hover:border-primary transition-all duration-300">
-                  Inquire Now <ArrowUpRight className="ml-2 w-3 h-3" />
-                </Link>
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* Show More Button */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          className="mt-20 text-center"
+        >
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-12 py-5 border border-primary text-primary text-[10px] uppercase font-sans tracking-[0.4em] hover:bg-primary hover:text-black transition-all duration-500"
+          >
+            Show More
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );

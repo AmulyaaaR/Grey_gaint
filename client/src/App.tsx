@@ -51,7 +51,7 @@ function Navbar() {
             <button
               key={item.name}
               onClick={() => scrollToSection(item.href)}
-              className="text-xs uppercase tracking-[0.2em] text-foreground/70 hover:text-primary transition-colors"
+              className="text-xs uppercase tracking-[0.2em] text-foreground/70 hover:text-primary transition-colors font-bold"
             >
               {item.name}
             </button>
@@ -75,7 +75,7 @@ function Navbar() {
             <button
               key={item.name}
               onClick={() => scrollToSection(item.href)}
-              className="text-sm uppercase tracking-widest text-white/70 hover:text-white text-left"
+              className="text-sm uppercase tracking-widest text-white/70 hover:text-white text-left font-bold"
             >
               {item.name}
             </button>
