@@ -97,7 +97,7 @@ export default function Home() {
               <img
                 src={introductionImg}
                 alt="Architecture"
-                className="relative z-10 w-full aspect-[4/5] object-cover brightness-75 contrast-125"
+                className="relative z-10 w-full max-h-[600px] object-cover mx-auto brightness-75 contrast-125 rounded-sm shadow-2xl"
               />
             </div>
             <div className="space-y-8">
