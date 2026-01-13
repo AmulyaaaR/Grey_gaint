@@ -4,7 +4,13 @@ export default function Values() {
     const values = [
         { title: "Precision", desc: "Attention to detail is our hallmark. Nothing is left to chance." },
         { title: "Elegance", desc: "We believe in refined aesthetics that speak volumes." },
-        { title: "Excellence", desc: "Delivering beyond expectations is our standard." }
+        { title: "Excellence", desc: "Delivering beyond expectations is our standard." },
+        { title: "Artistry", desc: "Every detail is thoughtfully composed to create visually striking experiences." },
+        { title: "Integrity", desc: "We operate with honesty, transparency, and respect in every collaboration." },
+        { title: "Innovation", desc: "We constantly evolve, bringing fresh ideas and modern approaches to every event." },
+        { title: "Commitment", desc: "Your vision becomes our responsibility, from concept to final moment." },
+        { title: "Sophistication", desc: "Refined taste guides every decision, ensuring timeless appeal." },
+        { title: "Passion", desc: "We pour heart and soul into crafting moments that truly matter." }
     ];
 
     return (
