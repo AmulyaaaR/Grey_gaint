@@ -59,7 +59,7 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/20">
-          <p>&copy; {new Date().getFullYear()} Grey Giant Events & Services. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Grey Darshan Events & Services. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white/40">Privacy Policy</a>
             <a href="#" className="hover:text-white/40">Terms of Service</a>
