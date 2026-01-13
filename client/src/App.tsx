@@ -24,6 +24,8 @@ function Navbar() {
   const navItems = [
     { name: "Home", href: "home" },
     { name: "About", href: "about" },
+    { name: "Our Story", href: "story" },
+    { name: "Values", href: "values" },
     { name: "Services", href: "services" },
     { name: "Gallery", href: "gallery" },
     { name: "Reviews", href: "reviews" },
@@ -66,7 +68,7 @@ function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="absolute top-full left-0 w-full bg-black border-b border-white/10 p-6 flex flex-col gap-6 md:hidden"
@@ -100,6 +102,8 @@ function MainLayout() {
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-white z-[60] origin-left" style={{ scaleX }} />
       <div id="home"><Home /></div>
       <div id="about"><AboutSection /></div>
+      <div id="story"><DistinctionSection /></div>
+      <div id="values"><ValuesSection /></div>
       <div id="services"><ServicesSection /></div>
       <div id="gallery"><GallerySection /></div>
       <div id="reviews"><ReviewsSection /></div>
@@ -115,8 +119,12 @@ import Services from "@/pages/Services";
 import Gallery from "@/pages/Gallery";
 import Reviews from "@/pages/Reviews";
 import Contact from "@/pages/Contact";
+import Distinction from "@/components/sections/Distinction";
+import Values from "@/components/sections/Values";
 
 function AboutSection() { return <div className="py-20"><About /></div>; }
+function DistinctionSection() { return <div id="story"><Distinction /></div>; }
+function ValuesSection() { return <div id="values"><Values /></div>; }
 function ServicesSection() { return <div className="py-20"><Services /></div>; }
 function GallerySection() { return <div className="py-20"><Gallery /></div>; }
 function ReviewsSection() { return <div className="py-20"><Reviews /></div>; }
