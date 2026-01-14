@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowUpRight } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 import corporateImg from "@assets/gallery/luxury_corporate_eve_632147c4.jpg";
 import weddingImg from "@assets/gallery/elegant_wedding_rece_fa4a2b09.jpg";
@@ -124,14 +125,14 @@ export default function Services() {
           transition={{ delay: 0.5 }}
           className="mt-20 text-center"
         >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <Button
+            variant="outline"
+            size="lg"
             onClick={() => setShowAll(!showAll)}
-            className="px-12 py-5 border border-primary text-primary text-[10px] uppercase font-sans tracking-[0.4em] hover:bg-primary hover:text-black transition-all duration-500 cursor-pointer"
+            className="border-primary text-primary hover:bg-primary/10 hover:text-primary rounded-none px-8 h-12 text-base tracking-wide font-bold cursor-pointer"
           >
             {showAll ? "Show Less" : "Show More"}
-          </motion.button>
+          </Button>
         </motion.div>
       </div>
     </div>

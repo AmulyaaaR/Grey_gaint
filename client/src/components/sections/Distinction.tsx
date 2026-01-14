@@ -37,16 +37,22 @@ export default function Distinction() {
                                         Read Our Story <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                     </button>
                                 </DialogTrigger>
-                                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                                    <div className="prose prose-invert prose-lg text-white/70 font-light mt-4 space-y-6">
+                                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto no-scrollbar bg-neutral-900 border border-primary/20 p-12 md:p-16">
+                                    <div className="text-center mb-10">
+                                        <h3 className="text-3xl md:text-4xl font-serif text-white mb-4 italic">
+                                            "We don’t just manage events,<br /> we craft moments of <span className="text-primary not-italic">distinction</span>."
+                                        </h3>
+                                        <div className="w-24 h-0.5 bg-primary/30 mx-auto mt-6"></div>
+                                    </div>
+                                    <div className="prose prose-invert prose-lg text-white/70 font-light space-y-8 text-center max-w-3xl mx-auto leading-relaxed">
                                         <p>
-                                            Grey Giant Events & Services is a distinguished event management company dedicated to creating extraordinary experiences with refined elegance. We specialize in luxury corporate events, bespoke weddings, milestone celebrations, and exclusive social gatherings, delivering events that are both visually captivating and impeccably executed.
+                                            <span className="text-primary font-normal">Grey Giant Events & Services</span> is a distinguished event management company dedicated to creating extraordinary experiences with refined elegance. We specialize in luxury corporate events, bespoke weddings, milestone celebrations, and exclusive social gatherings, delivering events that are both visually captivating and impeccably executed.
                                         </p>
                                         <p>
                                             With a strong focus on end-to-end planning, seamless coordination, and flawless execution, we transform concepts into memorable realities. From initial ideation to meticulous on-site management, every element is thoughtfully curated, ensuring sophistication, precision, and effortless flow.
                                         </p>
                                         <p>
-                                            Whether orchestrating a prestigious corporate engagement or an intimate personal celebration, we design tailor-made experiences that embody class, professionalism, and timeless style. At Grey Giant, we don’t just manage events — we craft moments of distinction, where vision is elevated through excellence and every occasion leaves a lasting impression.
+                                            Whether orchestrating a prestigious corporate engagement or an intimate personal celebration, we design tailor-made experiences that embody class, professionalism, and timeless style. At Grey Giant, where vision is elevated through excellence and every occasion leaves a lasting impression.
                                         </p>
                                     </div>
                                 </DialogContent>

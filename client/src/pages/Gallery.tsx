@@ -27,7 +27,7 @@ export default function Gallery() {
           className="text-center mb-10"
         >
           <h1 className="text-3xl md:text-5xl font-serif text-white mb-3">
-            Our <span className="text-primary">Portfolio</span>
+            The <span className="text-primary">GreyGained</span> Collection
           </h1>
           <p className="text-gray-400 font-light max-w-2xl mx-auto">
             A glimpse into the moments of distinction we've crafted for our
@@ -123,7 +123,7 @@ export default function Gallery() {
             {selectedIndex !== null && (
               <>
                 {/* Large Image Viewport: Constrained and Centered */}
-                <div 
+                <div
                   className="relative w-full max-w-full flex-1 flex flex-col items-center justify-center group/main cursor-pointer min-h-[45vh] md:min-h-[65vh] select-none no-scrollbar"
                   onContextMenu={(e) => {
                     e.preventDefault();
@@ -171,11 +171,10 @@ export default function Gallery() {
                         key={idx}
                         id={`thumb-${idx}`}
                         onClick={() => setSelectedIndex(idx)}
-                        className={`relative w-20 h-14 md:w-28 md:h-20 flex-shrink-0 cursor-pointer overflow-hidden border-2 transition-all duration-500 rounded-sm group/thumb ${
-                          selectedIndex === idx
+                        className={`relative w-20 h-14 md:w-28 md:h-20 flex-shrink-0 cursor-pointer overflow-hidden border-2 transition-all duration-500 rounded-sm group/thumb ${selectedIndex === idx
                             ? "border-primary scale-110 z-10 shadow-lg shadow-primary/30 opacity-100"
                             : "border-white/5 opacity-40 hover:opacity-100 hover:border-white/20"
-                        }`}
+                          }`}
                       >
                         <img
                           src={photo.src}
