@@ -9,7 +9,8 @@ import { Link, useLocation } from "wouter";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import WelcomePopup from "@/components/WelcomePopup";
+import logoImg from "@assets/logo/logo.png";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,8 +44,11 @@ function Navbar() {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? "bg-black/95 backdrop-blur-md py-4 border-b border-primary/20" : "bg-transparent py-6"}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <button onClick={() => scrollToSection('home')} className="text-xl font-serif font-bold text-primary tracking-widest">
-          GREY GIANT
+        <button onClick={() => scrollToSection('home')} className="flex items-center gap-3 group">
+          <img src={logoImg} alt="Grey Giant Logo" className="w-10 h-10 object-contain transition-transform duration-500 group-hover:scale-110" />
+          <span className="text-xl font-serif font-bold text-primary tracking-widest hidden sm:inline-block">
+            GREY GIANT
+          </span>
         </button>
 
         {/* Desktop Nav */}
@@ -105,6 +109,8 @@ function MainLayout() {
       <div id="story"><DistinctionSection /></div>
       <div id="values"><ValuesSection /></div>
       <div id="services"><ServicesSection /></div>
+      <div id="story"><DistinctionSection /></div>
+      <div id="values"><ValuesSection /></div>
       <div id="gallery"><GallerySection /></div>
       <div id="reviews"><ReviewsSection /></div>
       <div id="contact"><ContactSection /></div>
@@ -115,6 +121,8 @@ function MainLayout() {
 
 // Wrapper components to remove their internal padding/min-h-screen where needed for single page flow
 import About from "@/pages/About";
+import Distinction from "@/components/sections/Distinction";
+import Values from "@/components/sections/Values";
 import Services from "@/pages/Services";
 import Gallery from "@/pages/Gallery";
 import Reviews from "@/pages/Reviews";
@@ -156,6 +164,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
+        <WelcomePopup />
         <Router />
       </TooltipProvider>
     </QueryClientProvider>

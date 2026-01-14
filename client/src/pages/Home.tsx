@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import heroImg from "@assets/stock_images/luxury_corporate_eve_632147c4.jpg";
+import heroImg from "@assets/gallery/luxury_corporate_eve_632147c4.jpg";
 
 export default function Home() {
   return (
