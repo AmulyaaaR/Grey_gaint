@@ -1,40 +1,78 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowUpRight } from "lucide-react";
+import { useState } from "react";
 
-import corporateImg from "@assets/gallery/image_1768032170619.png"; // Launch event
-import weddingImg from "@assets/gallery/image_1768032128663.png"; // Engagement sign
-import retirementImg from "@assets/gallery/image_1768032161591.png"; // Retirement farewell
-import thematicImg from "@assets/gallery/image_1768032149552.png"; // Tropical entrance
+import corporateImg from "@assets/gallery/luxury_corporate_eve_632147c4.jpg";
+import weddingImg from "@assets/gallery/elegant_wedding_rece_fa4a2b09.jpg";
+import djImg from "@assets/gallery/social_gathering_new.jpg";
+import bandImg from "@assets/gallery/corporate_event_new.png";
+import cateringImg from "@assets/gallery/image_1768032128663.png";
+import makeupImg from "@assets/gallery/wedding_event_new.jpg";
+import pastriesImg from "@assets/gallery/image_1768032161591.png";
+import balloonImg from "@assets/gallery/birthday_celebration_05d1cd5e.jpg";
+import socialImg from "@assets/gallery/corporate_social_gat_3217eb15.jpg";
 
 const services = [
   {
     id: "corporate",
     title: "Luxury Corporate Events",
-    desc: "From high-profile launches to professional conferences, we execute with refined precision.",
+    desc: "Strategic gatherings designed with precision and brand excellence.",
     image: corporateImg
   },
   {
     id: "weddings",
     title: "Bespoke Weddings & Engagements",
-    desc: "Curating timeless elegance for your most cherished personal milestones.",
+    desc: "Personalized celebrations crafted with timeless elegance.",
     image: weddingImg
   },
   {
-    id: "farewell",
-    title: "Retirement & Legacy Celebrations",
-    desc: "Honoring decades of excellence with sophisticated farewell gatherings.",
-    image: retirementImg
+    id: "dj-nights",
+    title: "DJ Nights & Private Parties",
+    desc: "High-energy music experiences designed to elevate celebrations.",
+    image: djImg
   },
   {
-    id: "thematic",
-    title: "Thematic Social Gatherings",
-    desc: "Bringing visions to life through creative, high-impact thematic decor and management.",
-    image: thematicImg
+    id: "bands",
+    title: "Traditional Bands & Brand Openings",
+    desc: "Cultural performances and ceremonial elements for grand launches.",
+    image: bandImg
+  },
+  {
+    id: "catering",
+    title: "Catering & Culinary Experiences",
+    desc: "Curated menus and refined presentation for every occasion.",
+    image: cateringImg
+  },
+  {
+    id: "makeup",
+    title: "Makeup & Styling Services",
+    desc: "Professional artistry designed for elegance and confidence.",
+    image: makeupImg
+  },
+  {
+    id: "pastries",
+    title: "Pastries & Celebration Cakes",
+    desc: "Artfully crafted desserts designed for memorable moments.",
+    image: pastriesImg
+  },
+  {
+    id: "balloon",
+    title: "Balloon Décor & Birthday Celebrations",
+    desc: "Creative balloon styling for joyful and vibrant occasions.",
+    image: balloonImg
+  },
+  {
+    id: "social",
+    title: "Private & Social Celebrations",
+    desc: "Intimate gatherings designed with elegance and personal touch.",
+    image: socialImg
   }
 ];
 
 export default function Services() {
+  const [showAll, setShowAll] = useState(false);
+
   return (
     <div className="min-h-screen bg-black">
       <div className="container mx-auto px-6 py-20">
@@ -50,7 +88,7 @@ export default function Services() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {services.map((service, i) => (
+          {services.slice(0, showAll ? services.length : 4).map((service, i) => (
             <motion.div
               key={service.id}
               initial={{ opacity: 0, y: 30 }}
@@ -68,11 +106,7 @@ export default function Services() {
 
               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 transform translate-y-6 transition-transform duration-500 group-hover:translate-y-0">
                 <h3 className="text-3xl font-serif text-white mb-4 tracking-wide group-hover:text-primary transition-colors flex items-baseline gap-2">
-                  {i % 2 === 0 ? (
-                    <> {service.title.split(' ').slice(0, -1).join(' ')} <span className="text-primary">{service.title.split(' ').slice(-1)}</span></>
-                  ) : (
-                    <>{service.title}</>
-                  )}
+                  {service.title}
                 </h3>
                 <p className="text-gray-300 font-light mb-8 max-w-md opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
                   {service.desc}
@@ -93,9 +127,10 @@ export default function Services() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-12 py-5 border border-primary text-primary text-[10px] uppercase font-sans tracking-[0.4em] hover:bg-primary hover:text-black transition-all duration-500"
+            onClick={() => setShowAll(!showAll)}
+            className="px-12 py-5 border border-primary text-primary text-[10px] uppercase font-sans tracking-[0.4em] hover:bg-primary hover:text-black transition-all duration-500 cursor-pointer"
           >
-            Show More
+            {showAll ? "Show Less" : "Show More"}
           </motion.button>
         </motion.div>
       </div>
