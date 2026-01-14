@@ -10,7 +10,7 @@ import { motion, useScroll, useSpring } from "framer-motion";
 import { Menu, X, Instagram, Facebook, Twitter, Phone, Mail, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import WelcomePopup from "@/components/WelcomePopup";
-import logoImg from "@assets/logo/logo.png";
+import logoImg from "@assets/logo/logo1.jpeg";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -137,7 +137,8 @@ function ContactSection() { return <div className="py-20"><Contact /></div>; }
 function Footer() {
   return (
     <footer className="bg-neutral-900 pt-20 pb-6 border-t border-white/5">
-      <div className="container mx-auto px-6 text-center">
+      <div className="container mx-auto px-6 text-center flex flex-col items-center">
+        <img src={logoImg} alt="Grey Giant Logo" className="w-12 h-12 object-contain mb-6 opacity-80" />
         <h2 className="text-2xl font-serif text-white mb-4">GREY GIANT</h2>
         <p className="text-white/40 text-sm tracking-widest uppercase mb-8">Vision Meets Excellence</p>
 

@@ -20,17 +20,17 @@ export default function Distinction() {
                             className="relative z-10 w-full max-h-[600px] object-cover mx-auto brightness-75 contrast-125 rounded-sm shadow-2xl"
                         />
                     </div>
-                    <div className="space-y-8">
+                    <div className="space-y-8 text-center">
                         <h2 className="text-4xl md:text-5xl font-serif text-white leading-tight">
-                            Crafting Moments of <span className="italic text-primary">Distinction</span>
+                            Crafting Moments of <br /><span className="italic text-primary">Distinction</span>
                         </h2>
-                        <p className="text-white/60 leading-relaxed font-light text-lg">
+                        <p className="text-white/60 leading-relaxed font-light text-lg max-w-xl mx-auto">
                             Grey Giant Events & Services is a premium event management company in Bengaluru.
                             We provide end-to-end planning, ensuring every event is seamless, elegant, and stress-free.
                             From concept creation to flawless on-site management, every detail is thoughtfully curated
                             with precision and refined aesthetics.
                         </p>
-                        <div className="pt-4">
+                        <div className="pt-4 flex justify-center">
                             <Dialog>
                                 <DialogTrigger asChild>
                                     <button className="inline-flex items-center text-white text-sm tracking-widest uppercase hover:text-white/70 transition-colors group">
