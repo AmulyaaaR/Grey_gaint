@@ -109,8 +109,6 @@ function MainLayout() {
       <div id="story"><DistinctionSection /></div>
       <div id="values"><ValuesSection /></div>
       <div id="services"><ServicesSection /></div>
-      <div id="story"><DistinctionSection /></div>
-      <div id="values"><ValuesSection /></div>
       <div id="gallery"><GallerySection /></div>
       <div id="reviews"><ReviewsSection /></div>
       <div id="contact"><ContactSection /></div>
@@ -127,8 +125,6 @@ import Services from "@/pages/Services";
 import Gallery from "@/pages/Gallery";
 import Reviews from "@/pages/Reviews";
 import Contact from "@/pages/Contact";
-import Distinction from "@/components/sections/Distinction";
-import Values from "@/components/sections/Values";
 
 function AboutSection() { return <div className="py-20"><About /></div>; }
 function DistinctionSection() { return <div id="story"><Distinction /></div>; }
