@@ -330,13 +330,28 @@ export default function Services() {
     <div className="min-h-screen bg-black">
       <div className="container mx-auto px-6 py-20">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center max-w-2xl mx-auto mb-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col items-center mb-32 text-center px-4 max-w-4xl mx-auto"
         >
-          <h1 className="text-4xl md:text-6xl font-serif text-white mb-6 tracking-tight">Our <span className="text-primary">Catalogue</span></h1>
-          <p className="text-gray-400 font-light leading-relaxed">
-            Every event is a unique masterpiece. Browse our core service categories designed for those who value distinction and professional excellence.
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-4 mb-10"
+          >
+            <span className="w-12 h-[1px] bg-primary/20" />
+            <span className="text-[10px] uppercase tracking-[0.7em] text-primary/60 font-bold">
+              The Offering
+            </span>
+            <span className="w-12 h-[1px] bg-primary/20" />
+          </motion.div>
+
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-10 tracking-tighter leading-[0.9]">
+            Our Exclusive <br />
+            <span className="bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic">Catalogue</span>
+          </h1>
+          <p className="text-white/40 max-w-xl font-light italic text-sm md:text-base leading-relaxed font-serif">
+            "Explore our curated suite of services, where every element is designed to elevate your celebration into a masterpiece of distinction."
           </p>
         </motion.div>
 

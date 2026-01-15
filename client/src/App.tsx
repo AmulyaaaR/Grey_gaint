@@ -126,13 +126,13 @@ import Gallery from "@/pages/Gallery";
 import Reviews from "@/pages/Reviews";
 import Contact from "@/pages/Contact";
 
-function AboutSection() { return <div className="py-20"><About /></div>; }
+function AboutSection() { return <div id="about"><About /></div>; }
 function DistinctionSection() { return <div id="story"><Distinction /></div>; }
 function ValuesSection() { return <div id="values"><Values /></div>; }
-function ServicesSection() { return <div className="py-20"><Services /></div>; }
-function GallerySection() { return <div className="py-20"><Gallery /></div>; }
-function ReviewsSection() { return <div className="py-20"><Reviews /></div>; }
-function ContactSection() { return <div className="py-20"><Contact /></div>; }
+function ServicesSection() { return <div id="services"><Services /></div>; }
+function GallerySection() { return <div id="gallery"><Gallery /></div>; }
+function ReviewsSection() { return <div id="reviews"><Reviews /></div>; }
+function ContactSection() { return <div id="contact"><Contact /></div>; }
 
 function Footer() {
   return (

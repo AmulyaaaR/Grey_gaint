@@ -20,14 +20,17 @@ export const reviews = pgTable("reviews", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertInquirySchema = createInsertSchema(inquiries).omit({ 
-  id: true, 
-  createdAt: true 
+export const insertInquirySchema = createInsertSchema(inquiries).omit({
+  id: true,
+  createdAt: true
+}).extend({
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  phone: z.string().min(1, "Phone number is required").regex(/^[6-9]\d{9}$/, "Invalid Indian phone number"),
 });
 
-export const insertReviewSchema = createInsertSchema(reviews).omit({ 
-  id: true, 
-  createdAt: true 
+export const insertReviewSchema = createInsertSchema(reviews).omit({
+  id: true,
+  createdAt: true
 });
 
 export type Inquiry = typeof inquiries.$inferSelect;

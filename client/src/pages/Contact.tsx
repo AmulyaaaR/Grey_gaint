@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { MapPin, Clock, Phone, Navigation } from "lucide-react";
+import { MapPin, Phone, Navigation, Mail } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Contact() {
@@ -31,166 +31,187 @@ export default function Contact() {
   };
 
   return (
-    <div className="pt-20 min-h-screen bg-background">
-      <div className="grid lg:grid-cols-2 min-h-[calc(100vh-80px)]">
+    <div className="pt-20 min-h-screen bg-[#020202] relative overflow-hidden selection:bg-primary/30">
+      {/* Abstract Background Noise / Grid */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+           style={{ backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`, backgroundSize: '40px 40px' }} />
 
-        {/* Contact Info Side */}
-        <div className="bg-neutral-900 p-10 lg:p-20 flex flex-col justify-center border-r border-primary/10">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
+      {/* Dynamic Glows */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[#d4af37]/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="container mx-auto px-6 py-24 relative z-10 flex flex-col items-center">
+        <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 w-full max-w-7xl items-start">
+          
+          {/* Contact Info Side */}
+          <div className="lg:col-span-12 xl:col-span-5 h-full">
+            <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col h-full"
           >
-            <h1 className="text-4xl md:text-6xl font-serif text-white mb-12">Get in <span className="text-primary">Touch</span></h1>
+            <div className="space-y-8 mb-16 text-center xl:text-left">
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="flex items-center gap-4 justify-center xl:justify-start"
+              >
+                <span className="w-10 h-[1px] bg-primary/20" />
+                <span className="text-[10px] uppercase tracking-[0.7em] text-primary/60 font-bold">
+                  Get In Touch
+                </span>
+                <span className="w-10 h-[1px] bg-primary/20 xl:hidden" />
+              </motion.div>
+              
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif text-white tracking-tighter leading-[0.9]">
+                Envision Your <br />
+                <span className="bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic">Experience</span>
+              </h1>
+              <p className="text-white/30 max-w-sm mx-auto xl:mx-0 font-light italic text-base md:text-lg leading-relaxed font-serif">
+                "Connect with our artisans to begin crafting your next milestone event with absolute precision and refined elegance."
+              </p>
+            </div>
 
-            <div className="space-y-12">
-              <div className="flex gap-6">
-                <MapPin className="w-6 h-6 text-primary mt-1 shrink-0" />
-                <div>
-                  <h3 className="text-white font-medium uppercase tracking-widest mb-2">Location</h3>
-                  <a href="https://maps.app.goo.gl/p6miECt3U0FevDmiC" target="_blank" rel="noopener noreferrer" className="group block">
-                    <p className="text-white/60 font-light leading-relaxed group-hover:text-primary transition-colors">
-                      Post-office, Kamakshipalya,<br />
-                      Bengaluru, Karnataka 560079
-                    </p>
-                    <div className="mt-4 flex gap-4 text-sm text-primary/80 group-hover:text-primary transition-colors">
-                      <span className="flex items-center gap-2"><Navigation className="w-4 h-4" /> Get Directions</span>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <Clock className="w-6 h-6 text-primary mt-1 shrink-0" />
-                <div>
-                  <h3 className="text-white font-medium uppercase tracking-widest mb-2">Hours</h3>
-                  <p className="text-white/60 font-light">
-                    Open 24 Hours<br />
-                    Monday - Sunday
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <Phone className="w-6 h-6 text-primary mt-1 shrink-0" />
-                <div>
-                  <h3 className="text-white font-medium uppercase tracking-widest mb-2">Contact</h3>
-                  <p className="text-white/60 font-light">
-                    7483216698<br />
-                    greygiant01@gmail.com
-                  </p>
-                </div>
-              </div>
+            <div className="grid sm:grid-cols-1 gap-6 max-w-2xl mx-auto xl:mx-0 mt-auto">
+              {[
+                { icon: MapPin, label: "Location", value: "Post-office, Kamakshipalya, Bengaluru, 560079" },
+                { icon: Phone, label: "Contact", value: "+91 7483216698" },
+                { icon: Mail, label: "Email", value: "greygiant01@gmail.com" }
+              ].map((item, i) => (
+                <motion.div 
+                  key={item.label}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="group flex flex-col xl:flex-row items-center xl:items-center gap-6 p-8 rounded-[2rem] bg-white/[0.01] border border-white/5 hover:bg-white/[0.02] hover:border-primary/20 transition-all duration-500"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-primary/5 border border-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-black transition-all duration-500 shrink-0">
+                    <item.icon size={20} />
+                  </div>
+                  <div className="text-center xl:text-left">
+                    <p className="text-[10px] uppercase tracking-[0.5em] text-primary/40 font-bold mb-2">{item.label}</p>
+                    <p className="text-white/70 font-light text-base md:text-lg lg:text-xl leading-snug font-serif italic">{item.value}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>
 
-        {/* Form Side */}
-        <div className="p-10 lg:p-20 flex flex-col justify-center bg-black">
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
+          {/* Contact Form */}
+          <div className="lg:col-span-12 xl:col-span-7 h-full">
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative h-full"
           >
-            <h2 className="text-2xl font-serif text-white mb-8">Send an <span className="text-primary">Inquiry</span></h2>
-
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-primary/80">Name</FormLabel>
-                        <FormControl>
-                          <Input {...field} className="h-12 bg-white/5 border-white/10 rounded-none focus:border-primary" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-primary/80">Phone</FormLabel>
-                        <FormControl>
-                          <Input {...field} value={field.value || ""} className="h-12 bg-white/5 border-white/10 rounded-none focus:border-primary" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-primary/80">Email</FormLabel>
-                        <FormControl>
-                          <Input {...field} value={field.value || ""} className="h-12 bg-white/5 border-white/10 rounded-none focus:border-primary" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="eventType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-primary/80">Event Type</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+            <div className="absolute -inset-10 bg-primary/5 blur-[120px] rounded-full opacity-20 pointer-events-none" />
+            
+            <div className="relative h-full p-10 md:p-14 backdrop-blur-3xl bg-white/[0.01] border border-white/5 rounded-[3rem] shadow-2xl flex flex-col">
+              <h2 className="text-2xl font-serif text-white mb-10 italic font-light tracking-tight text-center xl:text-left">"Define your celebration..."</h2>
+              
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormLabel className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-bold px-1">Your Name</FormLabel>
                           <FormControl>
-                            <SelectTrigger className="h-12 bg-white/5 border-white/10 rounded-none focus:border-primary">
-                              <SelectValue placeholder="Select type" />
-                            </SelectTrigger>
+                            <Input {...field} className="bg-white/[0.03] border-white/10 rounded-2xl h-14 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-white/5" placeholder="John Doe" />
                           </FormControl>
-                          <SelectContent className="rounded-none bg-neutral-900 border-white/10 text-white">
-                            <SelectItem value="corporate">Corporate Event</SelectItem>
-                            <SelectItem value="wedding">Wedding</SelectItem>
-                            <SelectItem value="birthday">Birthday</SelectItem>
-                            <SelectItem value="social">Social Gathering</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormLabel className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-bold px-1">Phone Number</FormLabel>
+                          <FormControl>
+                            <Input {...field} value={field.value || ""} className="bg-white/[0.03] border-white/10 rounded-2xl h-14 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-white/5" placeholder="+91 00000 00000" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormLabel className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-bold px-1">Email Address</FormLabel>
+                          <FormControl>
+                            <Input {...field} value={field.value || ""} className="bg-white/[0.03] border-white/10 rounded-2xl h-14 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-white/5" placeholder="john@example.com" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="eventType"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormLabel className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-bold px-1">Type of Event</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+                            <FormControl>
+                              <SelectTrigger className="bg-white/[0.03] border-white/10 rounded-2xl h-14 focus:ring-primary/20 focus:border-primary/30 transition-all text-white/50">
+                                <SelectValue placeholder="Select type" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="bg-[#0a0a0a]/95 backdrop-blur-3xl border-white/10 text-white/70">
+                              <SelectItem value="corporate">Corporate Gala</SelectItem>
+                              <SelectItem value="wedding">Bespoke Wedding</SelectItem>
+                              <SelectItem value="social">Private Celebration</SelectItem>
+                              <SelectItem value="other">Other Event</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormLabel className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-bold px-1">Message / Vision</FormLabel>
+                        <FormControl>
+                          <Textarea {...field} className="bg-white/[0.03] border-white/10 rounded-2xl min-h-[160px] focus:ring-primary/20 focus:border-primary/30 transition-all resize-none placeholder:text-white/5 text-white/70" placeholder="Tell us about your dream event..." />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                </div>
 
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-primary/80">Details</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} className="min-h-[150px] bg-white/5 border-white/10 rounded-none focus:border-primary" placeholder="Tell us about your vision..." />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full h-14 bg-primary text-black hover:bg-primary/90 rounded-none text-base tracking-wide uppercase font-medium border-primary"
-                >
-                  Request Quote
-                </Button>
-              </form>
-            </Form>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="submit"
+                    className="w-full py-6 bg-primary text-black font-bold uppercase tracking-[0.3em] text-[11px] hover:shadow-[0_0_40px_rgba(212,175,55,0.2)] transition-all duration-500 rounded-none overflow-hidden group relative mt-4"
+                  >
+                    <span className="relative z-10">Send Inquiry</span>
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                  </motion.button>
+                </form>
+              </Form>
+            </div>
           </motion.div>
         </div>
       </div>
     </div>
+  </div>
   );
 }
