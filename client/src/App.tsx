@@ -11,6 +11,7 @@ import { Menu, X, Instagram, Facebook, Twitter, Phone, Mail, MessageCircle } fro
 import { useState, useEffect } from "react";
 import WelcomePopup from "@/components/WelcomePopup";
 import logoImg from "@assets/logo/logo1.jpeg";
+import ServiceDetails from "@/pages/ServiceDetails";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,10 @@ function Navbar() {
   ];
 
   const scrollToSection = (id: string) => {
+    if (window.location.pathname !== '/') {
+      window.location.href = `/#${id}`;
+      return;
+    }
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -92,7 +97,7 @@ function Navbar() {
   );
 }
 
-function MainLayout() {
+function MainContent() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -100,9 +105,21 @@ function MainLayout() {
     restDelta: 0.001
   });
 
+  useEffect(() => {
+    if (window.location.hash) {
+      const id = window.location.hash.slice(1);
+      const element = document.getElementById(id);
+      if (element) {
+        // Delay slightly to ensure component is rendered
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  }, []);
+
   return (
-    <div className="bg-black">
-      <Navbar />
+    <>
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-white z-[60] origin-left" style={{ scaleX }} />
       <div id="home"><Home /></div>
       <div id="about"><AboutSection /></div>
@@ -112,8 +129,7 @@ function MainLayout() {
       <div id="gallery"><GallerySection /></div>
       <div id="reviews"><ReviewsSection /></div>
       <div id="contact"><ContactSection /></div>
-      <Footer />
-    </div>
+    </>
   );
 }
 
@@ -168,10 +184,17 @@ function Footer() {
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={MainLayout} />
-      <Route component={NotFound} />
-    </Switch>
+    <div className="bg-black min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow">
+        <Switch>
+          <Route path="/" component={MainContent} />
+          <Route path="/services/:id" component={ServiceDetails} />
+          <Route component={NotFound} />
+        </Switch>
+      </main>
+      <Footer />
+    </div>
   );
 }
 

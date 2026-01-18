@@ -11,12 +11,26 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Phone, MapPin, Sparkles, ShieldCheck } from "lucide-react";
+import { Mail, Phone, MapPin, Sparkles, ShieldCheck, ChevronDown } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import inviteBg from "@assets/popup/invite_bg.png";
 
 export default function WelcomePopup() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isRobotVerified, setIsRobotVerified] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    eventType: "",
+    details: ""
+  });
 
   useEffect(() => {
     const hasBeenShown = sessionStorage.getItem("welcome_popup_shown");
@@ -35,13 +49,13 @@ export default function WelcomePopup() {
         <div className="flex flex-col md:flex-row min-h-[500px]">
           {/* Left Side: Visual Invitation */}
           <div className="relative w-full md:w-1/2 min-h-[250px] md:min-h-full overflow-hidden">
-            <img 
-              src={inviteBg} 
-              alt="Invitation Background" 
+            <img
+              src={inviteBg}
+              alt="Invitation Background"
               className="absolute inset-0 w-full h-full object-cover opacity-80"
             />
             <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black via-black/40 to-transparent" />
-            
+
             <div className="absolute inset-0 p-8 flex flex-col justify-end md:justify-center">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -59,62 +73,84 @@ export default function WelcomePopup() {
             </div>
           </div>
 
-          {/* Right Side: Contact & Quick Inquiry */}
+          {/* Right Side: Inquiry Form */}
           <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col justify-center bg-neutral-950">
-            <DialogHeader className="mb-8">
-              <DialogTitle className="text-2xl font-serif text-white mb-2">Connect With Us</DialogTitle>
-              <DialogDescription className="text-white/40 text-sm">
-                Inquire about your next premium event.
-              </DialogDescription>
+            <DialogHeader className="mb-6">
+              <DialogTitle className="text-3xl font-serif text-white mb-2 leading-tight">
+                Send an <span className="bg-gradient-to-r from-primary via-[#f8e4b1] to-primary bg-clip-text text-transparent italic">Inquiry</span>
+              </DialogTitle>
             </DialogHeader>
 
-            <div className="space-y-6">
-              {/* Contact Info Card */}
-              <div className="grid grid-cols-1 gap-4 py-4 border-y border-white/5">
-                <div className="flex items-center gap-3 text-white/70 text-sm">
-                  <Phone className="w-4 h-4 text-primary shrink-0" />
-                  <span>+91 98765 43210</span>
-                </div>
-                <div className="flex items-center gap-3 text-white/70 text-sm">
-                  <Mail className="w-4 h-4 text-primary shrink-0" />
-                  <span>hello@greygiant.com</span>
-                </div>
-                <div className="flex items-center gap-3 text-white/70 text-sm">
-                  <MapPin className="w-4 h-4 text-primary shrink-0" />
-                  <span>Bengaluru, Karnataka</span>
-                </div>
-              </div>
-
-              {/* Quick Robot Verification */}
-              <div className="bg-black/40 border border-white/5 p-4 space-y-4">
-                <div className="flex items-center space-x-3">
-                  <Checkbox 
-                    id="robot-check" 
-                    checked={isRobotVerified}
-                    onCheckedChange={(checked) => setIsRobotVerified(checked as boolean)}
-                    className="border-primary data-[state=checked]:bg-primary data-[state=checked]:text-black"
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="pop-name" className="text-[10px] uppercase tracking-widest text-primary font-bold">Name</Label>
+                  <Input
+                    id="pop-name"
+                    placeholder="Your Name"
+                    className="bg-black/40 border-white/10 rounded-none h-10 text-sm focus:border-primary/50 transition-colors"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
-                  <Label 
-                    htmlFor="robot-check"
-                    className="text-sm text-white/60 cursor-pointer flex items-center gap-2"
-                  >
-                    I am not a robot
-                    <ShieldCheck className={`w-4 h-4 transition-colors ${isRobotVerified ? "text-primary" : "text-white/20"}`} />
-                  </Label>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="pop-phone" className="text-[10px] uppercase tracking-widest text-primary font-bold">Phone</Label>
+                  <Input
+                    id="pop-phone"
+                    placeholder="Your Phone"
+                    className="bg-black/40 border-white/10 rounded-none h-10 text-sm focus:border-primary/50 transition-colors"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  />
                 </div>
               </div>
 
-              <div className="pt-4 flex flex-col gap-3">
-                <Button 
-                  disabled={!isRobotVerified}
-                  className="w-full bg-primary text-black hover:bg-primary/90 rounded-none h-12 font-bold uppercase tracking-widest text-xs transition-all duration-300 disabled:opacity-30"
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="pop-email" className="text-[10px] uppercase tracking-widest text-primary font-bold">Email</Label>
+                  <Input
+                    id="pop-email"
+                    type="email"
+                    placeholder="Your Email"
+                    className="bg-black/40 border-white/10 rounded-none h-10 text-sm focus:border-primary/50 transition-colors"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-[10px] uppercase tracking-widest text-primary font-bold">Event Type</Label>
+                  <Select onValueChange={(val) => setFormData({ ...formData, eventType: val })}>
+                    <SelectTrigger className="bg-black/40 border-white/10 rounded-none h-10 text-sm text-white/40 focus:border-primary/50 transition-colors">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-neutral-900 border-white/10 text-white rounded-none">
+                      <SelectItem value="corporate">Corporate</SelectItem>
+                      <SelectItem value="wedding">Wedding</SelectItem>
+                      <SelectItem value="private">Private Party</SelectItem>
+                      <SelectItem value="institutional">Institutional</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="pop-details" className="text-[10px] uppercase tracking-widest text-primary font-bold">Details</Label>
+                <Textarea
+                  id="pop-details"
+                  placeholder="Tell us about your vision..."
+                  className="bg-black/40 border-white/10 rounded-none min-h-[100px] text-sm focus:border-primary/50 transition-colors resize-none"
+                  value={formData.details}
+                  onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+                />
+              </div>
+
+              <div className="pt-2">
+                <Button
+                  className="w-full bg-primary hover:bg-[#c5a028] text-black rounded-none h-14 font-bold uppercase tracking-[0.3em] text-[11px] transition-all duration-500 shadow-[0_4px_20px_rgba(212,175,55,0.2)]"
                   onClick={() => setIsOpen(false)}
                 >
-                  Enter Experience
+                  REQUEST QUOTE
                 </Button>
-                <p className="text-[10px] text-center text-white/20 uppercase tracking-tighter">
-                  Secure connection verified
-                </p>
               </div>
             </div>
           </div>

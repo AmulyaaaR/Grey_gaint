@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
-import { ArrowRight, Star } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { ArrowRight, Star, X as CloseIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AnimatePresence } from "framer-motion";
 import {
   Dialog,
   DialogTrigger,
@@ -14,7 +15,8 @@ import {
 import heroImg from "@assets/gallery/luxury_corporate_eve_632147c4.jpg";
 
 export default function Home() {
-  const [quoteStep, setQuoteStep] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   return (
     <div className="min-h-screen bg-[#020202] overflow-hidden selection:bg-primary/30">
       {/* HERO SECTION */}
@@ -58,8 +60,8 @@ export default function Home() {
             </motion.div>
 
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif text-white mb-10 tracking-tighter leading-[0.9]">
-              GREY <span className="relative inline-block">
-                <span className="bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic">GIANT</span>
+              GREY <span className="relative inline-block pr-8">
+                <span className="inline-block bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic">GIANT</span>
               </span>
             </h1>
 
@@ -73,7 +75,10 @@ export default function Home() {
             </motion.p>
 
             <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-              <Dialog onOpenChange={(open) => !open && setQuoteStep(0)}>
+              <Dialog open={dialogOpen} onOpenChange={(open) => {
+                setDialogOpen(open);
+                if (!open) setShowPopup(false);
+              }}>
                 <DialogTrigger asChild>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -96,20 +101,74 @@ export default function Home() {
                       Every occasion, a signature of distinction.
                     </DialogDescription>
                   </DialogHeader>
+
                   <div className="mt-4">
-                    {quoteStep === 0 ? (
-                      <Button
-                        onClick={() => setQuoteStep(1)}
-                        className="bg-gradient-to-r from-primary to-[#f8e4b1] text-black hover:bg-white transition-all duration-500 rounded-none px-12 h-16 text-[10px] tracking-[0.3em] font-bold uppercase w-full md:w-auto cursor-pointer"
-                      >
-                        Begin Your Vision
-                      </Button>
-                    ) : (
-                      <Button asChild className="bg-gradient-to-r from-primary to-[#f8e4b1] text-black hover:bg-white transition-all duration-500 rounded-none px-12 h-16 text-[10px] tracking-[0.3em] font-bold uppercase w-full md:w-auto whitespace-normal md:whitespace-nowrap text-center leading-relaxed">
-                        <Link href="/contact">Define Your Celebration & Experience the Difference</Link>
-                      </Button>
-                    )}
+                    <Button
+                      onClick={() => {
+                        setShowPopup(true);
+                        setTimeout(() => {
+                          setDialogOpen(false);
+                          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                        }, 3000);
+                      }}
+                      className="bg-gradient-to-r from-primary to-[#f8e4b1] text-black hover:bg-white transition-all duration-500 rounded-none px-12 h-16 text-[10px] tracking-[0.3em] font-bold uppercase w-full md:w-auto cursor-pointer"
+                    >
+                      Begin Your Vision
+                    </Button>
                   </div>
+
+                  <AnimatePresence>
+                    {showPopup && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 flex items-center justify-center bg-[#0a0a0a]/95 backdrop-blur-2xl z-[100] p-6 text-center"
+                      >
+                        <motion.div
+                          initial={{ scale: 0.9, y: 20 }}
+                          animate={{ scale: 1, y: 0 }}
+                          exit={{ scale: 0.9, y: 20 }}
+                          className="relative max-w-lg w-full p-8 md:p-12 bg-neutral-900/50 border border-primary/10 shadow-[0_0_100px_rgba(212,175,55,0.1)] overflow-hidden"
+                        >
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowPopup(false);
+                            }}
+                            className="absolute top-6 right-6 text-primary/40 hover:text-primary transition-all duration-300 z-[110] cursor-pointer p-2 hover:bg-white/5 rounded-full"
+                          >
+                            <CloseIcon className="w-6 h-6" />
+                          </button>
+
+                          <div className="mb-10 flex justify-center">
+                            <div className="w-20 h-20 rounded-full border border-primary/10 flex items-center justify-center bg-primary/5">
+                              <Star className="w-10 h-10 text-primary animate-pulse" />
+                            </div>
+                          </div>
+
+                          <h3 className="text-2xl md:text-3xl font-serif italic text-white leading-tight mb-6">
+                            "Define Your Celebration & <br />
+                            <span className="text-primary not-italic">Experience the Difference</span>"
+                          </h3>
+
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: "100%" }}
+                            transition={{ delay: 0.5, duration: 2.5 }}
+                            className="h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent mb-10"
+                          />
+
+                          <div className="flex items-center justify-center gap-3">
+                            <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
+                            <p className="text-[10px] uppercase tracking-[0.6em] text-primary/50 font-bold">
+                              Redirecting to Your Journey
+                            </p>
+                          </div>
+                        </motion.div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </DialogContent>
               </Dialog>
 

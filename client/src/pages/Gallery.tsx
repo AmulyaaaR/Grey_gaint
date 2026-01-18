@@ -41,7 +41,7 @@ export default function Gallery() {
           animate={{ opacity: 1, y: 0 }}
           className="flex flex-col items-center text-center mb-28 px-4"
         >
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center gap-4 mb-10"
@@ -52,9 +52,9 @@ export default function Gallery() {
             </span>
             <span className="w-12 h-[1px] bg-primary/20" />
           </motion.div>
-          
+
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-10 tracking-tighter leading-[0.9]">
-            The <span className="bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic">Collection</span>
+            Grey Gained <span className="bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic">Collections</span>
           </h1>
           <p className="text-white/40 max-w-xl font-light italic text-sm md:text-base leading-relaxed font-serif">
             "A curated display of distinction and refined moments, captured across our most prestigious celebrations."
@@ -85,11 +85,11 @@ export default function Gallery() {
 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center backdrop-blur-[2px]">
-                   <div className="p-3 bg-primary/10 rounded-full border border-primary/20 scale-50 group-hover:scale-100 transition-transform duration-500">
-                      <Maximize2 className="text-primary w-5 h-5" />
-                   </div>
+                  <div className="p-3 bg-primary/10 rounded-full border border-primary/20 scale-50 group-hover:scale-100 transition-transform duration-500">
+                    <Maximize2 className="text-primary w-5 h-5" />
+                  </div>
                 </div>
-                
+
                 {/* Glow Border */}
                 <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/30 rounded-xl transition-colors duration-500 pointer-events-none" />
               </motion.div>
@@ -109,7 +109,7 @@ export default function Gallery() {
               View More
             </Button>
           )}
-          
+
           {displayRows > 2 && (
             <Button
               variant="outline"
@@ -132,22 +132,22 @@ export default function Gallery() {
           {selectedIndex !== null && (
             <div className="relative w-full h-full flex items-center justify-center px-4 md:px-20 group">
               {/* Main Image Container */}
-              <motion.div 
+              <motion.div
                 key={selectedIndex}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="relative max-w-full max-h-full flex items-center justify-center p-2 bg-white/[0.03] backdrop-blur-2xl rounded-3xl border border-white/10"
               >
-                 <img
-                    src={photos[selectedIndex].src}
-                    alt={photos[selectedIndex].alt}
-                    className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
-                  />
-                  
-                  {/* Subtle Label */}
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/5 text-[10px] tracking-[0.2em] uppercase text-white/40 italic">
-                    {selectedIndex + 1} / {photos.length}
-                  </div>
+                <img
+                  src={photos[selectedIndex].src}
+                  alt={photos[selectedIndex].alt}
+                  className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+                />
+
+                {/* Subtle Label */}
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/5 text-[10px] tracking-[0.2em] uppercase text-white/40 italic">
+                  {selectedIndex + 1} / {photos.length}
+                </div>
               </motion.div>
 
               {/* Navigation Buttons on Sides */}
