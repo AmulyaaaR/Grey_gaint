@@ -56,11 +56,12 @@ export default function WelcomePopup() {
             />
             <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black via-black/40 to-transparent" />
 
-            <div className="absolute inset-0 p-8 flex flex-col justify-end md:justify-center">
+            <div className="absolute inset-0 p-8 flex flex-col justify-end md:justify-center items-center text-center">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
+                className="flex flex-col items-center"
               >
                 <Sparkles className="w-10 h-10 text-primary mb-6" />
                 <h2 className="text-3xl md:text-4xl font-serif text-white mb-4 leading-tight">

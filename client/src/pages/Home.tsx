@@ -89,20 +89,20 @@ export default function Home() {
                     <div className="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                   </motion.button>
                 </DialogTrigger>
-                <DialogContent className="bg-[#0a0a0a]/98 backdrop-blur-3xl border-white/5 text-white p-12 md:p-16 text-center max-w-2xl rounded-[3rem] selection:bg-primary/30 outline-none">
-                  <DialogHeader>
+                <DialogContent className="bg-[#0a0a0a]/98 backdrop-blur-3xl border-white/5 text-white p-12 md:p-16 max-w-2xl rounded-[3rem] selection:bg-primary/30 outline-none">
+                  <DialogHeader className="flex flex-col items-center text-center">
                     <div className="mx-auto mb-10 p-5 rounded-full bg-primary/5 border border-primary/10 w-fit">
                       <Star className="w-8 h-8 text-primary animate-pulse" />
                     </div>
-                    <DialogTitle className="text-3xl md:text-5xl font-serif mb-10 leading-[1.1] italic text-white font-light">
+                    <DialogTitle className="text-3xl md:text-5xl font-serif mb-10 leading-[1.1] italic text-white font-light text-center">
                       "We don’t just plan events, we create memories wrapped in <span className="text-primary not-italic">elegance</span>."
                     </DialogTitle>
-                    <DialogDescription className="text-[10px] text-primary/40 font-semibold tracking-[0.5em] uppercase mb-10">
+                    <DialogDescription className="text-[10px] text-primary/40 font-semibold tracking-[0.5em] uppercase mb-10 text-center">
                       Every occasion, a signature of distinction.
                     </DialogDescription>
                   </DialogHeader>
 
-                  <div className="mt-4">
+                  <div className="mt-4 flex justify-center">
                     <Button
                       onClick={() => {
                         setShowPopup(true);
