@@ -60,8 +60,8 @@ export default function Home() {
             </motion.div>
 
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif text-white mb-10 tracking-tighter leading-[0.9]">
-              GREY <span className="relative inline-block pr-8">
-                <span className="inline-block bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic">GIANT</span>
+              GREY <span className="relative inline-block">
+                <span className="inline-block bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic pr-4">GIANT&nbsp;</span>
               </span>
             </h1>
 

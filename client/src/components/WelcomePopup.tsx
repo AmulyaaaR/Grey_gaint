@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import inviteBg from "@assets/popup/invite_bg.png";
+import inviteBg from "@assets/gallery/TraditionalBands&BrandOpenings/B1.jpg";
 
 export default function WelcomePopup() {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const About_img = "https://images.unsplash.com/photo-1478147427282-58a87a120781?w=800&auto=format&fit=crop&q=60";
+import About_img from "@assets/gallery/Balloon Décor & Birthday Celebrations/B3.jpg";
 
 export default function About() {
   return (
@@ -8,10 +8,10 @@ export default function About() {
       {/* Premium Background Accents */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none" />
-      
+
       <section className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-stretch">
-          
+
           {/* LEFT COLUMN: Header & Text */}
           <div className="flex-1 flex flex-col justify-start">
             <motion.div
@@ -20,7 +20,7 @@ export default function About() {
               viewport={{ once: true }}
               className="flex flex-col items-start mb-16"
             >
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 className="flex items-center gap-4 mb-10"
@@ -31,14 +31,14 @@ export default function About() {
                 </span>
                 <span className="w-10 h-[1px] bg-primary/20 lg:hidden" />
               </motion.div>
-              
+
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-10 tracking-tighter leading-[0.9] whitespace-nowrap">
                 About <span className="bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic">Giants</span>
               </h1>
             </motion.div>
 
             {/* Descriptive Content */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -57,7 +57,7 @@ export default function About() {
           </div>
 
           {/* RIGHT COLUMN: Image with Popping Elements & Stats */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -76,7 +76,7 @@ export default function About() {
               </div>
 
               {/* Popping 24/7 Box - Breaks boundary */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
@@ -91,7 +91,7 @@ export default function About() {
 
               {/* Stats Overlaid on Image */}
               <div className="absolute top-12 right-12 space-y-8 z-20">
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
@@ -100,8 +100,8 @@ export default function About() {
                   <p className="font-serif text-3xl text-primary/90 mb-1">Elite</p>
                   <p className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-medium">Curation Service</p>
                 </motion.div>
-                
-                <motion.div 
+
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
