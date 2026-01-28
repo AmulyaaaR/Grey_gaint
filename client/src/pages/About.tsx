@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-import About_img from "@assets/gallery/Balloon Décor & Birthday Celebrations/B3.jpg";
+import About_img from "@assets/gallery/About/about_hero.jpg";
 
 export default function About() {
   return (
@@ -61,60 +61,31 @@ export default function About() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="flex-1 relative mt-4 lg:mt-0"
+            className="flex-1 relative mt-4 lg:mt-0 flex flex-col"
           >
+            {/* Top Label */}
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <span className="w-8 h-[1px] bg-primary/30" />
+              <span className="text-[10px] uppercase tracking-[0.5em] text-primary/80 font-bold">
+                Elite • Tailored • Exquisite
+              </span>
+              <span className="w-8 h-[1px] bg-primary/30" />
+            </div>
+
             {/* Main Image Container */}
-            <div className="relative h-full min-h-[600px] overflow-visible rounded-sm group">
-              {/* The Image Itself */}
-              <div className="absolute inset-0 overflow-hidden rounded-sm border border-white/5 shadow-2xl">
-                <img
-                  src={About_img}
-                  alt="Grey Giant Event Setup"
-                  className="w-full h-full object-cover grayscale-[0.2] contrast-[1.1] transition-transform duration-1000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
-              </div>
+            <div className="relative aspect-[4/5] md:aspect-[3/4] lg:aspect-auto lg:h-[600px] overflow-hidden rounded-sm border border-white/5 shadow-2xl">
+              <img
+                src={About_img}
+                alt="Grey Giant Event Setup"
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-              {/* Popping 24/7 Box - Breaks boundary */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-                className="absolute -bottom-8 -left-8 md:-left-12 p-8 md:p-10 backdrop-blur-3xl bg-black/60 border border-primary/20 shadow-[0_20px_50px_rgba(212,175,55,0.15)] group/box z-30"
-              >
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent" />
-                <p className="font-serif text-5xl text-white mb-2 group-hover:text-primary transition-colors duration-500">24/7</p>
-                <p className="text-[10px] uppercase tracking-[0.4em] text-white/40 group-hover:text-white/70 transition-colors">Support & Perfection</p>
-                {/* Internal Glow */}
-                <div className="absolute -inset-1 bg-primary/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              </motion.div>
-
-              {/* Stats Overlaid on Image */}
-              <div className="absolute top-12 right-12 space-y-8 z-20">
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="p-6 backdrop-blur-md bg-white/[0.03] border border-white/10 rounded-xl hover:bg-primary/5 transition-colors cursor-default"
-                >
-                  <p className="font-serif text-3xl text-primary/90 mb-1">Elite</p>
-                  <p className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-medium">Curation Service</p>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="p-6 backdrop-blur-md bg-white/[0.03] border border-white/10 rounded-xl hover:bg-primary/5 transition-colors cursor-default"
-                >
-                  <p className="font-serif text-3xl text-primary/90 mb-1">Tailored</p>
-                  <p className="text-[9px] uppercase tracking-[0.2em] text-white/40 font-medium">Global Execution</p>
-                </motion.div>
-              </div>
-
-              {/* Hardware Micro-Accents */}
-              <div className="absolute -top-4 -right-4 w-16 h-16 border-t border-r border-primary/30 z-0" />
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 border-b border-l border-primary/30 z-0" />
+            {/* Bottom Label (Optional, but matching the screenshot's symmetry) */}
+            <div className="flex items-center justify-center gap-4 mt-6 opacity-40">
+              <span className="text-[8px] uppercase tracking-[0.6em] text-white/60 font-medium">
+                Elite • Tailored • Exquisite
+              </span>
             </div>
           </motion.div>
         </div>

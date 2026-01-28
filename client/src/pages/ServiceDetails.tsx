@@ -27,7 +27,7 @@ export default function ServiceDetails() {
     };
 
     return (
-        <div className="min-h-screen bg-black pt-32 pb-20">
+        <div className="min-h-screen bg-black pt-32 pb-10">
             <div className="container mx-auto px-6">
                 {/* Header Section */}
                 <motion.div
@@ -47,8 +47,8 @@ export default function ServiceDetails() {
                         <span className="w-12 h-[1px] bg-primary/20" />
                     </motion.div>
 
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-10 tracking-tighter leading-[0.9]">
-                        {service.title.split(' ').slice(0, -1).join(' ')} <br />
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white mb-10 tracking-tight leading-tight">
+                        {service.title.split(' ').slice(0, -1).join(' ')}{' '}
                         <span className="bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic">
                             {service.title.split(' ').slice(-1)}
                         </span>
@@ -58,42 +58,57 @@ export default function ServiceDetails() {
                     </p>
                 </motion.div>
 
-                {/* Content Section: Image Left, Text Right */}
-                <div className="grid lg:grid-cols-2 gap-12 items-center mb-32">
-                    {/* Left: Image */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2, duration: 0.8 }}
-                        className="relative h-[400px] md:h-[600px] group overflow-hidden border border-white/5"
-                    >
-                        <img
-                            src={service.image}
-                            alt={service.title}
-                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
-                    </motion.div>
+                {/* Details Section: Vertical Stack */}
+                {service.details && (
+                    <div className="space-y-24">
+                        {service.details.map((detail, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 40 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.1, duration: 0.8 }}
+                                className={`flex flex-col ${idx % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center`}
+                            >
+                                {/* Detail Image */}
+                                <div className="w-full lg:w-3/5 aspect-[16/9] overflow-hidden border border-white/5 group">
+                                    <img
+                                        src={detail.image}
+                                        alt={detail.title}
+                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    />
+                                </div>
 
-                    {/* Right: Description & CTA */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.4, duration: 0.8 }}
-                        className="flex flex-col justify-center"
-                    >
-                        <div className="mb-10 p-5 rounded-full bg-primary/5 border border-primary/10 w-fit">
-                            <Star className="w-8 h-8 text-primary animate-pulse" />
-                        </div>
+                                {/* Detail Text */}
+                                <div className="w-full lg:w-2/5 space-y-6">
+                                    <div className="flex items-center gap-4">
+                                        <span className="text-primary font-serif italic text-2xl">0{idx + 1}</span>
+                                        <div className="h-[1px] flex-grow bg-primary/20" />
+                                    </div>
+                                    <h4 className="text-2xl md:text-3xl font-serif text-white tracking-tight">
+                                        {detail.title}
+                                    </h4>
+                                    <p className="text-white/50 font-light leading-relaxed text-base md:text-lg">
+                                        {detail.description}
+                                    </p>
+                                    <Button
+                                        onClick={() => navigateToSection('contact')}
+                                        variant="outline"
+                                        className="border-primary/20 text-primary hover:bg-primary hover:text-black rounded-none uppercase tracking-[0.2em] text-[10px] h-12 px-8 transition-all duration-500"
+                                    >
+                                        {detail.buttonText}
+                                    </Button>
+                                </div>
+                            </motion.div>
+                        ))}
 
-                        <div className="mb-12">
-                            <h2 className="text-2xl font-serif text-primary italic mb-6">Crafting Your Vision</h2>
-                            <p className="text-white/70 font-light leading-relaxed text-lg whitespace-pre-line">
-                                {service.fullDescription || service.desc}
-                            </p>
-                        </div>
-
-                        <div className="flex flex-col sm:flex-row gap-6 mt-auto">
+                        {/* Moved CTA Buttons */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="flex flex-col sm:flex-row justify-center gap-6 pt-20"
+                        >
                             <Button
                                 onClick={() => navigateToSection('contact')}
                                 className="bg-gradient-to-r from-primary via-[#f8e4b1] to-primary text-black font-bold uppercase tracking-[0.3em] text-[11px] h-16 px-12 rounded-none hover:shadow-[0_0_50px_rgba(212,175,55,0.4)] transition-all duration-500"
@@ -107,29 +122,7 @@ export default function ServiceDetails() {
                             >
                                 Discover More
                             </Button>
-                        </div>
-                    </motion.div>
-                </div>
-
-                {/* Optional: Gallery/Details Section */}
-                {service.details && (
-                    <div className="grid md:grid-cols-2 gap-8">
-                        {service.details.slice(0, 2).map((detail, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: idx * 0.1 }}
-                                className="group p-6 bg-neutral-900/50 border border-white/5 hover:border-primary/20 transition-all duration-500"
-                            >
-                                <div className="aspect-video overflow-hidden mb-6">
-                                    <img src={detail.image} alt={detail.title} className="w-full h-full object-cover transition-all duration-700" />
-                                </div>
-                                <h4 className="text-primary text-xs uppercase tracking-widest font-bold mb-2">{detail.title}</h4>
-                                <p className="text-white/40 text-[10px] leading-relaxed uppercase tracking-wider">{detail.description}</p>
-                            </motion.div>
-                        ))}
+                        </motion.div>
                     </div>
                 )}
             </div>

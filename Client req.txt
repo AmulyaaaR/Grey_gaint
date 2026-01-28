@@ -2,11 +2,11 @@ v 1.2
 
 from v1.1 :
 1, Home page background image
-2, Home page vision
+2, Home page vision - done
 3, About page background change 
 4, About page image change,
 6, Change all the section background from Grey/Black to colorful images and add glass effects and neon frames and hover effects for each section. 
-8, Chnage "Our catalogue" to "Our expertise"
+8, Chnage "Our catalogue" to "Our expertise" - done
 9, Need seperate page for the our catalogue items
 10, in our catalogue section i need the hovering effect, and the desc of the event and view detail button as of now. onclick()-->new page redirect 
 	10.1, the new page must have the same effects from the our catalogue but different related image. 
