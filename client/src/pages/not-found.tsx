@@ -38,7 +38,7 @@ export default function NotFound() {
            transition={{ delay: 0.8 }}
            className="pt-12"
         >
-          <Link href={import.meta.env.BASE_URL} className="group relative text-[10px] uppercase tracking-[0.6em] text-white/40 hover:text-primary transition-colors duration-500">
+          <Link href="/" className="group relative text-[10px] uppercase tracking-[0.6em] text-white/40 hover:text-primary transition-colors duration-500">
             <span className="relative z-10">Return to Excellence</span>
             <div className="absolute -bottom-2 left-0 w-0 h-px bg-primary/40 group-hover:w-full transition-all duration-700" />
           </Link>
