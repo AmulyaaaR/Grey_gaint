@@ -9,9 +9,9 @@ import {
     DialogDescription,
 } from "@/components/ui/dialog";
 import { siteContent } from "@/data/siteContent";
-import { getFirstImageInDir, getBackground } from "@/lib/asset-utils";
+import { getFirstImageInDir, getBackground, resolveAsset } from "@/lib/asset-utils";
 
-const introductionImg = getFirstImageInDir("OurStory");
+const introductionImg = resolveAsset(siteContent.distinction.image) || getFirstImageInDir("OurStory");
 const bgImg = getBackground(siteContent.backgrounds.story);
 
 

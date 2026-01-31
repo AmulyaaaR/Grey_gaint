@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
 import { siteContent } from "@/data/siteContent";
-import { getFirstImageInDir, getBackground } from "@/lib/asset-utils";
+import { getFirstImageInDir, getBackground, resolveAsset } from "@/lib/asset-utils";
 
-const aboutImgFilename = siteContent.backgrounds.about;
-const About_img = getBackground(aboutImgFilename) || getFirstImageInDir("About");
+const About_img = resolveAsset(siteContent.about.image) || getBackground(siteContent.backgrounds.about) || getFirstImageInDir("About");
 
 export default function About() {
   const { about } = siteContent;

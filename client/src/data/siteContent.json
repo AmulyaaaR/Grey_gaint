@@ -29,7 +29,8 @@
             "Our philosophy is rooted in 'Silent Excellence'—a commitment to invisible, omni-present planning that allows you to be a guest at your own celebration, knowing that every intricate detail is being handled with absolute devotion.",
             "From the pulse of Bengaluru to the most exclusive private estates, we bring a global standard of sophistication to local heritage. We don't just coordinate venues; we curate atmospheres that leave an indelible mark on the soul."
         ],
-        "labels": "Artistry • Devotion • Soul"
+        "labels": "Artistry • Devotion • Soul",
+        "image": "About/About_main.png"
     },
     "distinction": {
         "eyebrow": "The Philosophy",
@@ -40,6 +41,7 @@
                 "of Boundless Soultion"
             ]
         },
+        "image": "OurStory/Story_main.png",
         "shortDesc": "Based in the heart of Bengaluru, Grey Giant is a creative powerhouse dedicated to the art of luxury hosting. We believe in planning that is felt but never seen, ensuring your vision is elevated through a lens of unyielding precision and refined artistry.",
         "dialog": {
             "eyebrow": "Our Spirit",

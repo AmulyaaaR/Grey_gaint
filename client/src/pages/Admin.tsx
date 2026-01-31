@@ -328,7 +328,7 @@ export default function Admin() {
   const [selectedUploadFile, setSelectedUploadFile] = useState<{ name: string; base64: string } | null>(null);
   const [activePickerField, setActivePickerField] = useState<{ label: string, path: string, setter: (val: string) => void, preferredDir?: string } | null>(null);
 
-  const assetDirectories = ["backgrounds", "Welcome", "LuxuryCorporateEvents", "BespokeWeddings&Engagements", "GeneralGallery", "DJNights&PrivateParties", "TraditionalBands&BrandOpenings", "Catering & Culinary Experiences", "Makeup&StylingServices", "Pastries & Celebration Cakes", "Balloon Decor & Birthday Celebrations", "Private & Social Celebrations", "Schools, Colleges & University Event Services"];
+  const assetDirectories = ["backgrounds", "Welcome", "About", "OurStory", "LuxuryCorporateEvents", "BespokeWeddings&Engagements", "GeneralGallery", "DJNights&PrivateParties", "TraditionalBands&BrandOpenings", "Catering & Culinary Experiences", "Makeup&StylingServices", "Pastries & Celebration Cakes", "Balloon Decor & Birthday Celebrations", "Private & Social Celebrations", "Schools, Colleges & University Event Services"];
 
   // Configuration mapping for background directory associations
   const bgDirMap: Record<Tab, string> = {
@@ -381,7 +381,9 @@ export default function Admin() {
     
     const newAssets: { [key: string]: string[] } = {};
     for (const dir of assetDirectories) {
-      const path = dir === "backgrounds" ? "client/src/assets/backgrounds" : `client/src/assets/gallery/${dir}`;
+      const path = (dir === "backgrounds" || dir === "Welcome" || dir === "About" || dir === "OurStory") 
+        ? `client/src/assets/${dir}` 
+        : `client/src/assets/gallery/${dir}`;
       const result = await listGitHubFiles(config, path);
       if (result.success && result.files) {
         newAssets[dir] = result.files;
@@ -534,7 +536,9 @@ export default function Admin() {
       
       // 2. Optionally delete old image if it's a replacement and NOT the same file
       if (shouldDeleteOld && previousPath !== newPath) {
-        const deletePath = previousPath.includes('/') ? `client/src/assets/gallery/${previousPath}` : `client/src/assets/backgrounds/${previousPath}`;
+        const deletePath = (previousPath.includes('/') && !previousPath.startsWith('About/') && !previousPath.startsWith('OurStory/') && !previousPath.startsWith('Welcome/'))
+            ? `client/src/assets/gallery/${previousPath}` 
+            : `client/src/assets/${previousPath.includes('/') ? previousPath : 'backgrounds/' + previousPath}`;
         await deleteGitHubFile(config, deletePath, `Admin: Auto-cleanup of replaced asset ${previousPath}`);
       }
 
@@ -559,7 +563,9 @@ export default function Admin() {
     if (!confirm(`Permanently delete ${fileName}?`)) return;
     setIsSaving(true);
     const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
-    const path = dir === "backgrounds" ? `client/src/assets/backgrounds/${fileName}` : `client/src/assets/gallery/${dir}/${fileName}`;
+    const path = (dir === "backgrounds" || dir === "Welcome" || dir === "About" || dir === "OurStory")
+        ? `client/src/assets/${dir}/${fileName}`
+        : `client/src/assets/gallery/${dir}/${fileName}`;
     const result = await deleteGitHubFile(config, path, `Admin: Resource removal ${fileName}`);
     setIsSaving(false);
     if (result.success) {
@@ -601,6 +607,10 @@ export default function Admin() {
     
     // Welcome
     if(content.welcomePopup?.image) used.add(content.welcomePopup.image);
+    
+    // About & Story
+    if(content.about?.image) used.add(content.about.image);
+    if(content.distinction?.image) used.add(content.distinction.image);
     
     return used;
   };
@@ -762,6 +772,21 @@ export default function Admin() {
                                                 <Field label="Heading Main" value={formData.about.title.main} onChange={(v: string) => setFormData(p => ({ ...p, about: { ...p.about, title: { ...p.about.title, main: v } } }))} />
                                                 <Field label="Heading Accent" value={formData.about.title.accent} onChange={(v: string) => setFormData(p => ({ ...p, about: { ...p.about, title: { ...p.about.title, accent: v } } }))} />
                                             </div>
+                                            <Field 
+                                                label="Main Section Asset" 
+                                                value={formData.about.image} 
+                                                onChange={(v: string) => setFormData(p => ({ ...p, about: { ...p.about, image: v } }))} 
+                                                image
+                                                onBrowse={() => {
+                                                    setActivePickerField({ 
+                                                        label: "About Asset", 
+                                                        path: formData.about.image, 
+                                                        setter: (v) => setFormData(p => ({ ...p, about: { ...p.about, image: v } })),
+                                                        preferredDir: "About"
+                                                    });
+                                                    setIsPickerOpen(true);
+                                                }}
+                                            />
                                             <div className="space-y-6">
                                                 <div className="flex items-center justify-between px-2">
                                                     <label className="text-[10px] uppercase tracking-widest text-primary/40 font-black">Narrative Content</label>
@@ -798,7 +823,24 @@ export default function Admin() {
 
                                     {activeTab === 'story' && (
                                         <div className="space-y-12">
-                                            <Field label="Intro Overview" value={formData.distinction.shortDesc} onChange={(v: string) => setFormData(p => ({ ...p, distinction: { ...p.distinction, shortDesc: v } }))} area italic />
+                                            <div className="grid md:grid-cols-2 gap-8">
+                                                <Field label="Intro Overview" value={formData.distinction.shortDesc} onChange={(v: string) => setFormData(p => ({ ...p, distinction: { ...p.distinction, shortDesc: v } }))} area italic />
+                                                <Field 
+                                                    label="Main Narrative Asset" 
+                                                    value={formData.distinction.image} 
+                                                    onChange={(v: string) => setFormData(p => ({ ...p, distinction: { ...p.distinction, image: v } }))} 
+                                                    image
+                                                    onBrowse={() => {
+                                                        setActivePickerField({ 
+                                                            label: "Story Asset", 
+                                                            path: formData.distinction.image, 
+                                                            setter: (v) => setFormData(p => ({ ...p, distinction: { ...p.distinction, image: v } })),
+                                                            preferredDir: "OurStory"
+                                                        });
+                                                        setIsPickerOpen(true);
+                                                    }}
+                                                />
+                                            </div>
                                             <div className="space-y-6">
                                                 <div className="flex items-center justify-between px-2">
                                                     <label className="text-[10px] uppercase tracking-widest text-primary/40 font-black">Dialog Paragraphs</label>
