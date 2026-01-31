@@ -1,7 +1,7 @@
 import { useRoute } from "wouter";
 import { motion } from "framer-motion";
 import { siteContent } from "@/data/siteContent";
-import { getImagesFromDir } from "@/lib/asset-utils";
+import { getImagesFromDir, resolveAsset } from "@/lib/asset-utils";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -28,7 +28,16 @@ export default function ServiceDetails() {
 
     // Handle navigation to sections on home page
     const navigateToSection = (sectionId: string) => {
-        window.location.href = `/#${sectionId}`;
+        window.location.href = `${import.meta.env.BASE_URL}#${sectionId}`;
+    };
+
+    const getAssetUrl = (path: string, serviceId: string, idx: number = 0) => {
+        if (!path) return "";
+        if (path.includes("/")) {
+            // Use resolveAsset if possible, or fall back to base-relative path
+            return resolveAsset(path) || `${import.meta.env.BASE_URL}assets/gallery/${path}`;
+        }
+        return getImagesFromDir(serviceId)[idx] || path;
     };
 
     return (
@@ -36,7 +45,7 @@ export default function ServiceDetails() {
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src={service.image.includes("/") ? `/src/assets/gallery/${service.image}` : getImagesFromDir(service.id)[0] || service.image}
+                    src={getAssetUrl(service.image, service.id)}
                     alt=""
                     className="w-full h-full object-cover opacity-45 grayscale-[0.1]"
                 />
@@ -88,7 +97,7 @@ export default function ServiceDetails() {
                                 {/* Detail Image with Gold Frame */}
                                 <div className="w-full lg:w-3/5 aspect-[16/9] overflow-hidden p-2 bg-black/20 border border-primary/30 group rounded-sm shadow-2xl flex items-center justify-center relative">
                                     <img
-                                        src={detail.image.includes("/") ? `/src/assets/gallery/${detail.image}` : getImagesFromDir(service.id)[idx] || detail.image}
+                                        src={getAssetUrl(detail.image, service.id, idx)}
                                         alt={detail.title}
                                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 rounded-sm"
                                     />
