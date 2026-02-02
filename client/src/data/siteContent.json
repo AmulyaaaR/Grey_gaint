@@ -199,7 +199,7 @@
   "backgrounds": {
     "home": "Hero_bg.jpg",
     "about": "hero_new.png",
-    "story": "Story_bg.jpg",
+    "story": "hero_new.png",
     "values": "About_bg.jpg",
     "services": "Services_bg.jpg",
     "gallery": "Gallery_bg.jpg",
