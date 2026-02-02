@@ -204,7 +204,8 @@
     "services": "Services_bg.jpg",
     "gallery": "Gallery_bg.jpg",
     "reviews": "Reviews_bg.jpg",
-    "contact": "Contact_bg.jpg"
+    "contact": "Contact_bg.jpg",
+    "hero": "hero_new.png"
   },
   "services": [
     {
