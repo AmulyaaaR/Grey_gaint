@@ -107,7 +107,7 @@ export default function Distinction() {
                                             ))}"
                                         </DialogTitle>
                                     </DialogHeader>
-                                <div className="relative z-10 text-white/50 text-sm md:text-base leading-relaxed font-light space-y-8 text-justify italic font-serif">
+                                <div className="relative z-10 text-white/50 text-sm md:text-base leading-relaxed font-light space-y-8 text-center lg:text-justify italic font-serif">
                                     {distinction.dialog.paragraphs.map((p, i) => (
                                         <p key={i} className={i === 0 ? "first-letter:text-6xl first-letter:font-serif first-letter:text-primary first-letter:mr-4 first-letter:float-left first-letter:leading-none" : i === 3 ? "border-l-2 border-primary/20 pl-8 italic text-white/40 py-2" : ""}>
                                             {p}

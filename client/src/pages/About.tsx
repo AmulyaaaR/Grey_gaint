@@ -50,7 +50,7 @@ export default function About() {
                 <span className="w-10 h-[1px] bg-primary/20 lg:hidden" />
               </motion.div>
 
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-10 tracking-tighter leading-[0.9] whitespace-nowrap">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-10 tracking-tighter leading-[0.9]">
                 {about.title.main} <span className="bg-gradient-to-b from-primary via-[#f8e4b1] to-primary/40 bg-clip-text text-transparent italic">{about.title.accent}</span>
               </h1>
             </motion.div>
@@ -60,7 +60,7 @@ export default function About() {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="prose prose-invert prose-lg max-w-none text-white/70 font-light leading-relaxed text-justify space-y-8"
+              className="prose prose-invert prose-lg max-w-none text-white/70 font-light leading-relaxed text-center lg:text-justify space-y-8"
             >
               {about.description.map((paragraph, i) => (
                 <p key={i} className={i === 0 ? "first-letter:text-6xl first-letter:text-primary first-letter:font-serif first-letter:mr-4 first-letter:float-left first-letter:leading-none" : ""}>

@@ -12,57 +12,57 @@
   --elevate-1: rgba(212, 175, 55, .03);
   --elevate-2: rgba(212, 175, 55, .08);
 
-  /* Gold/Yellow Base: HSL(45, 60%, 52%) -> #d4af37 */
-  --background: 0 0% 5%;
-  /* Deep Charcoal Black */
-  --foreground: 45 30% 95%;
-  /* Creamy White */
+  /* Refined Midnight & Champagne Palette */
+  --background: 240 10% 2.5%; 
+  /* Midnight */
+  --foreground: 45 30% 98%;
+  /* Soft Cream */
 
-  --border: 45 20% 20%;
-  /* Dark Gold Border */
+  --border: 45 15% 15%;
+  /* Muted Gold Border */
 
-  --card: 0 0% 8%;
-  --card-foreground: 45 30% 95%;
-  --card-border: 45 20% 15%;
+  --card: 240 10% 4%;
+  --card-foreground: 45 30% 98%;
+  --card-border: 45 15% 12%;
 
-  --sidebar: 0 0% 4%;
+  --sidebar: 240 10% 2%;
   --sidebar-foreground: 45 30% 90%;
-  --sidebar-border: 45 20% 15%;
-  --sidebar-primary: 45 60% 52%;
-  /* Gold */
-  --sidebar-primary-foreground: 0 0% 0%;
-  --sidebar-accent: 45 20% 15%;
-  --sidebar-accent-foreground: 45 60% 52%;
-  --sidebar-ring: 45 60% 52%;
+  --sidebar-border: 45 15% 12%;
+  --sidebar-primary: 45 60% 65%;
+  /* Champagne */
+  --sidebar-primary-foreground: 240 10% 2%;
+  --sidebar-accent: 45 15% 12%;
+  --sidebar-accent-foreground: 45 60% 65%;
+  --sidebar-ring: 45 60% 65%;
 
-  --popover: 0 0% 8%;
-  --popover-foreground: 45 30% 95%;
-  --popover-border: 45 20% 20%;
+  --popover: 240 10% 5%;
+  --popover-foreground: 45 30% 98%;
+  --popover-border: 45 15% 15%;
 
-  --primary: 45 70% 55%;
-  /* More vibrant Gold */
-  --primary-foreground: 0 0% 0%;
+  --primary: 45 60% 65%; 
+  /* Champagne Gold */
+  --primary-foreground: 240 10% 2%;
 
-  --secondary: 45 10% 20%;
-  --secondary-foreground: 45 70% 55%;
+  --secondary: 240 10% 8%;
+  --secondary-foreground: 45 60% 65%;
 
-  --muted: 0 0% 15%;
-  --muted-foreground: 45 10% 60%;
+  --muted: 240 10% 12%;
+  --muted-foreground: 45 10% 50%;
 
-  --accent: 45 70% 55%;
-  --accent-foreground: 0 0% 0%;
+  --accent: 45 60% 65%;
+  --accent-foreground: 240 10% 2%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
-  --input: 45 20% 20%;
-  --ring: 45 70% 55%;
+  --input: 240 10% 10%;
+  --ring: 45 60% 65%;
 
-  --chart-1: 45 70% 55%;
-  --chart-2: 45 30% 40%;
-  --chart-3: 45 10% 20%;
-  --chart-4: 0 0% 15%;
-  --chart-5: 0 0% 10%;
+  --chart-1: 45 60% 65%;
+  --chart-2: 45 30% 50%;
+  --chart-3: 45 15% 30%;
+  --chart-4: 240 10% 15%;
+  --chart-5: 240 10% 10%;
 
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Playfair Display', serif;

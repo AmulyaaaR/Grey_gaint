@@ -15,13 +15,13 @@ import {
 import { siteContent } from "@/data/siteContent";
 import { getFirstImageInDir, getBackground } from "@/lib/asset-utils";
 
-const heroImgFilename = siteContent.backgrounds.home;
+const heroImgFilename = siteContent.backgrounds.hero;
 const heroImg = getBackground(heroImgFilename) || getFirstImageInDir("Hero");
 
 const SnowOverlay = () => {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-30">
-      {[...Array(100)].map((_, i) => {
+      {[...Array(40)].map((_, i) => {
         const isGold = Math.random() > 0.4;
         const sizeMultiplier = i % 10 === 0 ? 3 : 1; 
         const size = (Math.random() * 10 + 4) * sizeMultiplier;
@@ -90,6 +90,8 @@ export default function Home() {
             src={heroImg}
             alt="Luxury Event Background"
             className="w-full h-full object-cover object-[50%_85%] opacity-50 grayscale-[0.1]"
+            fetchPriority="high"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/30 to-transparent" />
         </div>
@@ -114,7 +116,7 @@ export default function Home() {
               <span className="w-12 h-[1px] bg-primary/20" />
             </motion.div>
 
-            <h1 className="text-5xl md:text-8xl lg:text-9xl font-serif text-white mb-8 md:mb-10 tracking-tighter leading-[0.9]">
+            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-serif text-white mb-8 md:mb-10 tracking-tighter leading-[0.9]">
               {hero.title.first} <span className="relative inline-block">
                 <span className="inline-block bg-gradient-to-b from-[#b8860b] via-[#f8e4b1] to-[#996515] bg-clip-text text-transparent font-accent italic pr-4" style={{ fontSize: '1.1em' }}>{hero.title.second}&nbsp;</span>
               </span>

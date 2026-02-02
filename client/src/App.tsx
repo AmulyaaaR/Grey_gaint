@@ -16,9 +16,10 @@ import Values from "@/components/sections/Values";
 import WelcomePopup from "@/components/modals/WelcomePopup";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
-import Admin from "@/pages/Admin";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
+
+const Admin = lazy(() => import("@/pages/Admin"));
 
 function MainContent() {
   const { scrollYProgress } = useScroll();
@@ -66,7 +67,11 @@ function AppRouter() {
         <Router base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <Switch>
             <Route path="/" component={MainContent} />
-            <Route path="/admin" component={Admin} />
+            <Route path="/admin">
+              <Suspense fallback={<div className="min-h-screen bg-black" />}>
+                <Admin />
+              </Suspense>
+            </Route>
             <Route path="/services/:id" component={ServiceDetails} />
             <Route component={NotFound} />
           </Switch>
