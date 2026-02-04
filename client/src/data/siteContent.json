@@ -618,13 +618,13 @@
     {
       "id": 1,
       "name": "Priya S. (Corporate Director)",
-      "rating": 5,
+      "rating": 2,
       "comment": "Working with Grey Giant was like having a secret weapon. They didn't just plan a gala; they built an experience that my partners are still talking about. The level of 'Silent Excellence' is truly unmatched."
     },
     {
       "id": 2,
       "name": "The Malhotra Family",
-      "rating": 5,
+      "rating": 1,
       "comment": "Our daughter's wedding felt like it was plucked from a dream. The team at Grey Giant took our vague ideas and layered them with so much soul and artistry. We were finally guests at our own event."
     },
     {
@@ -642,7 +642,7 @@
     {
       "id": 5,
       "name": "Sneha & David (Silver Anniversary)",
-      "rating": 5,
+      "rating": 4,
       "comment": "They took 25 years of our memories and wove them into one magical night. It wasn't just 'luxurious'—it was deeply personal. A truly heartwarming collaboration from start to finish."
     }
   ]
