@@ -26,8 +26,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-// --- Types ---
-const allFolderImages = Object.keys(import.meta.glob("@assets/gallery/**/*.{png,jpg,jpeg}", { eager: true }));
+// Import ONLY GeneralGallery images (matches website Gallery.tsx)
+const allFolderImages = Object.keys(import.meta.glob("@assets/gallery/GeneralGallery/*.{png,jpg,jpeg,webp}", { eager: true }));
 
 interface AuthState {
   isLoggedIn: boolean;
@@ -79,9 +79,9 @@ const SortableGridItem = ({ id, path, idx, otherUsage, onRemove, onReplace }: an
         
         {/* Usage Indicator */}
         {otherUsage.has(path) && (
-            <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2 py-1 bg-black/60 backdrop-blur-md rounded-lg border border-white/10 z-10 pointer-events-none">
-                <Layers size={10} className="text-primary/60"/>
-                <span className="text-[8px] font-black uppercase text-white/60 tracking-widest">In Use</span>
+            <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2.5 py-1.5 bg-black/60 backdrop-blur-md rounded-lg border border-white/10 z-10 pointer-events-none">
+                <Layers size={12} className="text-primary/60"/>
+                <span className="text-xs font-black uppercase text-white/60 tracking-wider">In Use</span>
             </div>
         )}
         
@@ -110,7 +110,7 @@ const SortableGridItem = ({ id, path, idx, otherUsage, onRemove, onReplace }: an
             </div>
         </div>
         
-        <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/60 rounded-lg text-[8px] font-black text-white/40 border border-white/5 pointer-events-none">
+        <div className="absolute bottom-2 left-2 px-2.5 py-1.5 bg-black/60 rounded-lg text-xs font-black text-white/40 border border-white/5 pointer-events-none">
             {idx + 1}
         </div>
     </div>
@@ -151,70 +151,80 @@ const SortableListItem = ({ id, children, onRemove, handle = true }: any) => {
 
 // --- Externalized UI Components ---
 
-const VisualImageField = ({ label, value, onBrowse }: any) => (
+const VisualImageField = ({ label, value, onBrowse, helpText }: any) => (
   <div className="space-y-4">
-    <label className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-black px-1 flex items-center gap-2">
-      <ImageIcon size={10} className="text-primary/60"/> {label}
-    </label>
+    <div className="space-y-1.5">
+      <label className="text-sm uppercase tracking-wider text-white/60 font-bold px-1 flex items-center gap-2">
+        <ImageIcon size={14} className="text-primary/60"/> {label}
+      </label>
+      {helpText && <p className="text-xs text-white/30 px-1 leading-relaxed">{helpText}</p>}
+    </div>
     <div 
       onClick={onBrowse}
-      className="group relative aspect-video bg-white/[0.03] border border-white/10 rounded-3xl overflow-hidden cursor-pointer hover:border-primary/40 transition-all duration-500"
+      className="group relative aspect-video bg-white/[0.03] border border-white/10 rounded-3xl overflow-hidden cursor-pointer hover:border-primary/40 transition-all duration-500 min-h-[44px]"
     >
       {value?.toLowerCase().endsWith('.pdf') ? (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-primary/5 text-primary">
           <FileText size={48} className="mb-4 opacity-40 group-hover:opacity-100 transition-opacity duration-700"/>
-          <span className="text-[10px] uppercase font-black tracking-widest opacity-40 group-hover:opacity-100 transition-opacity duration-700">PDF Asset Selected</span>
+          <span className="text-sm uppercase font-black tracking-wider opacity-40 group-hover:opacity-100 transition-opacity duration-700">PDF Document</span>
+          <span className="text-xs text-white/20 mt-2">Click to change</span>
         </div>
       ) : (
         <img 
-          src={resolveAsset(value)} 
+          src={value && (value.startsWith?.("data:") || value.startsWith?.("http")) ? value : resolveAsset(value)} 
           className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700" 
           alt={label}
-          onError={(e: any) => e.target.src = "https://placehold.co/600x400/0a0a0a/d4af37?text=Select+Asset"}
+          onError={(e: any) => e.target.src = "https://placehold.co/600x400/0a0a0a/d4af37?text=Click+to+Select+Image"}
         />
       )}
       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-3">
           <div className="p-4 bg-primary/20 rounded-full border border-primary/30">
             <RefreshCw size={24} className="text-primary animate-spin-slow group-hover:rotate-180 transition-transform duration-1000"/>
           </div>
-          <span className="text-[10px] uppercase font-black tracking-widest text-primary">Change Asset</span>
+          <span className="text-sm uppercase font-black tracking-wider text-primary">Change Image</span>
+          <span className="text-xs text-white/40">Click to browse</span>
         </div>
       </div>
       {value && (
         <div className="absolute bottom-4 left-4 right-4 p-4 bg-black/60 backdrop-blur-md rounded-2xl border border-white/5 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
-          <p className="text-[9px] font-mono text-white/40 truncate">{value}</p>
+          <p className="text-xs font-mono text-white/40 truncate">{value}</p>
         </div>
       )}
     </div>
   </div>
 );
 
-const Field = ({ label, value, onChange, area = false, italic = false }: any) => (
+const Field = ({ label, value, onChange, area = false, italic = false, helpText, placeholder }: any) => (
   <div className="space-y-3">
-    <label className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-black px-1 flex items-center gap-2">
-      <Pencil size={10} className="text-primary/60"/> {label}
-    </label>
+    <div className="space-y-1.5">
+      <label className="text-sm uppercase tracking-wider text-white/60 font-bold px-1 flex items-center gap-2">
+        <Pencil size={14} className="text-primary/60"/> {label}
+      </label>
+      {helpText && <p className="text-xs text-white/30 px-1 leading-relaxed">{helpText}</p>}
+    </div>
     {area ? (
       <textarea 
         className={`w-full bg-white/[0.03] border border-white/10 rounded-3xl p-6 text-white/80 focus:border-primary/40 focus:bg-white/[0.05] outline-none transition-all min-h-[140px] resize-none leading-relaxed text-sm ${italic ? 'italic font-serif text-lg' : ''}`}
         value={value} 
-        onChange={(e) => onChange(e.target.value)} 
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder || 'Enter text here...'}
       />
     ) : (
       <input 
         type="text" 
-        className="w-full bg-white/[0.03] border border-white/10 rounded-3xl h-16 px-6 text-white/80 focus:border-primary/40 focus:bg-white/[0.05] outline-none transition-all text-sm"
+        className="w-full bg-white/[0.03] border border-white/10 rounded-3xl h-14 md:h-16 px-6 text-white/80 focus:border-primary/40 focus:bg-white/[0.05] outline-none transition-all text-sm"
         value={value} 
-        onChange={(e) => onChange(e.target.value)} 
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder || 'Enter text...'}
       />
     )}
   </div>
 );
 
 const MobileNav = ({ activeTab, setActiveTab }: any) => (
-  <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-[#050505]/80 backdrop-blur-2xl border-t border-white/10 z-[100] px-4 py-2">
-    <div className="flex items-center justify-between overflow-x-auto no-scrollbar gap-4">
+  <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-[#050505]/95 backdrop-blur-2xl border-t border-white/10 z-[100] px-2 py-3 safe-area-inset-bottom">
+    <div className="flex items-center justify-between overflow-x-auto no-scrollbar gap-2">
       {(Object.keys(tabMetadata) as Tab[]).map((tabId) => {
         const { label, icon: Icon } = tabMetadata[tabId];
         const isActive = activeTab === tabId;
@@ -222,10 +232,11 @@ const MobileNav = ({ activeTab, setActiveTab }: any) => (
           <button
             key={tabId}
             onClick={() => setActiveTab(tabId)}
-            className={`flex flex-col items-center gap-1 min-w-[60px] py-2 transition-all duration-300 ${isActive ? 'text-primary' : 'text-white/20'}`}
+            title={`Edit ${label} section`}
+            className={`flex flex-col items-center gap-1.5 min-w-[68px] py-3 px-2 rounded-xl transition-all duration-300 min-h-[44px] ${isActive ? 'text-primary bg-primary/10' : 'text-white/30 hover:bg-white/5'}`}
           >
-            <Icon size={18} className={isActive ? 'scale-110' : ''} />
-            <span className="text-[8px] uppercase font-black tracking-widest">{label}</span>
+            <Icon size={20} className={isActive ? 'scale-110' : ''} />
+            <span className="text-[10px] sm:text-xs uppercase font-black tracking-wider">{label}</span>
           </button>
         );
       })}
@@ -237,9 +248,10 @@ const Sidebar = ({ activeTab, setActiveTab, onSave, isSaving, logout }: any) => 
   <aside className="hidden lg:flex flex-col w-80 h-screen fixed left-0 top-0 bg-[#050505] border-r border-white/5 p-8 z-50">
     <div className="mb-12">
       <h1 className="text-2xl font-serif italic text-white flex items-center gap-3">
-        Event Horizon <span className="text-[10px] uppercase tracking-[0.4em] font-sans not-italic text-primary/40">Studio</span>
+        Event Horizon <span className="text-sm uppercase tracking-wider font-sans not-italic text-primary/40">Studio</span>
       </h1>
-      <p className="text-[8px] text-white/20 uppercase tracking-[0.5em] font-black mt-2">Administrative Control v2.0</p>
+      <p className="text-xs text-white/30 uppercase tracking-wider font-black mt-2">Admin Panel v2.0</p>
+      <p className="text-xs text-white/20 mt-1 font-normal">Manage your website content</p>
     </div>
 
     <nav className="flex-grow space-y-2 overflow-y-auto no-scrollbar -mx-2 px-2">
@@ -250,11 +262,12 @@ const Sidebar = ({ activeTab, setActiveTab, onSave, isSaving, logout }: any) => 
           <button
             key={tabId}
             onClick={() => setActiveTab(tabId)}
-            className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-500 group ${isActive ? 'bg-primary text-black' : 'text-white/30 hover:bg-white/[0.03] hover:text-white'}`}
+            title={`Edit ${label} section`}
+            className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-500 group min-h-[52px] ${isActive ? 'bg-primary text-black shadow-lg' : 'text-white/40 hover:bg-white/[0.05] hover:text-white'}`}
           >
-            <Icon size={18} className={isActive ? '' : 'group-hover:scale-110 group-hover:text-primary transition-all'} />
-            <span className="text-[9px] uppercase tracking-[0.3em] font-black">{label}</span>
-            {isActive && <motion.div layoutId="activeTab" className="ml-auto w-1 h-1 bg-black rounded-full" />}
+            <Icon size={20} className={isActive ? '' : 'group-hover:scale-110 group-hover:text-primary transition-all'} />
+            <span className="text-xs uppercase tracking-wider font-black">{label}</span>
+            {isActive && <motion.div layoutId="activeTab" className="ml-auto w-2 h-2 bg-black rounded-full" />}
           </button>
         );
       })}
@@ -264,15 +277,18 @@ const Sidebar = ({ activeTab, setActiveTab, onSave, isSaving, logout }: any) => 
       <button 
         onClick={onSave} 
         disabled={isSaving}
-        className="w-full flex items-center justify-center gap-3 py-5 bg-primary text-black rounded-2xl text-[10px] uppercase font-black tracking-[0.3em] shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+        title="Save all changes and publish to live website"
+        className="w-full flex items-center justify-center gap-3 py-5 bg-primary text-black rounded-2xl text-sm uppercase font-black tracking-wider shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 min-h-[56px]"
       >
-        <Save size={16}/> {isSaving ? "Syncing..." : "Push Live"}
+        <Save size={18}/> {isSaving ? "Publishing..." : "Save & Publish"}
       </button>
+      <p className="text-xs text-center text-white/20 px-2 leading-relaxed">Changes go live immediately after saving</p>
       <button 
         onClick={logout}
-        className="w-full py-4 text-white/10 hover:text-red-500 transition-colors text-[9px] uppercase font-black tracking-widest"
+        title="Sign out of admin panel"
+        className="w-full py-4 text-white/20 hover:text-red-500 transition-colors text-xs uppercase font-black tracking-wider min-h-[44px]"
       >
-        Terminate Session
+        Sign Out
       </button>
     </div>
   </aside>
@@ -280,41 +296,74 @@ const Sidebar = ({ activeTab, setActiveTab, onSave, isSaving, logout }: any) => 
 
 const RepositoryBrowser = ({ dir, onSelect, activeSelection, assetFiles, fetchAllAssets, isFetchingFiles, isOptimizing, onFileChange, selectedUploadFile, uploadTargetDirForSection, setUploadTargetDirForSection, handleImageUpload, handleDeleteAsset, usedAssets }: any) => (
   <div className="space-y-8">
-      <div className="flex items-center justify-between px-2">
-          <h4 className="text-[10px] uppercase tracking-[0.4em] font-black text-white/20">Archive: {dir}</h4>
-          <div className="flex gap-6 items-center">
-             <button onClick={fetchAllAssets} className="text-primary/40 hover:text-primary transition-colors flex items-center gap-2 text-[10px] uppercase font-black"><RefreshCw size={12} className={isFetchingFiles ? "animate-spin" : ""}/> Sync</button>
-             <label htmlFor={`up-${dir}`} className="text-primary/60 hover:text-primary transition-colors cursor-pointer flex items-center gap-2 text-[10px] uppercase font-black">
-                  <UploadCloud size={14}/> Upload New
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-2">
+          <div>
+            <h4 className="text-sm uppercase tracking-wider font-black text-white/60">{dir}</h4>
+            <p className="text-xs text-white/30 mt-0.5">Manage images for this section</p>
+          </div>
+          <div className="flex gap-3 items-center">
+             <button 
+               onClick={fetchAllAssets} 
+               title="Refresh image list from server"
+               className="text-primary/60 hover:text-primary transition-colors flex items-center gap-2 text-sm uppercase font-black min-h-[44px] px-4 py-2 rounded-xl hover:bg-white/5"
+             >
+               <RefreshCw size={16} className={isFetchingFiles ? "animate-spin" : ""}/> Refresh
+             </button>
+             <label 
+               htmlFor={`up-${dir}`} 
+               title={`Upload new ${dir === "Brochure" ? "PDF document" : "image"}`}
+               className="text-primary hover:text-white bg-primary/10 hover:bg-primary/20 border border-primary/30 transition-all cursor-pointer flex items-center gap-2 text-sm uppercase font-black min-h-[44px] px-5 py-2 rounded-xl"
+             >
+                  <UploadCloud size={16}/> Upload {dir === "Brochure" ? "PDF" : "Image"}
              </label>
-             <input type="file" id={`up-${dir}`} className="hidden" accept={dir === "Brochure" ? ".pdf" : "image/*"} onChange={(e) => {
+             <input 
+               type="file" 
+               id={`up-${dir}`} 
+               className="hidden" 
+               accept={dir === "Brochure" ? ".pdf" : "image/*"} 
+               onChange={(e) => {
                  setUploadTargetDirForSection(dir);
                  onFileChange(e);
-             }} />
+               }} 
+             />
           </div>
       </div>
 
       {isOptimizing && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6 bg-primary/5 border border-primary/20 rounded-3xl flex items-center gap-4">
-              <RefreshCw size={16} className="animate-spin text-primary"/>
-              <span className="text-[10px] uppercase font-black tracking-widest text-primary/80">Optimizing Image (WebP)...</span>
+              <RefreshCw size={18} className="animate-spin text-primary"/>
+              <div>
+                <span className="text-sm uppercase font-black tracking-wider text-primary block">Optimizing Image...</span>
+                <span className="text-xs text-white/40 mt-1 block">Converting to WebP format</span>
+              </div>
           </motion.div>
       )}
 
       {selectedUploadFile && uploadTargetDirForSection === dir && !isOptimizing && (
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-primary/10 border border-dashed border-primary/30 rounded-3xl flex items-center justify-between gap-6">
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="p-6 bg-primary/10 border border-dashed border-primary/30 rounded-3xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl border border-primary/20 bg-black/40 overflow-hidden">
-                      <img src={selectedUploadFile.base64} className="w-full h-full object-cover" alt="Up"/>
+                  <div className="w-16 h-16 rounded-xl border border-primary/20 bg-black/40 overflow-hidden flex-shrink-0">
+                      <img src={selectedUploadFile.base64} className="w-full h-full object-cover" alt="Preview"/>
                   </div>
                  <div className="flex flex-col">
-                      <span className="text-[10px] font-black text-primary/80 uppercase tracking-widest">{selectedUploadFile.name}</span>
-                      <span className="text-[9px] text-white/20 uppercase">Ready for deployment (Optimized)</span>
+                      <span className="text-sm font-black text-primary uppercase tracking-wider">{selectedUploadFile.name}</span>
+                      <span className="text-xs text-white/40 mt-1">Ready to upload • Optimized for web</span>
                  </div>
               </div>
-              <div className="flex gap-4">
-                  <button onClick={() => handleImageUpload(dir)} className="px-6 py-2 bg-primary text-black text-[10px] uppercase font-black rounded-full shadow-lg hover:scale-105 transition-all">Confirm Upload</button>
-                  <button onClick={() => onFileChange(null as any)} className="p-2 text-white/40 hover:text-red-500 transition-colors"><X size={16}/></button>
+              <div className="flex gap-3 w-full sm:w-auto">
+                  <button 
+                    onClick={() => handleImageUpload(dir)} 
+                    className="flex-1 sm:flex-none px-6 py-3 bg-primary text-black text-sm uppercase font-black rounded-xl shadow-lg hover:scale-105 transition-all min-h-[44px]"
+                  >
+                    Confirm Upload
+                  </button>
+                  <button 
+                    onClick={() => onFileChange(null as any)} 
+                    title="Cancel upload"
+                    className="p-3 text-white/40 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all min-h-[44px] min-w-[44px]"
+                  >
+                    <X size={20}/>
+                  </button>
               </div>
           </motion.div>
       )}
@@ -336,17 +385,17 @@ const RepositoryBrowser = ({ dir, onSelect, activeSelection, assetFiles, fetchAl
                         src={resolveAsset(fullPath)} 
                         className={`w-full h-full object-cover transition-all duration-700 ${isActive ? 'opacity-90 grayscale-0' : 'opacity-40 group-hover:opacity-80 grayscale-[0.5] group-hover:grayscale-0'}`} 
                         alt={f}
-                        onError={(e: any) => e.target.src = "https://placehold.co/600x400/020202/d4af37?text=Asset+Error"}
+                        onError={(e: any) => e.target.src = "https://placehold.co/600x400/020202/d4af37?text=Image"}
                       />
                       
                       {isUsed && (
-                          <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2 py-1 bg-black/60 backdrop-blur-md rounded-lg border border-white/10 z-10">
-                              <Layers size={10} className="text-primary/60"/>
-                              <span className="text-[8px] font-black uppercase text-white/60 tracking-widest">In Use</span>
+                          <div className="absolute top-4 left-4 flex items-center gap-1.5 px-2.5 py-1.5 bg-black/60 backdrop-blur-md rounded-lg border border-white/10 z-10">
+                              <Layers size={12} className="text-primary/60"/>
+                              <span className="text-xs font-black uppercase text-white/60 tracking-wider">Active</span>
                           </div>
                       )}
 
-                      <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/90 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500 flex flex-col gap-2">
+                      <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/90 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-500 flex flex-col gap-3">
                           <button 
                               onClick={() => {
                                   if(onSelect) onSelect(fullPath);
@@ -354,12 +403,19 @@ const RepositoryBrowser = ({ dir, onSelect, activeSelection, assetFiles, fetchAl
                                       navigator.clipboard.writeText(fullPath);
                                   }
                               }} 
-                              className="w-full py-2 bg-primary text-black rounded-xl text-[9px] uppercase font-black shadow-xl"
+                              title={onSelect ? "Use this image" : "Copy path to clipboard"}
+                              className="w-full py-3 bg-primary text-black rounded-xl text-xs uppercase font-black shadow-xl min-h-[44px] hover:bg-white transition-colors"
                           >
-                              {onSelect ? "Apply Asset" : "Copy Reference"}
+                              {onSelect ? "Select Image" : "Copy Path"}
                           </button>
                           {!isUsed && (
-                              <button onClick={() => handleDeleteAsset(dir, f)} className="text-red-500/60 hover:text-red-500 transition-colors self-center p-1"><Trash2 size={12}/></button>
+                              <button 
+                                onClick={() => handleDeleteAsset(dir, f)} 
+                                title="Delete this image permanently"
+                                className="text-red-500/60 hover:text-red-500 transition-colors self-center p-2 hover:bg-red-500/10 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
+                              >
+                                <Trash2 size={16}/>
+                              </button>
                           )}
                       </div>
                       {isActive && (
@@ -396,6 +452,7 @@ export default function Admin() {
   const [isFetchingFiles, setIsFetchingFiles] = useState(false);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [selectedUploadFile, setSelectedUploadFile] = useState<{ name: string; base64: string } | null>(null);
+  const [stagedUploads, setStagedUploads] = useState<Array<{ targetDir: string; name: string; base64: string; previousPath?: string; deleteOld?: boolean }>>([]);
   const [activePickerField, setActivePickerField] = useState<{ label: string, path: string, setter: (val: string) => void, preferredDir?: string } | null>(null);
 
   const assetDirectories = ["backgrounds", "Welcome", "About", "OurStory", "Brochure", "LuxuryCorporateEvents", "BespokeWeddings&Engagements", "GeneralGallery", "DJNights&PrivateParties", "TraditionalBands&BrandOpenings", "Catering & Culinary Experiences", "Makeup&StylingServices", "Pastries & Celebration Cakes", "Balloon Decor & Birthday Celebrations", "Private & Social Celebrations", "Schools, Colleges & University Event Services"];
@@ -424,6 +481,18 @@ export default function Admin() {
       setAuth(prev => ({ ...prev, githubToken: savedToken, githubOwner: savedOwner, githubRepo: savedRepo }));
     }
   }, []);
+
+  // Normalize uploaded filenames to a predictable, URL-friendly format
+  const normalizeFileName = (original: string, ext = "webp") => {
+    const base = original.replace(/\.[^/.]+$/, "");
+    const sanitized = base
+      .toLowerCase()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-');
+    return `${sanitized}.${ext}`;
+  };
 
   useEffect(() => {
     if (auth.isLoggedIn) {
@@ -579,56 +648,144 @@ export default function Admin() {
   const handleSave = async () => {
     setIsSaving(true);
     const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
-    const result = await updateGitHubFile(config, "client/src/data/siteContent.json", JSON.stringify(formData, null, 2), "Admin: Comprehensive content update");
-    setIsSaving(false);
+
+    // Work on a deep copy of current content so we can safely replace previews
+    const newData: SiteContent = JSON.parse(JSON.stringify(formData));
+
+    // 1) Process staged uploads (if any): upload files, optionally delete replaced assets, and swap base64 previews with repo paths
+    if (stagedUploads.length > 0) {
+      for (const staged of stagedUploads) {
+        const { targetDir, name, base64, previousPath, deleteOld } = staged;
+        const uploadRes = await uploadGitHubImage(config, targetDir, name, base64.split(",")[1], `Admin: Resource upload to ${targetDir}`);
+        if (!uploadRes.success) {
+          setIsSaving(false);
+          setStatus({ type: "error", message: `Upload failed for ${name}: ${uploadRes.message}` });
+          return;
+        }
+
+        const newPath = targetDir === "backgrounds" ? name : `${targetDir}/${name}`;
+
+        // If requested, delete old asset from repo
+        if (deleteOld && previousPath && previousPath !== newPath) {
+          const deletePath = (previousPath.includes('/') && !previousPath.startsWith('About/') && !previousPath.startsWith('OurStory/') && !previousPath.startsWith('Welcome/'))
+              ? `client/src/assets/gallery/${previousPath}`
+              : `client/src/assets/${previousPath.includes('/') ? previousPath : 'backgrounds/' + previousPath}`;
+          await deleteGitHubFile(config, deletePath, `Admin: Auto-cleanup of replaced asset ${previousPath}`);
+        }
+
+        // Compose repository file path and a public raw URL so the site can fetch images without a local build
+        const repoFilePath = targetDir === "backgrounds" ? `client/src/assets/backgrounds/${name}` : `client/src/assets/gallery/${targetDir}/${name}`;
+        const rawUrl = `https://raw.githubusercontent.com/${config.owner}/${config.repo}/main/${repoFilePath}`;
+
+        // Replace any occurrences of the base64 placeholder in newData with the public raw URL
+        const replaceBase64 = (obj: any): any => {
+          if (!obj) return obj;
+          if (typeof obj === 'string') return obj === base64 ? rawUrl : obj;
+          if (Array.isArray(obj)) return obj.map((v) => replaceBase64(v));
+          if (typeof obj === 'object') {
+            Object.keys(obj).forEach((k) => {
+              obj[k] = replaceBase64(obj[k]);
+            });
+            return obj;
+          }
+          return obj;
+        };
+
+        replaceBase64(newData);
+      }
+
+      // Clear staged uploads after processing
+      setStagedUploads([]);
+    }
+
+    // 2) Persist the content file to the repository
+    const result = await updateGitHubFile(config, "client/src/data/siteContent.json", JSON.stringify(newData, null, 2), "Admin: Comprehensive content update");
+
+    // 3) Update local state and UI
     if (result.success) {
-      setStatus({ type: "success", message: "Repository synchronization successful." });
+      setFormData(newData);
+      // Verify that referenced assets exist in repository (catch mapping mismatches)
+      try {
+        const used = Array.from(getUsedAssets(newData));
+        const missing: string[] = [];
+        const OctokitClz = (await import("octokit")).Octokit;
+        const octokit = new OctokitClz({ auth: config.token });
+
+        await Promise.all(used.map(async (assetPath) => {
+          if (!assetPath || assetPath.startsWith('data:') || assetPath.startsWith('http')) return;
+          const repoPath = assetPath.includes('/')
+            ? `client/src/assets/${assetPath.startsWith('About/') || assetPath.startsWith('OurStory/') || assetPath.startsWith('Welcome/') || assetPath.startsWith('Brochure/') ? assetPath : 'gallery/' + assetPath}`
+            : `client/src/assets/backgrounds/${assetPath}`;
+          try {
+            await octokit.rest.repos.getContent({ owner: config.owner, repo: config.repo, path: repoPath });
+          } catch (err: any) {
+            missing.push(assetPath);
+          }
+        }));
+
+        if (missing.length) {
+          setStatus({ type: "error", message: `Sync completed but ${missing.length} mapped assets are missing: ${missing.slice(0,5).join(', ')}${missing.length>5?', ...':''}` });
+        } else {
+          setStatus({ type: "success", message: "Repository synchronization successful." });
+        }
+      } catch (err: any) {
+        setStatus({ type: "success", message: "Repository synchronized. (Asset verification skipped due to check error)" });
+      }
+
+      // Refresh asset list to reflect any newly uploaded files
+      fetchAllAssets();
     } else {
       setStatus({ type: "error", message: `Sync failed: ${result.message}` });
     }
+
+    setIsSaving(false);
   };
 
   const handleImageUpload = async (targetDir: string) => {
     if (!selectedUploadFile) return;
-    
+
     const previousPath = activePickerField?.path;
-    const shouldDeleteOld = previousPath && confirm(`Asset Replacement: Replace "${previousPath}" with "${selectedUploadFile.name}" and delete the old file from repository?`);
-
-    setIsSaving(true);
-    const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
     
-    // 1. Upload new image
-    const result = await uploadGitHubImage(config, targetDir, selectedUploadFile.name, selectedUploadFile.base64.split(",")[1], `Admin: Resource upload to ${targetDir}`);
+    // Check if the image is from GeneralGallery - these should NEVER be deleted
+    const isGeneralGallery = previousPath?.includes('GeneralGallery/');
     
-    if (result.success) {
-      const newPath = targetDir === "backgrounds" ? selectedUploadFile.name : `${targetDir}/${selectedUploadFile.name}`;
-      
-      // 2. Optionally delete old image if it's a replacement and NOT the same file
-      if (shouldDeleteOld && previousPath !== newPath) {
-        const deletePath = (previousPath.includes('/') && !previousPath.startsWith('About/') && !previousPath.startsWith('OurStory/') && !previousPath.startsWith('Welcome/'))
-            ? `client/src/assets/gallery/${previousPath}` 
-            : `client/src/assets/${previousPath.includes('/') ? previousPath : 'backgrounds/' + previousPath}`;
-        await deleteGitHubFile(config, deletePath, `Admin: Auto-cleanup of replaced asset ${previousPath}`);
-      }
+    // If replacing an existing asset:
+    // - General Gallery images are NEVER deleted (to prevent storage issues)
+    // - Other assets (services, backgrounds, etc.) are deleted ONLY if not used elsewhere
+    const willDeleteOld = !!(previousPath && !isGeneralGallery && !otherUsage.has(previousPath));
 
-      setStatus({ type: "success", message: `Asset ${shouldDeleteOld ? 'replaced' : 'uploaded'} successfully.` });
-      
-      // Auto-assign if we have an active picker field
-      if (activePickerField) {
-          activePickerField.setter(newPath);
-          setIsPickerOpen(false);
-          setActivePickerField(null);
-      }
-      
-      setSelectedUploadFile(null);
-      fetchAllAssets();
-    } else {
-      setStatus({ type: "error", message: `Upload failed: ${result.message}` });
+    // Stage the upload for later (Push Live)
+    setStagedUploads(prev => [...prev, { targetDir, name: selectedUploadFile.name, base64: selectedUploadFile.base64, previousPath, deleteOld: willDeleteOld }]);
+
+    // Show immediate preview in the admin UI by assigning the base64 to the active field
+    if (activePickerField) {
+      activePickerField.setter(selectedUploadFile.base64);
+      setIsPickerOpen(false);
+      setActivePickerField(null);
     }
-    setIsSaving(false);
+
+    setSelectedUploadFile(null);
+    
+    // Enhanced status message
+    let statusMsg = 'Asset staged for deployment.';
+    if (isGeneralGallery) {
+      statusMsg += ' General Gallery images are preserved (no deletion).';
+    } else if (willDeleteOld) {
+      statusMsg += ' Previous asset will be removed on Push Live.';
+    } else if (previousPath) {
+      statusMsg += ' Previous asset will NOT be removed (in use elsewhere).';
+    }
+    
+    setStatus({ type: "success", message: statusMsg });
   };
 
   const handleDeleteAsset = async (dir: string, fileName: string) => {
+    // Prevent deletion of GeneralGallery images
+    if (dir === "GeneralGallery") {
+      setStatus({ type: "error", message: "General Gallery images cannot be deleted to preserve storage integrity." });
+      return;
+    }
+    
     if (!confirm(`Permanently delete ${fileName}?`)) return;
     setIsSaving(true);
     const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
@@ -674,7 +831,7 @@ export default function Admin() {
           const ctx = canvas.getContext("2d");
           ctx?.drawImage(img, 0, 0, width, height);
           
-          const webpName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+          const webpName = normalizeFileName(file.name, "webp");
           const base64 = canvas.toDataURL("image/webp", 0.85);
           resolve({ name: webpName, base64: base64 });
         };
@@ -696,7 +853,7 @@ export default function Admin() {
         }
         const reader = new FileReader();
         reader.onload = (e) => {
-            setSelectedUploadFile({ name: file.name, base64: e.target?.result as string });
+            setSelectedUploadFile({ name: normalizeFileName(file.name, "pdf"), base64: e.target?.result as string });
         };
         reader.readAsDataURL(file);
         return;

@@ -4,8 +4,8 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, Plus, Minus, Maximize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Dynamically import all portfolio images
-const imageFiles = import.meta.glob("@assets/gallery/**/*.{png,jpg,jpeg}", { eager: true, import: "default" });
+// Dynamically import ONLY GeneralGallery images
+const imageFiles = import.meta.glob("@assets/gallery/GeneralGallery/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" });
 
 import { siteContent } from "@/data/siteContent";
 import { getBackground, resolveAsset } from "@/lib/asset-utils";

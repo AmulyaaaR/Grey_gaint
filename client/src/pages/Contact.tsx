@@ -91,7 +91,7 @@ export default function Contact() {
                   className="flex items-center gap-4 justify-center xl:justify-start"
                 >
                   <span className="w-10 h-[1px] bg-primary/20" />
-                  <span className="text-[10px] uppercase tracking-[0.7em] text-primary/60 font-bold">
+                  <span className="text-xs sm:text-sm uppercase tracking-wider text-primary/60 font-bold">
                     Get In Touch
                   </span>
                   <span className="w-10 h-[1px] bg-primary/20 xl:hidden" />
@@ -126,7 +126,7 @@ export default function Contact() {
                       <item.icon size={18} />
                     </div>
                     <div className="text-center xl:text-left">
-                      <p className="text-[9px] uppercase tracking-[0.5em] text-primary/40 font-bold mb-1">{item.label}</p>
+                      <p className="text-xs uppercase tracking-wider text-primary/40 font-bold mb-1">{item.label}</p>
                       <p className="text-white/70 font-light text-sm md:text-base leading-snug font-serif italic">{item.value}</p>
                     </div>
                   </motion.a>
@@ -146,7 +146,7 @@ export default function Contact() {
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                     </div>
                     <div className="text-center xl:text-left">
-                      <p className="text-[9px] uppercase tracking-[0.5em] text-white/40 font-bold mb-1">Resources</p>
+                      <p className="text-xs uppercase tracking-wider text-white/40 font-bold mb-1">Resources</p>
                       <p className="text-white/70 group-hover:text-white font-bold text-sm md:text-base leading-snug font-serif italic transition-colors">Download Event Brochure (PDF)</p>
                     </div>
                   </motion.a>
@@ -176,7 +176,7 @@ export default function Contact() {
                         name="name"
                         render={({ field }) => (
                           <FormItem className="space-y-3">
-                            <FormLabel className="text-[9px] uppercase tracking-[0.3em] text-white/30 font-bold px-1">Your Name</FormLabel>
+                            <FormLabel className="text-xs uppercase tracking-wider text-white/40 font-bold px-1">Your Name</FormLabel>
                             <FormControl>
                               <Input {...field} className="bg-white/[0.03] border-white/10 rounded-xl h-12 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-white/5 font-light" placeholder="John Doe" />
                             </FormControl>
@@ -189,9 +189,9 @@ export default function Contact() {
                         name="phone"
                         render={({ field }) => (
                           <FormItem className="space-y-3">
-                            <FormLabel className="text-[9px] uppercase tracking-[0.3em] text-white/30 font-bold px-1">Phone Number</FormLabel>
+                            <FormLabel className="text-xs uppercase tracking-wider text-white/40 font-bold px-1">Phone Number</FormLabel>
                             <FormControl>
-                              <Input {...field} value={field.value || ""} className="bg-white/[0.03] border-white/10 rounded-xl h-12 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-white/5 font-light" placeholder="+91 00000 00000" />
+                              <Input {...field} value={field.value || ""} className="bg-white/[0.03] border-white/10 rounded-xl h-12 md:h-14 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-white/5 font-light" placeholder="+91 00000 00000" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -205,9 +205,9 @@ export default function Contact() {
                         name="email"
                         render={({ field }) => (
                           <FormItem className="space-y-3">
-                            <FormLabel className="text-[9px] uppercase tracking-[0.3em] text-white/30 font-bold px-1">Email Address</FormLabel>
+                            <FormLabel className="text-xs uppercase tracking-wider text-white/40 font-bold px-1">Email Address</FormLabel>
                             <FormControl>
-                              <Input {...field} value={field.value || ""} className="bg-white/[0.03] border-white/10 rounded-xl h-12 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-white/5 font-light" placeholder="john@example.com" />
+                              <Input {...field} value={field.value || ""} className="bg-white/[0.03] border-white/10 rounded-xl h-12 md:h-14 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-white/5 font-light" placeholder="john@example.com" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -218,10 +218,10 @@ export default function Contact() {
                         name="eventType"
                         render={({ field }) => (
                           <FormItem className="space-y-3">
-                            <FormLabel className="text-[9px] uppercase tracking-[0.3em] text-white/30 font-bold px-1">Type of Event</FormLabel>
+                            <FormLabel className="text-xs uppercase tracking-wider text-white/40 font-bold px-1">Type of Event</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
                               <FormControl>
-                                <SelectTrigger className="bg-white/[0.03] border-white/10 rounded-xl h-12 focus:ring-primary/20 focus:border-primary/30 transition-all text-white/50">
+                                <SelectTrigger className="bg-white/[0.03] border-white/10 rounded-xl h-12 md:h-14 focus:ring-primary/20 focus:border-primary/30 transition-all text-white/50">
                                   <SelectValue placeholder="Select type" />
                                 </SelectTrigger>
                               </FormControl>
@@ -249,7 +249,7 @@ export default function Contact() {
                       name="message"
                       render={({ field }) => (
                         <FormItem className="space-y-3">
-                          <FormLabel className="text-[9px] uppercase tracking-[0.3em] text-white/30 font-bold px-1">Message / Vision</FormLabel>
+                          <FormLabel className="text-xs uppercase tracking-wider text-white/40 font-bold px-1">Message / Vision</FormLabel>
                           <FormControl>
                             <Textarea {...field} className="bg-white/[0.03] border-white/10 rounded-xl min-h-[100px] focus:ring-primary/20 focus:border-primary/30 transition-all resize-none placeholder:text-white/5 text-white/70 font-light" placeholder="Tell us about your dream event..." />
                           </FormControl>
@@ -262,7 +262,7 @@ export default function Contact() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       type="submit"
-                      className="w-full py-4 bg-primary text-black font-bold uppercase tracking-[0.3em] text-[11px] hover:shadow-[0_0_40px_rgba(212,175,55,0.2)] transition-all duration-500 rounded-none overflow-hidden group relative mt-2"
+                      className="w-full py-5 md:py-6 min-h-[56px] bg-primary text-black font-bold uppercase tracking-wider text-xs md:text-sm hover:shadow-[0_0_40px_rgba(212,175,55,0.2)] transition-all duration-500 rounded-none overflow-hidden group relative mt-2"
                     >
                       <span className="relative z-10">{contactPage.submitButton}</span>
                       <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />

@@ -152,7 +152,7 @@ export default function Home() {
                     <DialogTitle className="text-3xl md:text-5xl font-serif mb-10 leading-[1.1] italic text-white font-light text-center">
                       "We don’t just plan events, we create memories wrapped in <span className="text-primary not-italic">elegance</span>."
                     </DialogTitle>
-                    <DialogDescription className="text-[10px] text-primary/40 font-semibold tracking-[0.5em] uppercase mb-10 text-center">
+                    <DialogDescription className="text-sm text-primary/50 font-semibold tracking-wider uppercase mb-10 text-center">
                       Every occasion, a signature of distinction.
                     </DialogDescription>
                   </DialogHeader>
@@ -166,7 +166,7 @@ export default function Home() {
                           document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                         }, 3000);
                       }}
-                      className="bg-gradient-to-r from-primary to-[#f8e4b1] text-black hover:bg-white transition-all duration-500 rounded-none px-12 h-16 text-[10px] tracking-[0.3em] font-bold uppercase w-full md:w-auto cursor-pointer"
+                      className="bg-gradient-to-r from-primary to-[#f8e4b1] text-black hover:bg-white transition-all duration-500 rounded-none px-12 h-14 md:h-16 text-sm tracking-wider font-bold uppercase w-full md:w-auto cursor-pointer min-h-[56px]"
                     >
                       Begin Your Vision
                     </Button>
@@ -216,7 +216,7 @@ export default function Home() {
 
                           <div className="flex items-center justify-center gap-3">
                             <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
-                            <p className="text-[10px] uppercase tracking-[0.6em] text-primary/50 font-bold">
+                            <p className="text-xs sm:text-sm uppercase tracking-wider text-primary/50 font-bold">
                               Redirecting to Your Journey
                             </p>
                           </div>

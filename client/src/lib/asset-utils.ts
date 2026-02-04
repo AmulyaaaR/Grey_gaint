@@ -61,6 +61,9 @@ export function getBackground(fileName: string): string {
 export function resolveAsset(path: string): string {
     if (!path) return "";
 
+    // If a data URL or full remote URL is provided (e.g., staged preview or external image), return as-is
+    if (path.startsWith("data:") || path.startsWith("http://") || path.startsWith("https://")) return path;
+
     // Normalize path for matching (standardize separators)
     const normalizedSearch = path.replace(/\\/g, '/');
 
