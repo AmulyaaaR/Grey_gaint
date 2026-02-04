@@ -84,7 +84,7 @@ export default function Contact() {
               viewport={{ once: true }}
               className="flex flex-col h-full"
             >
-              <div className="space-y-2 mb-6 text-center xl:text-left">
+              <div className="space-y-2 mb-4 text-center xl:text-left">
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -169,7 +169,7 @@ export default function Contact() {
                 <h2 className="text-lg font-serif text-white mb-6 italic font-light tracking-tight text-center xl:text-left">"{contactPage.formQuote}"</h2>
 
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                       <FormField
                         control={form.control}
