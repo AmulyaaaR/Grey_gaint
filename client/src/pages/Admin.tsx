@@ -522,6 +522,7 @@ const serviceFolderMap: Record<string, string> = {
     
     // Keep existing order for known items (including previews)
     // Filter out items that are neither previews nor exist on GitHub
+    const newImages = normalizedFolderImages.filter(path => !savedOrder.includes(path));
     const finalOrder = [
       ...savedOrder.filter(path => 
         path.startsWith('data:') || path.startsWith('http') || normalizedFolderImages.includes(path)
