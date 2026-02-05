@@ -275,7 +275,7 @@
         {
           "title": "DJ Setup & Sound Experience",
           "buttonText": "Hear the Energy",
-          "image": "DJNights&PrivateParties/DP4.webp",
+          "image": "DJNights&PrivateParties/DPimg3.webp",
           "description": "High-quality sound systems and professional DJ setups tailored to the event. Music flow, bass balance, and clarity are carefully managed."
         },
         {
@@ -287,7 +287,7 @@
         {
           "title": "Stage, Dance Floor & Layout",
           "buttonText": "Feel the Beat",
-          "image": "DJNights&PrivateParties/DP5.webp",
+          "image": "DJNights&PrivateParties/DPimg4.webp",
           "description": "Well-planned stage and dance floor arrangements for comfort and safety. Layouts allow smooth movement and immersive party experiences."
         },
         {
@@ -320,7 +320,7 @@
         {
           "title": "Traditional Folk Bands & Performances",
           "buttonText": "Experience Culture",
-          "image": "TraditionalBands&BrandOpenings/BBimg1.webp",
+          "image": "TraditionalBands&BrandOpenings/BBimg6.webp",
           "description": "We arrange authentic traditional bands and folk artists for grand openings. Performances create a festive, welcoming, and culturally rich atmosphere."
         },
         {
@@ -359,7 +359,7 @@
         {
           "title": "Curated Menus & Culinary Planning",
           "buttonText": "Explore Flavors",
-          "image": "Catering & Culinary Experiences/CTimg1.webp",
+          "image": "Catering & Culinary Experiences/CTimg7.webp",
           "description": "We design menus tailored to your event style, guest preferences, and cultural tastes. Each selection balances flavor, presentation, and quality to enhance the overall experience."
         },
         {
@@ -416,7 +416,7 @@
         {
           "title": "Fashion, Themed & Event Makeup",
           "buttonText": "Creative Vision",
-          "image": "Makeup&StylingServices/MHimg3.webp",
+          "image": "Makeup&StylingServices/MHimg7.webp",
           "description": "Whether fashion-forward, themed, or contemporary, styles are tailored to the occasion. Makeup and hair are designed to align seamlessly with the event concept."
         },
         {
@@ -449,7 +449,7 @@
         {
           "title": "Personalized Design & Concepts",
           "buttonText": "Design Your Cake",
-          "image": "Pastries & Celebration Cakes/CDimg1.webp",
+          "image": "https://raw.githubusercontent.com/AmulyaaaR/Grey_gaint/main/client/src/assets/gallery/Pastries & Celebration Cakes/cd10jpg.webp",
           "description": "Every cake and dessert is custom-designed to match your event theme and style. From elegant wedding cakes to playful cupcakes, each creation reflects your vision."
         },
         {
@@ -494,7 +494,7 @@
         {
           "title": "Creative Party Planning & Themes",
           "buttonText": "See the Magic",
-          "image": "Balloon Decor & Birthday Celebrations/BDimg1.webp",
+          "image": "Balloon Decor & Birthday Celebrations/BDimg8.webp",
           "description": "We design birthday celebrations around your chosen theme and personality. From kids' parties to elegant adult celebrations, every concept feels special."
         },
         {
@@ -539,7 +539,7 @@
         {
           "title": "Public Event Planning & Coordination",
           "buttonText": "See the Flow",
-          "image": "Private & Social Celebrations/PSEimg1.webp",
+          "image": "Private & Social Celebrations/PSEmg6.webp",
           "description": "We plan and manage large-scale public and social events with structured execution. Permissions, timelines, and crowd flow are handled professionally."
         },
         {
@@ -578,7 +578,7 @@
         {
           "title": "Event Planning & Concept Design",
           "buttonText": "See the Vision",
-          "image": "Schools, Colleges & University Event Services/SCE4.webp",
+          "image": "Schools, Colleges & University Event Services/SCEimg3.webp",
           "description": "We plan school and college events around the institution’s vision and theme. Concepts are engaging, organized, and student-focused for cultural fests and annual days."
         },
         {
