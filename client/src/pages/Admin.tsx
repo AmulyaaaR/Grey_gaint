@@ -531,6 +531,7 @@ export default function Admin() {
     setIsFetchingFiles(false);
   };
 
+
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
@@ -744,18 +745,26 @@ export default function Admin() {
   const handleImageUpload = async (targetDir: string) => {
     if (!selectedUploadFile) return;
 
+    // Get the previous path - check if it's a data URL (base64) or actual path
     const previousPath = activePickerField?.path;
+    const isPreviousPathValid = previousPath && !previousPath.startsWith('data:') && !previousPath.startsWith('http') && previousPath.trim() !== '';
     
     // Check if the image is from GeneralGallery - these should NEVER be deleted
-    const isGeneralGallery = previousPath?.includes('GeneralGallery/');
+    const isGeneralGallery = isPreviousPathValid && previousPath.includes('GeneralGallery/');
     
     // If replacing an existing asset:
     // - General Gallery images are NEVER deleted (to prevent storage issues)
     // - Other assets (services, backgrounds, etc.) are deleted ONLY if not used elsewhere
-    const willDeleteOld = !!(previousPath && !isGeneralGallery && !otherUsage.has(previousPath));
+    const willDeleteOld = !!(isPreviousPathValid && !isGeneralGallery && !otherUsage.has(previousPath));
 
     // Stage the upload for later (Push Live)
-    setStagedUploads(prev => [...prev, { targetDir, name: selectedUploadFile.name, base64: selectedUploadFile.base64, previousPath, deleteOld: willDeleteOld }]);
+    setStagedUploads(prev => [...prev, { 
+      targetDir, 
+      name: selectedUploadFile.name, 
+      base64: selectedUploadFile.base64, 
+      previousPath: isPreviousPathValid ? previousPath : undefined, 
+      deleteOld: willDeleteOld 
+    }]);
 
     // Show immediate preview in the admin UI by assigning the base64 to the active field
     if (activePickerField) {
@@ -771,8 +780,8 @@ export default function Admin() {
     if (isGeneralGallery) {
       statusMsg += ' General Gallery images are preserved (no deletion).';
     } else if (willDeleteOld) {
-      statusMsg += ' Previous asset will be removed on Push Live.';
-    } else if (previousPath) {
+      statusMsg += ` Previous asset "${previousPath}" will be removed on Push Live.`;
+    } else if (isPreviousPathValid) {
       statusMsg += ' Previous asset will NOT be removed (in use elsewhere).';
     }
     
@@ -920,10 +929,75 @@ export default function Admin() {
     return used;
   };
 
-  const usedAssets = getUsedAssets(formData);
-  const otherUsage = getOtherUsage(formData);
+  const usedAssets = useMemo(() => getUsedAssets(formData), [formData]);
+  const otherUsage = useMemo(() => getOtherUsage(formData), [formData]);
+
+
+  // Fix duplicate service images on mount and after save
+  const fixDuplicateServiceImages = () => {
+    let fixedCount = 0;
+    const newServices = formData.services.map(service => {
+      const usedImages = new Set<string>();
+      const newDetails = (service.details || []).map(detail => {
+        // If detail has no image or null, keep it as empty string
+        if (!detail.image || detail.image.trim() === '') {
+          return { ...detail, image: '' };
+        }
+        
+        // If this image is already used in this service, find a replacement
+        if (usedImages.has(detail.image)) {
+          fixedCount++;
+          console.warn(`Duplicate image detected in "${service.title}": ${detail.image}`);
+          
+          // Try to find an unused image from the service folder
+          const folderName = service.title.replace(/\s+/g, '');
+          const availableImages = assetFiles[folderName] || [];
+          
+          // Build full paths and filter out already used ones
+          const unusedImage = availableImages
+            .map(f => `${folderName}/${f}`)
+            .find(path => !usedImages.has(path) && path !== service.image);
+          
+          if (unusedImage) {
+            usedImages.add(unusedImage);
+            return { ...detail, image: unusedImage };
+          } else {
+            // No available images, set to empty string
+            return { ...detail, image: '' };
+          }
+        }
+        
+        usedImages.add(detail.image);
+        return detail;
+      });
+      
+      return { ...service, details: newDetails };
+    });
+    
+    if (fixedCount > 0) {
+      setFormData(prev => ({ ...prev, services: newServices }));
+      setStatus({ 
+        type: "success", 
+        message: `Fixed ${fixedCount} duplicate image mapping(s). Review and Push Live to save.` 
+      });
+    }
+    
+    return fixedCount;
+  };
+
+  // Auto-fix duplicate images after assets are loaded
+  useEffect(() => {
+    if (Object.keys(assetFiles).length > 0 && formData.services.length > 0) {
+      // Small delay to ensure formData is stable
+      const timer = setTimeout(() => {
+        fixDuplicateServiceImages();
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [assetFiles]);
 
   const [uploadTargetDirForSection, setUploadTargetDirForSection] = useState("");
+
 
   if (!auth.isLoggedIn) {
     return (
