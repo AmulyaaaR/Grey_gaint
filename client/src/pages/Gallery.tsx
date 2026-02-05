@@ -22,13 +22,8 @@ export default function Gallery() {
     // might exist on GitHub but not in the local build yet.
     const validSavedOrder = [...savedOrder];
     
-    // Find files in the folder that haven't been ordered yet
-    const remainingFiles = allFiles.filter(path => {
-      return !validSavedOrder.some(s => path.endsWith(`/${s}`));
-    });
-
-    // Combine them: Manual Order first, then the rest
-    const finalDisplayOrder = [...validSavedOrder, ...remainingFiles];
+    // Combine them: ONLY Manual Order from siteContent
+    const finalDisplayOrder = [...validSavedOrder];
 
     return finalDisplayOrder.map((pathOrItem, index) => {
       // Find the actual file key for imageFiles

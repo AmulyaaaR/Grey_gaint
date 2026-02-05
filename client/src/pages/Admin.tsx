@@ -5,6 +5,25 @@ import { siteContent, type SiteContent } from "@/data/siteContent";
 import { updateGitHubFile, uploadGitHubImage, listGitHubFiles, deleteGitHubFile, type GitHubConfig } from "@/lib/github-api";
 import { resolveAsset } from "@/lib/asset-utils";
 
+// Helper to resolve assets in Admin with a GitHub raw fallback for newly uploaded files
+const resolveAdminAsset = (path: string, auth?: { githubOwner: string, githubRepo: string }) => {
+  if (!path) return "https://placehold.co/600x400/0a0a0a/d4af37?text=No+Asset";
+  if (path.startsWith('data:') || path.startsWith('http')) return path;
+  
+  // Try local first
+  const local = resolveAsset(path);
+  // If local resolution fails (e.g. it returns a placeholder or doesn't map) 
+  // or if we want to ensure we see the LATEST version from GitHub:
+  if (auth && auth.githubOwner && auth.githubRepo) {
+    const isSpecial = (path.startsWith('About/') || path.startsWith('OurStory/') || path.startsWith('Welcome/') || path.startsWith('Brochure/'));
+    const repoPath = path.includes('/')
+      ? `client/src/assets/${isSpecial ? path : 'gallery/' + path}`
+      : `client/src/assets/backgrounds/${path}`;
+    return `https://raw.githubusercontent.com/${auth.githubOwner}/${auth.githubRepo}/main/${repoPath}`;
+  }
+  return local;
+};
+
 import {
   DndContext,
   closestCenter,
@@ -54,7 +73,7 @@ const tabMetadata: Record<Tab, { label: string, icon: any }> = {
 
 // --- Sortable Components ---
 
-const SortableGridItem = ({ id, path, idx, otherUsage, onRemove, onReplace }: any) => {
+const SortableGridItem = ({ id, path, idx, otherUsage, onRemove, onReplace, auth }: any) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -71,7 +90,7 @@ const SortableGridItem = ({ id, path, idx, otherUsage, onRemove, onReplace }: an
     >
         <div className="w-full h-full" {...attributes} {...listeners}>
             <img 
-                src={resolveAsset(path)} 
+                src={resolveAdminAsset(path, auth)} 
                 className="w-full h-full object-cover rounded-sm transition-transform duration-1000 group-hover:scale-110" 
                 alt="Gallery Item" 
             />
@@ -171,7 +190,7 @@ const VisualImageField = ({ label, value, onBrowse, helpText }: any) => (
         </div>
       ) : (
         <img 
-          src={value && (value.startsWith?.("data:") || value.startsWith?.("http")) ? value : resolveAsset(value)} 
+          src={value && (value.startsWith?.("data:") || value.startsWith?.("http")) ? value : resolveAdminAsset(value, onBrowse?.auth)} 
           className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700" 
           alt={label}
           onError={(e: any) => e.target.src = "https://placehold.co/600x400/0a0a0a/d4af37?text=Click+to+Select+Image"}
@@ -244,17 +263,63 @@ const MobileNav = ({ activeTab, setActiveTab }: any) => (
   </div>
 );
 
-const Sidebar = ({ activeTab, setActiveTab, onSave, isSaving, logout }: any) => (
+const DeploymentStatus = ({ auth, isSaving, status }: any) => {
+  const [lastCommit, setLastCommit] = useState<any>(null);
+
+  useEffect(() => {
+    if (auth?.isLoggedIn && !isSaving) {
+      const fetchLastCommit = async () => {
+         try {
+            const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
+            const OctokitClz = (await import("octokit")).Octokit;
+            const octokit = new OctokitClz({ auth: config.token });
+            const { data } = await octokit.rest.repos.listCommits({ owner: config.owner, repo: config.repo, per_page: 1 });
+            setLastCommit(data[0]);
+         } catch (e) {}
+      };
+      fetchLastCommit();
+      const interval = setInterval(fetchLastCommit, 60000);
+      return () => clearInterval(interval);
+    }
+  }, [auth?.isLoggedIn, isSaving, auth?.githubOwner, auth?.githubRepo, auth?.githubToken]);
+
+  if (!auth?.isLoggedIn) return null;
+
+  return (
+    <div className="flex flex-col gap-3 p-6 bg-white/[0.02] border border-white/5 rounded-3xl">
+        <div className="flex items-center justify-between">
+            <span className="text-[9px] uppercase font-black tracking-[0.2em] text-white/20">Sync Status</span>
+            <div className={`w-2 h-2 rounded-full ${isSaving ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)]'}`} />
+        </div>
+        
+        {lastCommit && (
+            <div className="space-y-1">
+                <span className="text-[10px] font-black text-white/60 truncate block">{isSaving ? 'Staging Changes...' : 'Repository Synced'}</span>
+                <span className="text-[9px] font-mono text-white/20 truncate block">{lastCommit.commit.message}</span>
+            </div>
+        )}
+
+        {status && (
+            <div className={`mt-2 p-3 rounded-xl border text-[9px] font-black uppercase tracking-wider ${status.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}>
+                {status.message}
+            </div>
+        )}
+    </div>
+  );
+};
+
+const Sidebar = ({ activeTab, setActiveTab, onSave, isSaving, logout, auth, status }: any) => (
   <aside className="hidden lg:flex flex-col w-80 h-screen fixed left-0 top-0 bg-[#050505] border-r border-white/5 p-8 z-50">
     <div className="mb-12">
       <h1 className="text-2xl font-serif italic text-white flex items-center gap-3">
         Event Horizon <span className="text-sm uppercase tracking-wider font-sans not-italic text-primary/40">Studio</span>
       </h1>
-      <p className="text-xs text-white/30 uppercase tracking-wider font-black mt-2">Admin Panel v2.0</p>
-      <p className="text-xs text-white/20 mt-1 font-normal">Manage your website content</p>
+      <p className="text-[10px] text-white/10 uppercase font-black tracking-[0.2em] leading-relaxed">
+        Secure Control Surface<br/>v2.4.0 • Master Polish
+      </p>
     </div>
 
-    <nav className="flex-grow space-y-2 overflow-y-auto no-scrollbar -mx-2 px-2">
+    <nav className="flex-1 space-y-3 overflow-y-auto no-scrollbar -mx-2 px-2">
       {(Object.keys(tabMetadata) as Tab[]).map((tabId) => {
         const { label, icon: Icon } = tabMetadata[tabId];
         const isActive = activeTab === tabId;
@@ -262,31 +327,30 @@ const Sidebar = ({ activeTab, setActiveTab, onSave, isSaving, logout }: any) => 
           <button
             key={tabId}
             onClick={() => setActiveTab(tabId)}
-            title={`Edit ${label} section`}
-            className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-500 group min-h-[52px] ${isActive ? 'bg-primary text-black shadow-lg' : 'text-white/40 hover:bg-white/[0.05] hover:text-white'}`}
+            className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group outline-none ${isActive ? 'bg-primary text-black shadow-[0_10px_30px_rgba(212,175,55,0.3)]' : 'text-white/30 hover:bg-white/[0.03] hover:text-white'}`}
           >
-            <Icon size={20} className={isActive ? '' : 'group-hover:scale-110 group-hover:text-primary transition-all'} />
-            <span className="text-xs uppercase tracking-wider font-black">{label}</span>
-            {isActive && <motion.div layoutId="activeTab" className="ml-auto w-2 h-2 bg-black rounded-full" />}
+            <Icon size={18} className={isActive ? 'scale-110' : 'group-hover:scale-110 transition-transform duration-500'} />
+            <span className="text-[11px] uppercase font-black tracking-[0.2em]">{label}</span>
+            {isActive && <ArrowRight size={14} className="ml-auto animate-in slide-in-from-left-2" />}
           </button>
         );
       })}
     </nav>
 
-    <div className="mt-8 space-y-4 pt-8 border-t border-white/5">
+    <div className="pt-8 mt-8 border-t border-white/5 space-y-4">
+      <DeploymentStatus auth={auth} isSaving={isSaving} status={status} />
       <button 
-        onClick={onSave} 
+        onClick={onSave}
         disabled={isSaving}
-        title="Save all changes and publish to live website"
-        className="w-full flex items-center justify-center gap-3 py-5 bg-primary text-black rounded-2xl text-sm uppercase font-black tracking-wider shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 min-h-[56px]"
+        className="w-full py-5 bg-white text-black rounded-2xl text-[11px] uppercase font-black flex items-center justify-center gap-3 shadow-2xl hover:bg-primary transition-all duration-500 disabled:opacity-50 group outline-none"
       >
-        <Save size={18}/> {isSaving ? "Publishing..." : "Save & Publish"}
+        {isSaving ? <RefreshCw size={16} className="animate-spin" /> : <Save size={16} className="group-hover:scale-125 transition-transform duration-500" />}
+        {isSaving ? "Sync Protocol Active" : "Push Live Engine"}
       </button>
-      <p className="text-xs text-center text-white/20 px-2 leading-relaxed">Changes go live immediately after saving</p>
+
       <button 
         onClick={logout}
-        title="Sign out of admin panel"
-        className="w-full py-4 text-white/20 hover:text-red-500 transition-colors text-xs uppercase font-black tracking-wider min-h-[44px]"
+        className="w-full py-3 text-white/40 hover:text-red-500 hover:bg-red-500/10 rounded-2xl text-[11px] uppercase font-black transition-all duration-300 outline-none"
       >
         Sign Out
       </button>
@@ -294,7 +358,8 @@ const Sidebar = ({ activeTab, setActiveTab, onSave, isSaving, logout }: any) => 
   </aside>
 );
 
-const RepositoryBrowser = ({ dir, onSelect, activeSelection, assetFiles, fetchAllAssets, isFetchingFiles, isOptimizing, onFileChange, selectedUploadFile, uploadTargetDirForSection, setUploadTargetDirForSection, handleImageUpload, handleDeleteAsset, usedAssets }: any) => (
+
+const RepositoryBrowser = ({ dir, onSelect, activeSelection, assetFiles, fetchAllAssets, isFetchingFiles, isOptimizing, onFileChange, selectedUploadFile, uploadTargetDirForSection, setUploadTargetDirForSection, handleImageUpload, handleDeleteAsset, usedAssets, auth }: any) => (
   <div className="space-y-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-2">
           <div>
@@ -485,13 +550,21 @@ const serviceFolderMap: Record<string, string> = {
     brochure: "Brochure"
   } as any;
 
-  // Load GitHub config from local storage
+  // Load GitHub config and session from local storage
   useEffect(() => {
     const savedToken = localStorage.getItem("gh_token");
     const savedOwner = localStorage.getItem("gh_owner");
     const savedRepo = localStorage.getItem("gh_repo");
+    const savedLogin = localStorage.getItem("is_admin_logged_in") === "true";
+
     if (savedToken && savedOwner && savedRepo) {
-      setAuth(prev => ({ ...prev, githubToken: savedToken, githubOwner: savedOwner, githubRepo: savedRepo }));
+      setAuth(prev => ({ 
+        ...prev, 
+        githubToken: savedToken, 
+        githubOwner: savedOwner, 
+        githubRepo: savedRepo,
+        isLoggedIn: savedLogin
+      }));
     }
   }, []);
 
@@ -520,15 +593,10 @@ const serviceFolderMap: Record<string, string> = {
     const activeFiles = assetFiles["GeneralGallery"] || [];
     const normalizedFolderImages = activeFiles.map(f => `GeneralGallery/${f}`);
     
-    // Keep existing order for known items (including previews)
-    // Filter out items that are neither previews nor exist on GitHub
-    const newImages = normalizedFolderImages.filter(path => !savedOrder.includes(path));
-    const finalOrder = [
-      ...savedOrder.filter(path => 
+    // Strictly manual control: only show what is saved in content
+    const finalOrder = savedOrder.filter(path => 
         path.startsWith('data:') || path.startsWith('http') || normalizedFolderImages.includes(path)
-      ), 
-      ...newImages
-    ];
+    );
     return finalOrder;
   }, [formData.galleryPage?.galleryItems, assetFiles]);
 
@@ -601,6 +669,33 @@ const serviceFolderMap: Record<string, string> = {
        });
   };
 
+  const getAssetUsageCounts = (data: SiteContent) => {
+    const counts = new Map<string, number>();
+    const process = (val: any) => {
+      if (!val) return;
+      if (typeof val === 'string' && val.trim() !== '' && !val.startsWith('data:') && !val.startsWith('http')) {
+        counts.set(val, (counts.get(val) || 0) + 1);
+      } else if (Array.isArray(val)) {
+        val.forEach(process);
+      } else if (typeof val === 'object') {
+        Object.values(val).forEach(process);
+      }
+    };
+    process(data);
+    return counts;
+  };
+
+  const otherUsage = useMemo(() => {
+    const counts = getAssetUsageCounts(formData);
+    const usedSet = new Set<string>();
+    counts.forEach((count, path) => {
+      if (count > 0) usedSet.add(path);
+    });
+    return usedSet;
+  }, [formData]);
+
+  const usageCounts = useMemo(() => getAssetUsageCounts(formData), [formData]);
+
   // --- Core Handlers ---
 
   const sendOtp = async () => {
@@ -658,15 +753,29 @@ const serviceFolderMap: Record<string, string> = {
       localStorage.setItem("gh_token", auth.githubToken);
       localStorage.setItem("gh_owner", auth.githubOwner);
       localStorage.setItem("gh_repo", auth.githubRepo);
+      localStorage.setItem("is_admin_logged_in", "true");
       setStatus(null);
     } else {
       setStatus({ type: "error", message: "Invalid key." });
     }
   };
 
+  const handleSignOut = () => {
+    localStorage.removeItem("is_admin_logged_in");
+    setAuth(prev => ({ ...prev, isLoggedIn: false }));
+    setStatus({ type: "success", message: "Signed out successfully." });
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
     const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
+
+    // 0.1) Pre-flight count verification
+    const affectedDirs = new Set(stagedUploads.map(s => s.targetDir));
+    const preFlightCounts: Record<string, number> = {};
+    Array.from(affectedDirs).forEach(dir => {
+        preFlightCounts[dir] = (assetFiles[dir] || []).length;
+    });
 
     // Work on a deep copy of current content so we can safely replace previews
     const newData: SiteContent = JSON.parse(JSON.stringify(formData));
@@ -742,13 +851,14 @@ const serviceFolderMap: Record<string, string> = {
       setFormData(newData);
       // Verify that referenced assets exist in repository (catch mapping mismatches)
       try {
-        const used = Array.from(getUsedAssets(newData));
+        const usage = getAssetUsageCounts(newData);
+        const used = Array.from(usage.keys());
         const missing: string[] = [];
         const OctokitClz = (await import("octokit")).Octokit;
         const octokit = new OctokitClz({ auth: config.token });
 
-        await Promise.all(used.map(async (assetPath) => {
-          if (!assetPath || assetPath.startsWith('data:') || assetPath.startsWith('http')) return;
+        await Promise.all(used.map(async (assetPath: any) => {
+          if (!assetPath || typeof assetPath !== 'string' || assetPath.startsWith('data:') || assetPath.startsWith('http')) return;
           const repoPath = assetPath.includes('/')
             ? `client/src/assets/${assetPath.startsWith('About/') || assetPath.startsWith('OurStory/') || assetPath.startsWith('Welcome/') || assetPath.startsWith('Brochure/') ? assetPath : 'gallery/' + assetPath}`
             : `client/src/assets/backgrounds/${assetPath}`;
@@ -768,8 +878,30 @@ const serviceFolderMap: Record<string, string> = {
         setStatus({ type: "success", message: "Repository synchronized. (Asset verification skipped due to check error)" });
       }
 
-      // Refresh asset list to reflect any newly uploaded files
-      fetchAllAssets();
+      // Refresh asset list and site content to reflect repository changes immediately
+      await fetchAllAssets();
+      setStatus({ type: "success", message: "Repository synchronization successful and UI updated." });
+      
+      // Post-flight count verification report
+      const postFlightCounts: Record<string, number> = {};
+      let countReport = "Directory Snapshot: ";
+      
+      // Use a standard for loop on Array.from(affectedDirs) for reliable async/await
+      const affectedDirsArray = Array.from(affectedDirs);
+      for (let i = 0; i < affectedDirsArray.length; i++) {
+          const dir = affectedDirsArray[i];
+          const path = (dir === "backgrounds" || dir === "Welcome" || dir === "About" || dir === "OurStory" || dir === "Brochure") 
+            ? `client/src/assets/${dir}` 
+            : `client/src/assets/gallery/${dir}`;
+          const res = await listGitHubFiles(config, path);
+          const count = res.success ? (res.files?.length || 0) : 0;
+          postFlightCounts[dir] = count;
+          countReport += `${dir}: ${preFlightCounts[dir]} -> ${count} files. `;
+      }
+      setStatus(prev => ({ 
+        type: "success", 
+        message: `${prev?.message || "Sync successful."} ${countReport}` 
+      }));
     } else {
       setStatus({ type: "error", message: `Sync failed: ${result.message}` });
     }
@@ -787,10 +919,9 @@ const serviceFolderMap: Record<string, string> = {
     // Check if the image is from GeneralGallery - these should NEVER be deleted
     const isGeneralGallery = isPreviousPathValid && previousPath.includes('GeneralGallery/');
     
-    // If replacing an existing asset:
-    // - General Gallery images are NEVER deleted (to prevent storage issues)
-    // - Other assets (services, backgrounds, etc.) are deleted ONLY if not used elsewhere
-    const willDeleteOld = !!(isPreviousPathValid && !isGeneralGallery && !otherUsage.has(previousPath));
+    // Exact cleanup logic: delete only if it's the LAST usage in the entire site
+    const currentCount = isPreviousPathValid ? (usageCounts.get(previousPath) || 0) : 0;
+    const willDeleteOld = !!(isPreviousPathValid && !isGeneralGallery && currentCount === 1);
 
     // Stage the upload for later (Push Live)
     setStagedUploads(prev => [...prev, { 
@@ -925,52 +1056,8 @@ const serviceFolderMap: Record<string, string> = {
 
   const [isPickerOpen, setIsPickerOpen] = useState(false);
 
-  // Helper to find all image references in siteContent
-  const getUsedAssets = (content: SiteContent) => {
-    const used = new Set<string>();
-    
-    // Backgrounds
-    Object.values(content.backgrounds).forEach((path: any) => { if(path) used.add(path as string); });
-    
-    // Services
-    content.services.forEach(s => {
-      if(s.image) used.add(s.image);
-      (s.details || []).forEach(d => { if(d.image) used.add(d.image); });
-    });
-    
-    // Gallery Items
-    (content.galleryPage.galleryItems || []).forEach((path: string) => { if(path) used.add(path); });
-    
-    // Welcome
-    if(content.welcomePopup?.image) used.add(content.welcomePopup.image);
-    
-    // About & Story
-    if(content.about?.image) used.add(content.about.image);
-    if(content.distinction?.image) used.add(content.distinction.image);
-    
-    return used;
-  };
-
-  const getOtherUsage = (content: SiteContent) => {
-    const used = new Set<string>();
-    
-    // Backgrounds
-    Object.values(content.backgrounds).forEach((path: any) => { if(path) used.add(path as string); });
-    
-    // Services
-    content.services.forEach(s => {
-      if(s.image) used.add(s.image);
-      (s.details || []).forEach(d => { if(d.image) used.add(d.image); });
-    });
-    
-    // Welcome
-    if(content.welcomePopup?.image) used.add(content.welcomePopup.image);
-    
-    return used;
-  };
-
-  const usedAssets = useMemo(() => getUsedAssets(formData), [formData]);
-  const otherUsage = useMemo(() => getOtherUsage(formData), [formData]);
+  // use the previously defined usageCounts and otherUsage for site-wide consistency
+  const usedAssets = otherUsage;
 
 
   // Fix duplicate service images on mount and after save
@@ -1163,6 +1250,8 @@ const serviceFolderMap: Record<string, string> = {
         onSave={handleSave} 
         isSaving={isSaving} 
         logout={logout}
+        auth={auth}
+        status={status}
       />
       
       <MobileNav activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -1516,6 +1605,7 @@ const serviceFolderMap: Record<string, string> = {
                                                     path={path}
                                                     idx={idx}
                                                     otherUsage={otherUsage}
+                                                    auth={auth}
                                                     onRemove={() => {
                                                         const items = adminGalleryList.filter((p) => p !== path);
                                                         setFormData(p => ({ ...p, galleryPage: { ...p.galleryPage, galleryItems: items } }));
