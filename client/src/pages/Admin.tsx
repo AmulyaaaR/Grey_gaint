@@ -431,6 +431,19 @@ const RepositoryBrowser = ({ dir, onSelect, activeSelection, assetFiles, fetchAl
 );
 
 export default function Admin() {
+const serviceFolderMap: Record<string, string> = {
+    'Luxury Corporate Events': 'LuxuryCorporateEvents',
+    'Bespoke Weddings & Engagements': 'BespokeWeddings&Engagements',
+    'DJ Night & Private Party Event Services': 'DJNights&PrivateParties',
+    'Traditional Bands & Brand Opening Décor': 'TraditionalBands&BrandOpenings',
+    'Catering & Culinary Experiences': 'Catering & Culinary Experiences',
+    'Makeup & Hairstyle Services': 'Makeup&StylingServices',
+    'Customized Cakes & Desserts': 'Pastries & Celebration Cakes',
+    'Birthday Events & Celebration Services': 'Balloon Decor & Birthday Celebrations',
+    'Public Events & Social Activity Services': 'Private & Social Celebrations',
+    'School & College Event Services': 'Schools, Colleges & University Event Services'
+  };
+
   const [auth, setAuth] = useState<AuthState>({
     isLoggedIn: false,
     step: "credentials",
@@ -653,7 +666,23 @@ export default function Admin() {
     // Work on a deep copy of current content so we can safely replace previews
     const newData: SiteContent = JSON.parse(JSON.stringify(formData));
 
-    // 1) Process staged uploads (if any): upload files, optionally delete replaced assets, and swap base64 previews with repo paths
+    // 0) Validation: Ensure all services and details have images
+    for (const service of newData.services) {
+      if (!service.image) {
+        setIsSaving(false);
+        setStatus({ type: "error", message: `Service "${service.title}" is missing a featured image.` });
+        return;
+      }
+      for (const detail of (service.details || [])) {
+        if (!detail.image) {
+          setIsSaving(false);
+          setStatus({ type: "error", message: `Detail "${detail.title}" in "${service.title}" is missing an image.` });
+          return;
+        }
+      }
+    }
+
+    // 1) Process staged uploads
     if (stagedUploads.length > 0) {
       for (const staged of stagedUploads) {
         const { targetDir, name, base64, previousPath, deleteOld } = staged;
@@ -789,13 +818,11 @@ export default function Admin() {
   };
 
   const handleDeleteAsset = async (dir: string, fileName: string) => {
-    // Prevent deletion of GeneralGallery images
-    if (dir === "GeneralGallery") {
-      setStatus({ type: "error", message: "General Gallery images cannot be deleted to preserve storage integrity." });
-      return;
-    }
+    // General Gallery images previously had deletion locked. 
+    // Now allowing with confirmation for manual archival control.
+    const isGeneralGallery = dir === "GeneralGallery";
     
-    if (!confirm(`Permanently delete ${fileName}?`)) return;
+    if (!confirm(`Permanently delete ${fileName} from ${dir}?${isGeneralGallery ? " This action is irreversible." : ""}`)) return;
     setIsSaving(true);
     const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
     const path = (dir === "backgrounds" || dir === "Welcome" || dir === "About" || dir === "OurStory" || dir === "Brochure")
@@ -1377,7 +1404,7 @@ export default function Admin() {
                                                                     label: "Service Asset", 
                                                                     path: s.image, 
                                                                     setter: (v) => { const news = [...formData.services]; news[si].image = v; setFormData(p => ({ ...p, services: news })); },
-                                                                    preferredDir: s.title.replace(/\s+/g, '')
+                                                                    preferredDir: serviceFolderMap[s.title] || "GeneralGallery"
                                                                 });
                                                                 setIsPickerOpen(true);
                                                             }}
@@ -1417,7 +1444,7 @@ export default function Admin() {
                                                                                             label: "Detail Asset", 
                                                                                             path: d.image, 
                                                                                             setter: (v) => { const news = [...formData.services]; news[si].details[di].image = v; setFormData(p => ({ ...p, services: news })); },
-                                                                                            preferredDir: s.title.replace(/\s+/g, '')
+                                                                                            preferredDir: serviceFolderMap[s.title] || "GeneralGallery"
                                                                                         });
                                                                                         setIsPickerOpen(true);
                                                                                     }}

@@ -143,9 +143,21 @@ function findDuplicatesInService(serviceDetails) {
 // Validate image counts per service
 function validateServiceImageCounts(siteContent) {
     const issues = [];
+    const serviceFolderMap = {
+        'Luxury Corporate Events': 'LuxuryCorporateEvents',
+        'Bespoke Weddings & Engagements': 'BespokeWeddings&Engagements',
+        'DJ Night & Private Party Event Services': 'DJNights&PrivateParties',
+        'Traditional Bands & Brand Opening Décor': 'TraditionalBands&BrandOpenings',
+        'Catering & Culinary Experiences': 'Catering & Culinary Experiences',
+        'Makeup & Hairstyle Services': 'Makeup&StylingServices',
+        'Customized Cakes & Desserts': 'Pastries & Celebration Cakes',
+        'Birthday Events & Celebration Services': 'Balloon Decor & Birthday Celebrations',
+        'Public Events & Social Activity Services': 'Private & Social Celebrations',
+        'School & College Event Services': 'Schools, Colleges & University Event Services'
+    };
 
     (siteContent.services || []).forEach(service => {
-        const folderName = service.title.replace(/\s+/g, '');
+        const folderName = serviceFolderMap[service.title] || service.title.replace(/\s+/g, '');
         const folderPath = path.join(GALLERY_BASE, folderName);
 
         if (!fs.existsSync(folderPath)) {
