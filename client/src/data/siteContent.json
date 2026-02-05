@@ -172,7 +172,7 @@
     "gallery": "Gallery BG.webp",
     "reviews": "Reviews BG.webp",
     "contact": "Contacts BG.webp",
-    "hero": "https://raw.githubusercontent.com/AmulyaaaR/Grey_gaint/main/client/src/assets/backgrounds/heronew.webp"
+    "hero": "heronew.webp"
   },
   "services": [
     {
