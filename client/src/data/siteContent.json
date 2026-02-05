@@ -30,7 +30,7 @@
       "Whether it is a high-profile corporate gathering or a personal milestone celebration, we deliver customized experiences that reflect class, professionalism, and timeless elegance. At Grey Giant, we craft moments of distinction where vision meets excellence and every event leaves a lasting impression."
     ],
     "labels": "Elite • Tailored • Exquisite",
-    "image": "About/About_asset.webp"
+    "image": "https://raw.githubusercontent.com/AmulyaaaR/Grey_gaint/main/client/src/assets/gallery/About/whatsapp-image-2026-01-02-at-92259-pm-1.webp"
   },
   "distinction": {
     "eyebrow": "The Philosophy",
@@ -96,6 +96,10 @@
       {
         "title": "Wildly Devoted",
         "desc": "A heart-first approach to planning, ensuring your joy is our final metric."
+      },
+      {
+        "title": "New Principle 1770311534581",
+        "desc": "Describe the core essence..."
       }
     ]
   },
@@ -118,6 +122,7 @@
     "viewLess": "Show Fewer Masterpieces",
     "galleryItems": [
       "GeneralGallery/corporate_1.png",
+      "https://raw.githubusercontent.com/AmulyaaaR/Grey_gaint/main/client/src/assets/gallery/GeneralGallery/whatsapp-image-2026-01-02-at-91053-pm-1.webp",
       "GeneralGallery/masterpiece_1.png",
       "GeneralGallery/wedding_1.png",
       "GeneralGallery/pastry_1.png",
@@ -262,6 +267,12 @@
           "buttonText": "Stay Joyful",
           "image": "BespokeWeddings&Engagements/Wimg6.webp",
           "description": "Our experienced team manages everything quietly in the background. Logistics, coordination, and timing are handled with precision, ensuring you stay present and joyful throughout."
+        },
+        {
+          "title": "New Feature",
+          "buttonText": "Explore",
+          "image": "https://raw.githubusercontent.com/AmulyaaaR/Grey_gaint/main/client/src/assets/gallery/About/whatsapp-image-2026-01-02-at-92259-pm-1.webp",
+          "description": "test"
         }
       ]
     },
@@ -618,7 +629,7 @@
     {
       "id": 1,
       "name": "Priya S. (Corporate Director)",
-      "rating": 2,
+      "rating": 5,
       "comment": "Working with Grey Giant was like having a secret weapon. They didn't just plan a gala; they built an experience that my partners are still talking about. The level of 'Silent Excellence' is truly unmatched."
     },
     {
