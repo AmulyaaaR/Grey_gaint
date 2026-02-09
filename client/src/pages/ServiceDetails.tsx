@@ -92,20 +92,19 @@ export default function ServiceDetails() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.1, duration: 0.8 }}
-                                className={`flex flex-col ${idx % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center`}
+                                className={`flex flex-col ${idx % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-20 items-center justify-center`}
                             >
-                                {/* Detail Image with Gold Frame */}
-                                <div className="w-full lg:w-3/5 aspect-[16/9] overflow-hidden p-2 bg-black/20 border border-primary/30 group rounded-sm shadow-2xl flex items-center justify-center relative">
+                                {/* Detail Image - Organic Shape */}
+                                <div className="w-full lg:w-1/2 overflow-hidden group rounded-sm shadow-2xl flex items-center justify-center relative">
                                     <img
                                         src={getAssetUrl(detail.image, service.id, idx)}
                                         alt={detail.title}
-                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 rounded-sm"
+                                        className="max-w-full max-h-[87vh] w-auto h-auto transition-transform duration-1000 group-hover:scale-105 rounded-sm"
                                     />
-                                    <div className="absolute inset-0 border border-white/5 pointer-events-none" />
                                 </div>
 
                                 {/* Detail Text */}
-                                <div className="w-full lg:w-2/5 space-y-6">
+                                <div className="w-full lg:w-[40%] space-y-6">
                                     <div className="flex items-center gap-4">
                                         <span className="text-primary font-serif italic text-2xl">0{idx + 1}</span>
                                         <div className="h-[1px] flex-grow bg-primary/20" />

@@ -65,9 +65,9 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.8 }}
-                className="group relative h-[350px] md:h-[400px] overflow-hidden border-white/5 cursor-pointer premium-border"
+                className="group relative h-[300px] sm:h-[350px] md:h-[400px] overflow-hidden border-white/5 cursor-pointer premium-border"
               >
-                <div className="flex items-center justify-center bg-black/20 w-full h-full p-2 border border-primary/30">
+                <div className="flex items-center justify-center bg-black/20 w-full h-full p-1 border border-primary/20 sm:p-2 sm:border-primary/30">
                   <img
                     src={resolveAsset(service.image)}
                     alt={service.title}
