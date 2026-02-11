@@ -124,7 +124,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 1 }}
-              className="max-w-2xl mx-auto text-base md:text-lg text-white/50 font-light leading-relaxed mb-16 italic font-serif"
+              className="max-w-2xl mx-auto text-base md:text-lg text-white/80 font-light leading-relaxed mb-16 italic font-serif"
             >
               "{hero.description}"
             </motion.p>

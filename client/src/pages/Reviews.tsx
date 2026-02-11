@@ -185,8 +185,8 @@ const ReviewCard = ({ testimonial, onClick }: any) => {
   return (
     <motion.div
       onClick={onClick}
-      whileHover={{ y: -5, backgroundColor: "rgba(255,255,255,0.05)" }}
-      className="group/card relative p-10 bg-white/[0.03] border border-white/10 rounded-[2.5rem] overflow-hidden flex flex-col transition-all duration-500 w-[350px] md:w-[430px] shrink-0 cursor-pointer"
+      whileHover={{ y: -5, backgroundColor: "rgba(255,255,255,0.08)" }}
+      className="group/card relative p-10 bg-white/[0.05] backdrop-blur-md border border-white/10 rounded-[2.5rem] overflow-hidden flex flex-col transition-all duration-500 w-[350px] md:w-[430px] shrink-0 cursor-pointer shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
     >
       {/* Top Row: Quote (Left) & Stars (Center) */}
       <div className="relative mb-6 h-6 flex items-center justify-center">
@@ -203,14 +203,14 @@ const ReviewCard = ({ testimonial, onClick }: any) => {
 
       {/* Comment Content (Left Aligned) */}
       <div className="flex-grow flex flex-col justify-center text-left">
-        <blockquote className="text-[15px] text-white/70 italic leading-relaxed font-serif line-clamp-4">
+        <blockquote className="text-[15px] text-white/90 italic leading-relaxed font-serif line-clamp-4">
           "{testimonial.comment}"
         </blockquote>
       </div>
 
       {/* Footer Row (Name Right Aligned) */}
       <div className="mt-6 pt-4 border-t border-white/5 flex justify-end">
-        <h3 className="text-sm font-serif text-white/50">{testimonial.name}</h3>
+        <h3 className="text-sm font-serif text-white/80">{testimonial.name}</h3>
       </div>
 
       {/* Glow on hover */}

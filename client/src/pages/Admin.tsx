@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Mail, Github, Save, CheckCircle, AlertCircle, Image as ImageIcon, Send, X, Plus, Trash2, ArrowRight, Layers, Star, PlusCircle, Pencil, Search, RefreshCw, UploadCloud, Eye, EyeOff, FileText, ChevronLeft, ChevronRight, GripVertical, Maximize2, Briefcase } from "lucide-react";
 import { siteContent, type SiteContent } from "@/data/siteContent";
+import logoImg from "@assets/logo/logo1.jpeg";
 import { updateGitHubFile, uploadGitHubImage, listGitHubFiles, deleteGitHubFile, type GitHubConfig } from "@/lib/github-api";
 import { resolveAsset } from "@/lib/asset-utils";
 
@@ -244,8 +245,8 @@ const Field = ({ label, value, onChange, area = false, italic = false, helpText,
 );
 
 const MobileNav = ({ activeTab, setActiveTab }: any) => (
-  <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-[#050505]/95 backdrop-blur-2xl border-t border-white/10 z-[100] px-2 py-3 safe-area-inset-bottom">
-    <div className="flex items-center justify-between overflow-x-auto no-scrollbar gap-2">
+  <nav className="lg:hidden fixed bottom-6 left-4 right-4 bg-[#0a0a0a]/80 backdrop-blur-3xl border border-white/10 z-[100] px-4 py-3 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+    <div className="flex items-center justify-between overflow-x-auto no-scrollbar gap-4 scroll-smooth">
       {(Object.keys(tabMetadata) as Tab[]).map((tabId) => {
         const { label, icon: Icon } = tabMetadata[tabId];
         const isActive = activeTab === tabId;
@@ -256,16 +257,17 @@ const MobileNav = ({ activeTab, setActiveTab }: any) => (
               setActiveTab(tabId);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            title={`Edit ${label} section`}
-            className={`flex flex-col items-center gap-1.5 min-w-[68px] py-3 px-2 rounded-xl transition-all duration-300 min-h-[44px] ${isActive ? 'text-primary bg-primary/10' : 'text-white/30 hover:bg-white/5'}`}
+            className={`flex flex-col items-center gap-1.5 min-w-[64px] py-2 px-1 rounded-2xl transition-all duration-500 ${isActive ? 'text-primary' : 'text-white/20 hover:text-white/40'}`}
           >
-            <Icon size={20} className={isActive ? 'scale-110' : ''} />
-            <span className="text-[10px] sm:text-xs uppercase font-black tracking-wider">{label}</span>
+            <div className={`p-2.5 rounded-xl transition-all duration-500 ${isActive ? 'bg-primary/10 scale-110 shadow-[0_0_20px_rgba(212,175,55,0.2)]' : ''}`}>
+              <Icon size={18} />
+            </div>
+            <span className="text-[9px] uppercase font-bold tracking-widest">{label}</span>
           </button>
         );
       })}
     </div>
-  </div>
+  </nav>
 );
 
 const DeploymentStatus = ({ auth, isSaving, status }: any) => {
@@ -291,21 +293,24 @@ const DeploymentStatus = ({ auth, isSaving, status }: any) => {
   if (!auth?.isLoggedIn) return null;
 
   return (
-    <div className="flex flex-col gap-3 p-6 bg-white/[0.02] border border-white/5 rounded-3xl">
+    <div className="flex flex-col gap-3 p-5 bg-white/[0.02] border border-white/5 rounded-3xl group transition-all duration-500 hover:border-primary/10">
         <div className="flex items-center justify-between">
-            <span className="text-[9px] uppercase font-black tracking-[0.2em] text-white/20">Sync Status</span>
+            <div className="flex items-center gap-2">
+                <Github size={12} className="text-white/20" />
+                <span className="text-[9px] uppercase font-black tracking-[0.2em] text-white/20">Sync Engine</span>
+            </div>
             <div className={`w-2 h-2 rounded-full ${isSaving ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)]'}`} />
         </div>
         
         {lastCommit && (
-            <div className="space-y-1">
-                <span className="text-[10px] font-black text-white/60 truncate block">{isSaving ? 'Staging Changes...' : 'Repository Synced'}</span>
-                <span className="text-[9px] font-mono text-white/20 truncate block">{lastCommit.commit.message}</span>
+            <div className="space-y-1 overflow-hidden">
+                <span className="text-[10px] font-black text-white/60 truncate block leading-tight">{isSaving ? 'Synchronizing Control...' : 'Active Protocol'}</span>
+                <span className="text-[9px] font-mono text-white/20 truncate block opacity-0 group-hover:opacity-100 transition-opacity duration-500">{lastCommit.commit.message}</span>
             </div>
         )}
 
         {status && (
-            <div className={`mt-2 p-3 rounded-xl border text-[9px] font-black uppercase tracking-wider ${status.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}>
+            <div className={`mt-1 p-2 rounded-xl border text-[8px] font-black uppercase tracking-wider ${status.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}>
                 {status.message}
             </div>
         )}
@@ -314,51 +319,75 @@ const DeploymentStatus = ({ auth, isSaving, status }: any) => {
 };
 
 const Sidebar = ({ activeTab, setActiveTab, onSave, isSaving, logout, auth, status }: any) => (
-  <aside className="hidden lg:flex flex-col w-80 h-screen fixed left-0 top-0 bg-[#050505] border-r border-white/5 p-8 z-[200]">
-    <div className="mb-12">
-      <h1 className="text-2xl font-serif italic text-white flex items-center gap-3">
-        Grey Giant <span className="text-sm uppercase tracking-wider font-sans not-italic text-primary/40">Studio</span>
-      </h1>
-      <p className="text-[10px] text-white/10 uppercase font-black tracking-[0.2em] leading-relaxed">
-        Secure Control Surface<br/>v 1.0 • Master Polish
-      </p>
+  <aside className="hidden lg:flex flex-col w-[350px] h-screen fixed left-0 top-0 bg-[#050505] border-r border-white/5 px-8 py-10 z-[200]">
+    {/* Head Section with Logo */}
+    <div className="mb-10 px-2">
+      <div className="flex items-center gap-5 mb-6">
+        <div className="relative group">
+          <div className="absolute inset-0 bg-primary/20 blur-xl group-hover:bg-primary/40 transition-colors duration-700 rounded-full" />
+          <img 
+            src={logoImg} 
+            alt="Grey Giant Logo" 
+            className="relative w-14 h-14 object-contain rounded-2xl border border-white/10 shadow-2xl" 
+          />
+        </div>
+        <div>
+          <h1 className="text-2xl font-serif italic text-white flex flex-col leading-none">
+            Grey <span className="text-primary not-italic font-sans text-[10px] uppercase tracking-[0.4em] font-black mt-1">Giant Studio</span>
+          </h1>
+          <p className="text-[8px] text-white/10 uppercase tracking-[0.3em] font-black mt-2">Administrative Console</p>
+        </div>
+      </div>
+      <div className="h-[1px] w-full bg-gradient-to-r from-white/10 via-white/5 to-transparent" />
     </div>
 
-    <nav className="flex-1 min-h-0 space-y-3 overflow-y-auto custom-scrollbar -mx-2 px-2 py-4">
-      {(Object.keys(tabMetadata) as Tab[]).map((tabId) => {
-        const { label, icon: Icon } = tabMetadata[tabId];
-        const isActive = activeTab === tabId;
-        return (
-          <button
-            key={tabId}
-            onClick={() => setActiveTab(tabId)}
-            className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group outline-none ${isActive ? 'bg-primary text-black shadow-[0_10px_30px_rgba(212,175,55,0.3)]' : 'text-white/30 hover:bg-white/[0.03] hover:text-white'}`}
-          >
-            <Icon size={18} className={isActive ? 'scale-110' : 'group-hover:scale-110 transition-transform duration-500'} />
-            <span className="text-[11px] uppercase font-black tracking-[0.2em]">{label}</span>
-            {isActive && <ArrowRight size={14} className="ml-auto animate-in slide-in-from-left-2" />}
-          </button>
-        );
-      })}
+    {/* Navigation Tabs - Scrollable but items are more compact to fit */}
+    <nav className="flex-1 min-h-0 -mx-2 px-2 overflow-y-auto custom-scrollbar scroll-smooth">
+      <div className="grid grid-cols-1 gap-1.5 pb-8">
+        {(Object.keys(tabMetadata) as Tab[]).map((tabId) => {
+          const { label, icon: Icon } = tabMetadata[tabId];
+          const isActive = activeTab === tabId;
+          return (
+            <button
+              key={tabId}
+              onClick={() => setActiveTab(tabId)}
+              className={`w-full flex items-center gap-4 px-5 py-3 rounded-xl transition-all duration-500 group outline-none relative ${isActive ? 'bg-primary text-black shadow-[0_10px_25px_rgba(212,175,55,0.2)]' : 'text-white/20 hover:bg-white/[0.03] hover:text-white/40'}`}
+            >
+              <div className={`p-1.5 rounded-lg transition-colors duration-500 ${isActive ? 'bg-black/10' : 'bg-transparent group-hover:bg-white/5'}`}>
+                <Icon size={16} className={isActive ? 'scale-110' : 'group-hover:scale-110 transition-transform duration-500'} />
+              </div>
+              <span className="text-[10px] uppercase font-black tracking-[0.2em]">{label}</span>
+              {isActive && <ArrowRight size={12} className="ml-auto opacity-40 animate-in slide-in-from-left-2" />}
+            </button>
+          );
+        })}
+      </div>
     </nav>
 
-    <div className="pt-8 mt-8 border-t border-white/5 space-y-4">
+    {/* Status & Actions Section - Pushed to bottom, Fixed layout */}
+    <div className="mt-auto pt-8 border-t border-white/5 space-y-4 shrink-0">
       <DeploymentStatus auth={auth} isSaving={isSaving} status={status} />
-      <button 
-        onClick={onSave}
-        disabled={isSaving}
-        className="w-full py-5 bg-white text-black rounded-2xl text-[11px] uppercase font-black flex items-center justify-center gap-3 shadow-2xl hover:bg-primary transition-all duration-500 disabled:opacity-50 group outline-none"
-      >
-        {isSaving ? <RefreshCw size={16} className="animate-spin" /> : <Save size={16} className="group-hover:scale-125 transition-transform duration-500" />}
-        {isSaving ? "Sync Protocol Active" : "Push Live Engine"}
-      </button>
+      
+      <div className="space-y-3">
+        <button 
+          onClick={onSave}
+          disabled={isSaving}
+          className="relative w-full py-4 bg-primary text-black rounded-xl text-[10px] uppercase font-black flex items-center justify-center gap-3 shadow-2xl transition-all duration-500 disabled:opacity-50 group outline-none overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+          <span className="relative z-10 flex items-center gap-2">
+            {isSaving ? <RefreshCw size={14} className="animate-spin" /> : <Save size={14} className="group-hover:rotate-12 transition-transform duration-500" />}
+            {isSaving ? "Sync Active" : "Push Changes"}
+          </span>
+        </button>
 
-      <button 
-        onClick={logout}
-        className="w-full py-3 text-white/40 hover:text-red-500 hover:bg-red-500/10 rounded-2xl text-[11px] uppercase font-black transition-all duration-300 outline-none"
-      >
-        Sign Out
-      </button>
+        <button 
+          onClick={logout}
+          className="w-full py-3 text-white/20 hover:text-red-400 hover:bg-red-500/5 rounded-xl text-[10px] uppercase font-black tracking-widest transition-all duration-300 outline-none"
+        >
+          Sign Out
+        </button>
+      </div>
     </div>
   </aside>
 );
@@ -1277,25 +1306,29 @@ const serviceFolderMap: Record<string, string> = {
       
       <MobileNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <main className="lg:ml-80 min-h-screen pb-48 lg:pb-12 bg-[#050505] relative z-0">
-        <div className="max-w-6xl mx-auto px-6 lg:px-16 pt-16 pb-24 lg:pt-24 lg:pb-32">
+      <main className="lg:ml-[350px] min-h-screen pb-32 lg:pb-24 bg-[#050505] relative z-0">
+        <div className="max-w-6xl mx-auto px-6 lg:px-20 pt-10 pb-32 lg:pt-32 lg:pb-32">
           
           {/* Top Bar for Mobile/Tablet */}
-          <header className="lg:hidden flex items-center justify-between mb-16 pt-4">
-            <div>
-              <h1 className="text-2xl font-serif italic">{tabMetadata[activeTab].label}</h1>
-              <div className="flex gap-2 items-center mt-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                <p className="text-[8px] uppercase tracking-widest text-white/20 font-black">Control Active</p>
+          <header className="lg:hidden flex items-center justify-between mb-16 pt-2">
+            <div className="flex items-center gap-4">
+               <img src={logoImg} className="w-10 h-10 rounded-xl border border-white/10" alt="Logo"/>
+               <div>
+                <div className="flex items-center gap-3 mb-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(212,175,55,0.5)]" />
+                  <h1 className="text-2xl font-serif italic text-white tracking-tight">{tabMetadata[activeTab].label}</h1>
+                </div>
+                <p className="text-[8px] uppercase tracking-[0.3em] text-white/20 font-black pl-4">Interface Node Alpha</p>
               </div>
             </div>
-            <button 
+            <motion.button 
+              whileTap={{ scale: 0.95 }}
               onClick={handleSave} 
               disabled={isSaving}
-              className={`p-4 rounded-2xl border transition-all ${isSaving ? 'bg-primary/10 border-primary/20 text-primary' : 'bg-primary text-black border-primary shadow-lg active:scale-95'}`}
+              className={`p-4 rounded-2xl border transition-all duration-500 ${isSaving ? 'bg-primary/5 border-primary/20 text-primary' : 'bg-primary text-black border-primary shadow-[0_10px_30px_rgba(212,175,55,0.2)]'}`}
             >
               {isSaving ? <RefreshCw size={20} className="animate-spin" /> : <Save size={20} />}
-            </button>
+            </motion.button>
           </header>
 
           {status && (

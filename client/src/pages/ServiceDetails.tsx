@@ -115,13 +115,6 @@ export default function ServiceDetails() {
                                     <p className="text-white/50 font-light leading-relaxed text-base md:text-lg">
                                         {detail.description}
                                     </p>
-                                    <Button
-                                        onClick={() => navigateToSection('contact')}
-                                        variant="outline"
-                                        className="border-primary/20 text-primary hover:bg-primary hover:text-black rounded-none uppercase tracking-[0.2em] text-[10px] h-12 px-8 transition-all duration-500"
-                                    >
-                                        {detail.buttonText}
-                                    </Button>
                                 </div>
                             </motion.div>
                         ))}
