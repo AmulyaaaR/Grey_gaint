@@ -180,7 +180,7 @@
       "title": "Luxury Corporate Events",
       "desc": "Commanding environments where brand identity meets strategic excellence.",
       "fullDescription": "We translate your corporate vision into high-impact environments. From high-profile summits to celebratory launches, our corporate events are designed to be as influential as the brands they represent—balancing a professional edge with unmistakable sophistication.",
-      "image": "LuxuryCorporateEvents/Cimg10.webp",
+      "image": "LuxuryCorporateEvents/bg-in-corporate-events-catalog.webp",
       "details": [
         {
           "title": "Concept & Strategic Planning",
@@ -215,7 +215,7 @@
         {
           "title": "Execution & On-Ground Control",
           "buttonText": "Operational Excellence",
-          "image": "LuxuryCorporateEvents/Cimg7.webp",
+          "image": "LuxuryCorporateEvents/6.webp",
           "description": "Our team operates discreetly to manage logistics, catering, and hospitality. VIP handling and service standards are maintained without disruption."
         }
       ]
@@ -225,42 +225,42 @@
       "title": "Bespoke Weddings & Engagements",
       "desc": "Deeply personal unions crafted for a lifetime of memories.",
       "fullDescription": "A wedding is more than an event; it's a start of a new history. We approach every union as an heirloom, layering personal touches with grand design to create a celebration that is uniquely, undeniably yours.",
-      "image": "BespokeWeddings&Engagements/Wimg1.webp",
+      "image": "BespokeWeddings&Engagements/wed-bg.webp",
       "details": [
         {
           "title": "Personalized Concept & Storytelling",
           "buttonText": "Explore Your Story",
-          "image": "BespokeWeddings&Engagements/Wimg4.webp",
+          "image": "BespokeWeddings&Engagements/w1.webp",
           "description": "We take time to understand your love story, traditions, and personal style. Every wedding is thoughtfully designed to reflect who you are as a couple for a celebration that feels meaningful and elegant."
         },
         {
           "title": "Venue Selection & Wedding Design",
           "buttonText": "View Design Harmony",
-          "image": "BespokeWeddings&Engagements/Wimg2.webp",
+          "image": "BespokeWeddings&Engagements/w2.webp",
           "description": "Whether intimate or grand, we help you choose the perfect venue. Each space is transformed with refined décor, lighting, and visual harmony to create a beautiful and balanced setting."
         },
         {
           "title": "Custom Décor & Floral Styling",
           "buttonText": "Bespoke Artistry",
-          "image": "BespokeWeddings&Engagements/Wimg3.webp",
+          "image": "BespokeWeddings&Engagements/w3.webp",
           "description": "Décor and florals are designed to match your vision and wedding mood. We select colors, textures, and flowers that feel luxurious yet timeless, enhancing the emotion of every moment."
         },
         {
           "title": "Ceremony & Ritual Management",
           "buttonText": "Honor Tradition",
-          "image": "BespokeWeddings&Engagements/Wimg7.webp",
+          "image": "BespokeWeddings&Engagements/w4.webp",
           "description": "All ceremonies and rituals are planned with respect and cultural understanding. Timelines are carefully managed so each moment flows naturally, allowing you to enjoy every ritual without stress."
         },
         {
           "title": "Guest Experience & Hospitality",
           "buttonText": "Refined Comfort",
-          "image": "BespokeWeddings&Engagements/Wimg5.webp",
+          "image": "BespokeWeddings&Engagements/w5.webp",
           "description": "From the first invite to the final farewell, guests are cared for thoughtfully. Hospitality, seating, catering, and comfort are managed seamlessly so everyone feels welcomed and relaxed."
         },
         {
           "title": "Execution & On-Ground Coordination",
           "buttonText": "Stay Joyful",
-          "image": "BespokeWeddings&Engagements/Wimg6.webp",
+          "image": "BespokeWeddings&Engagements/w6.webp",
           "description": "Our experienced team manages everything quietly in the background. Logistics, coordination, and timing are handled with precision, ensuring you stay present and joyful throughout."
         }
       ]
@@ -270,7 +270,7 @@
       "title": "DJ Night & Private Party Event Services",
       "desc": "High-octane energy designed for the ultimate urban celebration.",
       "fullDescription": "For when the night needs to be legendary. We blend top-tier sound, light architecture, and curated energy to create private parties that become the talk of the town.",
-      "image": "DJNights&PrivateParties/DPimg1.webp",
+      "image": "DJNights&PrivateParties/dj-and-pvt-parties-bg.webp",
       "details": [
         {
           "title": "DJ Setup & Sound Experience",
@@ -287,13 +287,13 @@
         {
           "title": "Stage, Dance Floor & Layout",
           "buttonText": "Feel the Beat",
-          "image": "DJNights&PrivateParties/DPimg4.webp",
+          "image": "DJNights&PrivateParties/d3.webp",
           "description": "Well-planned stage and dance floor arrangements for comfort and safety. Layouts allow smooth movement and immersive party experiences."
         },
         {
           "title": "Coordination & Crowd Flow",
           "buttonText": "Seamless Energy",
-          "image": "DJNights&PrivateParties/DP4.webp",
+          "image": "DJNights&PrivateParties/d4.webp",
           "description": "Timelines, music transitions, and on-ground coordination are handled seamlessly. Crowd movement and safety are managed discreetly."
         },
         {
@@ -305,7 +305,7 @@
         {
           "title": "Setup, Execution & Wrap-Up",
           "buttonText": "Quiet Perfection",
-          "image": "DJNights&PrivateParties/DP6.webp",
+          "image": "DJNights&PrivateParties/DPimg1.webp",
           "description": "Complete setup, live monitoring, and post-event closure handled professionally. Our team works quietly behind the scenes so you enjoy the night."
         }
       ]
