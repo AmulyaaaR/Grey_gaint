@@ -624,13 +624,13 @@
     {
       "id": 2,
       "name": "The Malhotra Family",
-      "rating": 1,
+      "rating": 5,
       "comment": "Our daughter's wedding felt like it was plucked from a dream. The team at Grey Giant took our vague ideas and layered them with so much soul and artistry. We were finally guests at our own event."
     },
     {
       "id": 3,
       "name": "Anjali K. (Bespoke Designer)",
-      "rating": 4,
+      "rating": 5,
       "comment": "As a designer, I'm obsessive about details. Grey Giant didn't just meet my standards; they anticipated them. Every floral choice, every light beam was perfectly tuned to our aesthetic."
     },
     {
@@ -642,7 +642,7 @@
     {
       "id": 5,
       "name": "Sneha & David (Silver Anniversary)",
-      "rating": 4,
+      "rating": 5,
       "comment": "They took 25 years of our memories and wove them into one magical night. It wasn't just 'luxurious'—it was deeply personal. A truly heartwarming collaboration from start to finish."
     }
   ]
