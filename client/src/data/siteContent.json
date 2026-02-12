@@ -346,6 +346,12 @@
           "buttonText": "Professional Launch",
           "image": "TraditionalBands&BrandOpenings/b5.webp",
           "description": "Our team handles setup, coordination, and dismantling professionally. Everything runs quietly in the background so you focus on your launch."
+        },
+        {
+          "title": "Refined & Respectful Presentation",
+          "buttonText": "Explore",
+          "image": "TraditionalBands&BrandOpenings/6.webp",
+          "description": "Sound levels, positioning, and performance style are well-balanced.\nThe experience feels festive yet dignified.\nYour brand opening remains elegant and well-composed."
         }
       ]
     },
@@ -422,7 +428,7 @@
         {
           "title": "Non-Bridal & Guest Styling",
           "buttonText": "Polished Elegance",
-          "image": "Makeup&StylingServices/makeup4.webp",
+          "image": "Makeup&StylingServices/MHimg3.webp",
           "description": "For family members and guests, we offer polished, elegant makeup and hairstyles. Looks are comfortable, flattering, and long-lasting for lasting confidence."
         },
         {
