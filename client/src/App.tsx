@@ -16,6 +16,7 @@ import Values from "@/components/sections/Values";
 import WelcomePopup from "@/components/modals/WelcomePopup";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { SectionBubbles } from "@/components/layout/SectionBubbles";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useEffect, lazy, Suspense } from "react";
 

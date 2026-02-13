@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { siteContent } from "@/data/siteContent";
 import { getFirstImageInDir, getBackground, resolveAsset } from "@/lib/asset-utils";
+import { SectionBubbles } from "@/components/layout/SectionBubbles";
 
 const introductionImg = resolveAsset(siteContent.distinction.image) || getFirstImageInDir("OurStory");
 const bgImg = getBackground(siteContent.backgrounds.story);
@@ -19,6 +20,7 @@ export default function Distinction() {
     const { distinction } = siteContent;
     return (
         <section className="py-12 md:py-20 bg-black relative overflow-hidden">
+            <SectionBubbles count={40} />
             {/* Background Image with Overlay */}
             {bgImg && (
                 <div className="absolute inset-0 z-0 pointer-events-none">
@@ -26,6 +28,7 @@ export default function Distinction() {
                         src={bgImg}
                         alt=""
                         className="w-full h-full object-cover opacity-60 grayscale-[0.2]"
+                        loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black" />
                 </div>
@@ -48,6 +51,7 @@ export default function Distinction() {
                             src={introductionImg}
                             alt="Our Story"
                             className="relative z-10 w-full h-auto max-h-[400px] md:max-h-[600px] object-contain md:object-cover mx-auto brightness-75 contrast-125 rounded-sm transition-transform duration-1000 group-hover:scale-[1.02]"
+                            loading="lazy"
                         />
                     </motion.div>
                     <motion.div 

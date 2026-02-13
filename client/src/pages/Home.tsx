@@ -18,52 +18,7 @@ import { getFirstImageInDir, getBackground, resolveAsset } from "@/lib/asset-uti
 const heroImgFilename = siteContent.backgrounds.hero;
 const heroImg = getBackground(heroImgFilename) || getFirstImageInDir("Hero");
 
-const SnowOverlay = () => {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-30">
-      {[...Array(40)].map((_, i) => {
-        const isGold = Math.random() > 0.4;
-        const sizeMultiplier = i % 10 === 0 ? 3 : 1;
-        const size = (Math.random() * 10 + 4) * sizeMultiplier;
-        const duration = Math.random() * 20 + 15;
-        const initialOpacity = Math.random() * 0.4 + 0.2;
-
-        return (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            initial={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 120}%`,
-              opacity: 0,
-              scale: Math.random() * 0.4 + 0.8
-            }}
-            animate={{
-              y: -1600,
-              opacity: [0, initialOpacity, initialOpacity, 0],
-              x: [(Math.random() - 0.5) * 150, (Math.random() - 0.5) * 300],
-              rotate: [0, 360]
-            }}
-            transition={{
-              duration: duration,
-              repeat: Infinity,
-              ease: "linear",
-              delay: -Math.random() * duration
-            }}
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              background: isGold ? 'radial-gradient(circle at 30% 30%, #f8e4b1, #d4af37)' : 'radial-gradient(circle at 30% 30%, #ffffff, #f1f1f1)',
-              boxShadow: isGold ? `0 0 ${size}px rgba(212, 175, 55, 0.4)` : `0 0 ${size}px rgba(255, 255, 255, 0.3)`,
-              filter: sizeMultiplier > 2 ? 'blur(1px)' : 'blur(0.5px)',
-              zIndex: Math.floor(size)
-            }}
-          />
-        );
-      })}
-    </div>
-  );
-};
+import { SectionBubbles } from "@/components/layout/SectionBubbles";
 
 export default function Home() {
   const [showPopup, setShowPopup] = useState(false);
@@ -74,7 +29,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#020202] overflow-hidden selection:bg-primary/30">
       {/* HERO SECTION */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <SnowOverlay />
+        <SectionBubbles count={50} />
 
         {/* Abstract Background Noise / Grid */}
         <div className="absolute inset-0 opacity-[0.03] z-10 pointer-events-none"

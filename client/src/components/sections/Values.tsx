@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Sparkles, MoveRight } from "lucide-react";
 import { siteContent } from "@/data/siteContent";
 import { getBackground } from "@/lib/asset-utils";
+import { SectionBubbles } from "@/components/layout/SectionBubbles";
 
 
 // --- Helper Components ---
@@ -136,6 +137,7 @@ export default function Values() {
 
     return (
         <section className="py-12 md:py-20 bg-[#020202] overflow-hidden relative border-t border-white/5 selection:bg-primary/30">
+            <SectionBubbles />
             {/* Background Image with Overlay */}
             {bgImg && (
                 <div className="absolute inset-0 z-0 pointer-events-none">

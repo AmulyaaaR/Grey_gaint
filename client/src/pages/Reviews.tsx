@@ -3,6 +3,7 @@ import { Star, Quote, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { siteContent } from "@/data/siteContent";
 import { getBackground } from "@/lib/asset-utils";
+import { SectionBubbles } from "@/components/layout/SectionBubbles";
 
 
 export default function Reviews() {
@@ -20,6 +21,7 @@ export default function Reviews() {
 
   return (
     <div className="pt-20 md:min-h-screen bg-[#020202] relative overflow-hidden selection:bg-primary/30">
+      <SectionBubbles />
       {/* Background Image with Overlay */}
       {bgImg && (
         <div className="absolute inset-0 z-0 pointer-events-none">

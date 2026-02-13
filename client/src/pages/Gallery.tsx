@@ -3,6 +3,7 @@ import { useState, useMemo } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight, Plus, Minus, Maximize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SectionBubbles } from "@/components/layout/SectionBubbles";
 
 // Dynamically import ONLY GeneralGallery images
 const imageFiles = import.meta.glob("@assets/gallery/GeneralGallery/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" });
@@ -54,11 +55,12 @@ export default function Gallery() {
   };
 
   return (
-    <div className="md:min-h-screen bg-[#020202] text-white py-12 md:py-20 selection:bg-primary/30 relative overflow-hidden">
-      {/* Background Overlay */}
+    <div className="pt-20 md:min-h-screen bg-[#020202] relative overflow-hidden selection:bg-primary/30">
+      <SectionBubbles />
+      {/* Background Image with Overlay */}
       {bgImg && (
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <img src={bgImg} alt="" className="w-full h-full object-cover opacity-60 grayscale-[0.2]" />
+          <img src={bgImg} alt="" className="w-full h-full object-cover opacity-60 grayscale-[0.2]" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#020202] via-[#020202]/40 to-[#020202]" />
         </div>
       )}
@@ -86,7 +88,7 @@ export default function Gallery() {
                 className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden cursor-pointer group p-2 bg-black/20 border border-primary/30 shadow-2xl rounded-sm w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.75rem)] lg:w-[calc(20%-1rem)]"
                 onClick={() => setSelectedIndex(i)}
               >
-                <img src={photo.src} alt={photo.alt} className="w-full h-full object-cover rounded-sm transition-transform duration-1000 group-hover:scale-110" />
+                <img src={photo.src} alt={photo.alt} className="w-full h-full object-cover rounded-sm transition-transform duration-1000 group-hover:scale-110" loading="lazy" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center backdrop-blur-[2px]">
                   <Maximize2 className="text-primary w-5 h-5" aria-label="View Large" />
                 </div>

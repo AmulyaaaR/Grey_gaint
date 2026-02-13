@@ -9,6 +9,7 @@ import { MapPin, Phone, Mail } from "lucide-react";
 import { motion } from "framer-motion";
 import { siteContent } from "@/data/siteContent";
 import { getBackground, resolveAsset } from "@/lib/asset-utils";
+import { SectionBubbles } from "@/components/layout/SectionBubbles";
 
 import { useToast } from "@/hooks/use-toast";
 
@@ -52,6 +53,7 @@ export default function Contact() {
 
   return (
     <div className="md:min-h-screen relative overflow-hidden selection:bg-primary/30 md:flex md:items-center pt-24 md:pt-12 pb-12 md:pb-0">
+      <SectionBubbles />
       {/* Background Image with Overlay */}
       {bgImg && (
         <div className="absolute inset-0 z-0 pointer-events-none">

@@ -3,51 +3,9 @@ import logoImg from "@assets/logo/logo1.jpeg";
 import { siteContent } from "@/data/siteContent";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import { SectionBubbles } from "@/components/layout/SectionBubbles";
 
-const SidebarBubbles = () => {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-      {[...Array(20)].map((_, i) => {
-        const isLeft = i < 10;
-        const isGold = Math.random() > 0.4;
-        const size = Math.random() * 6 + 3;
-        const duration = Math.random() * 15 + 10;
-        const initialOpacity = Math.random() * 0.3 + 0.1;
 
-        return (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            initial={{
-              left: isLeft ? `${Math.random() * 15}%` : `${85 + Math.random() * 15}%`,
-              top: `${100 + Math.random() * 20}%`,
-              opacity: 0,
-              scale: Math.random() * 0.5 + 0.5
-            }}
-            animate={{
-              y: -800,
-              opacity: [0, initialOpacity, initialOpacity, 0],
-              x: [(Math.random() - 0.5) * 50, (Math.random() - 0.5) * 100],
-            }}
-            transition={{
-              duration: duration,
-              repeat: Infinity,
-              ease: "linear",
-              delay: -Math.random() * duration
-            }}
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              background: isGold ? 'radial-gradient(circle at 30% 30%, #f8e4b1, #d4af37)' : 'radial-gradient(circle at 30% 30%, #ffffff, #f1f1f1)',
-              boxShadow: isGold ? `0 0 ${size}px rgba(212, 175, 55, 0.4)` : `0 0 ${size}px rgba(255, 255, 255, 0.3)`,
-              filter: 'blur(0.5px)',
-            }}
-          />
-        );
-      })}
-    </div>
-  );
-};
 
 export function Footer() {
   const { contact, hero, socials } = siteContent;
@@ -64,7 +22,7 @@ export function Footer() {
 
   return (
     <footer className="relative bg-[#020202] py-8 md:py-10 border-t border-white/5 overflow-hidden">
-      <SidebarBubbles />
+      <SectionBubbles sideways={true} />
       {/* Background Accents */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 
 import { siteContent } from "@/data/siteContent";
 import { getBackground, getFirstImageInDir, resolveAsset } from "@/lib/asset-utils";
+import { SectionBubbles } from "@/components/layout/SectionBubbles";
 
 export default function Services() {
   const [showAll, setShowAll] = useState(false);
@@ -14,6 +15,7 @@ export default function Services() {
 
   return (
     <div className="md:min-h-screen bg-[#020202] py-12 md:py-20 selection:bg-primary/30 relative overflow-hidden">
+      <SectionBubbles />
       {/* Background Image with Overlay */}
       {bgImg && (
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -72,6 +74,7 @@ export default function Services() {
                     src={resolveAsset(service.image)}
                     alt={service.title}
                     className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+                    loading="lazy"
                   />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-70" />

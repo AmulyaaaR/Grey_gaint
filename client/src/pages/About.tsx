@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { siteContent } from "@/data/siteContent";
 import { getFirstImageInDir, getBackground, resolveAsset } from "@/lib/asset-utils";
+import { SectionBubbles } from "@/components/layout/SectionBubbles";
 
 const About_img = resolveAsset(siteContent.about.image) || getBackground(siteContent.backgrounds.about) || getFirstImageInDir("About");
 
@@ -11,6 +12,7 @@ export default function About() {
 
   return (
     <div className="min-h-fit bg-[#020202] text-white py-12 md:py-20 selection:bg-primary/30 relative overflow-hidden">
+      <SectionBubbles count={40} />
       {/* Background Image with Overlay */}
       {bgImg && (
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -93,6 +95,7 @@ export default function About() {
                 src={About_img}
                 alt="Grey Giant Event Setup"
                 className="w-full h-full object-contain md:object-cover rounded-sm transition-transform duration-1000 group-hover:scale-105"
+                loading="lazy"
               />
             </div>
 
