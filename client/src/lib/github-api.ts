@@ -1,161 +1,166 @@
-import { Octokit } from "octokit";
+/**
+ * GitHub API Client - Refactored to use backend proxy
+ * All operations now go through authenticated backend endpoints
+ * JWT is managed via HttpOnly cookies - no manual token handling needed
+ */
 
-export interface GitHubConfig {
-    owner: string;
-    repo: string;
-    token: string;
+const API_BASE_URL = 'http://localhost:3001'; // Will be configurable via env vars in production
+
+/**
+ * Handle API responses and redirect on authentication failure
+ */
+async function handleResponse(response: Response) {
+    if (response.status === 401) {
+        // Token expired or invalid - redirect to login
+        window.location.href = '/admin';
+        throw new Error('Session expired. Please log in again.');
+    }
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'API request failed');
+    }
+
+    return data;
 }
 
 /**
- * Update a file in the GitHub repository.
- * This is the mechanism we use to "save" changes without a database.
+ * Update a file in the GitHub repository
  */
 export async function updateGitHubFile(
-    config: GitHubConfig,
     path: string,
     content: string,
     message: string
 ) {
-    const octokit = new Octokit({ auth: config.token });
+    const response = await fetch(`${API_BASE_URL}/github/update-file`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Send HttpOnly cookies
+        body: JSON.stringify({ path, content, message }),
+    });
 
-    try {
-        // 1. Get the current file's SHA (required for updating)
-        const { data: fileData } = await octokit.rest.repos.getContent({
-            owner: config.owner,
-            repo: config.repo,
-            path,
-        });
-
-        if (Array.isArray(fileData)) {
-            throw new Error("Target path is a directory, not a file.");
-        }
-
-        // 2. Push the update
-        await octokit.rest.repos.createOrUpdateFileContents({
-            owner: config.owner,
-            repo: config.repo,
-            path,
-            message,
-            content: btoa(unescape(encodeURIComponent(content))), // Correctly handle Unicode for Base64
-            sha: fileData.sha,
-        });
-
-        return { success: true };
-    } catch (error: any) {
-        console.error("GitHub API Error:", error);
-        return { success: false, message: error.message };
-    }
+    return handleResponse(response);
 }
 
 /**
- * Upload an image to a specific directory in GitHub.
+ * Upload an image to a specific directory in GitHub
  */
 export async function uploadGitHubImage(
-    config: GitHubConfig,
     dir: string,
     fileName: string,
     fileBase64: string,
     message: string
 ) {
-    const octokit = new Octokit({ auth: config.token });
-    const path = dir === "backgrounds" ? `client/src/assets/backgrounds/${fileName}` : `client/src/assets/gallery/${dir}/${fileName}`;
+    const response = await fetch(`${API_BASE_URL}/github/upload-image`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ dir, fileName, fileBase64, message }),
+    });
 
+    return handleResponse(response);
+}
+
+/**
+ * List files in a specific directory in GitHub
+ */
+export async function listGitHubFiles(path: string) {
+    const response = await fetch(`${API_BASE_URL}/github/list-files`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ path }),
+    });
+
+    return handleResponse(response);
+}
+
+/**
+ * Delete a file from the GitHub repository
+ */
+export async function deleteGitHubFile(path: string, message: string) {
+    const response = await fetch(`${API_BASE_URL}/github/delete-file`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ path, message }),
+    });
+
+    return handleResponse(response);
+}
+
+/**
+ * Get repository information
+ */
+export async function getRepoInfo() {
+    const response = await fetch(`${API_BASE_URL}/github/repo-info`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    });
+
+    return handleResponse(response);
+}
+
+/**
+ * Verify if user is authenticated
+ */
+export async function verifyAuth(): Promise<boolean> {
     try {
-        // Check if file exists to get SHA if overwrite is needed
-        let sha: string | undefined;
-        try {
-            const { data: existingFile } = await octokit.rest.repos.getContent({
-                owner: config.owner,
-                repo: config.repo,
-                path,
-            });
-            if (!Array.isArray(existingFile)) {
-                sha = existingFile.sha;
-            }
-        } catch {
-            // File doesn't exist, which is fine
-        }
-
-        await octokit.rest.repos.createOrUpdateFileContents({
-            owner: config.owner,
-            repo: config.repo,
-            path,
-            message,
-            content: fileBase64,
-            sha,
+        const response = await fetch(`${API_BASE_URL}/admin/verify`, {
+            method: 'GET',
+            credentials: 'include',
         });
 
-        return { success: true };
-    } catch (error: any) {
-        console.error("GitHub API Error:", error);
-        return { success: false, message: error.message };
+        const data = await response.json();
+        return data.authenticated === true;
+    } catch (error) {
+        return false;
     }
 }
 
 /**
- * List files in a specific directory in GitHub.
+ * Login with OTP
  */
-export async function listGitHubFiles(
-    config: GitHubConfig,
-    path: string
-) {
-    const octokit = new Octokit({ auth: config.token });
+export async function login(otp: string) {
+    const response = await fetch(`${API_BASE_URL}/admin/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ otp }),
+    });
 
-    try {
-        const { data } = await octokit.rest.repos.getContent({
-            owner: config.owner,
-            repo: config.repo,
-            path,
-        });
-
-        if (Array.isArray(data)) {
-            return {
-                success: true,
-                files: data
-                    .filter(item => item.type === "file")
-                    .map(item => item.name)
-            };
-        }
-        return { success: false, message: "Path is not a directory." };
-    } catch (error: any) {
-        console.error("GitHub API Error:", error);
-        return { success: false, message: error.message };
-    }
+    return handleResponse(response);
 }
+
 /**
- * Delete a file from the GitHub repository.
+ * Logout and clear session
  */
-export async function deleteGitHubFile(
-    config: GitHubConfig,
-    path: string,
-    message: string
-) {
-    const octokit = new Octokit({ auth: config.token });
+export async function logout() {
+    const response = await fetch(`${API_BASE_URL}/admin/logout`, {
+        method: 'POST',
+        credentials: 'include',
+    });
 
-    try {
-        // 1. Get the current file's SHA (required for deleting)
-        const { data: fileData } = await octokit.rest.repos.getContent({
-            owner: config.owner,
-            repo: config.repo,
-            path,
-        });
+    return handleResponse(response);
+}
 
-        if (Array.isArray(fileData)) {
-            throw new Error("Target path is a directory, not a file.");
-        }
-
-        // 2. Delete the file
-        await octokit.rest.repos.deleteFile({
-            owner: config.owner,
-            repo: config.repo,
-            path,
-            message,
-            sha: (fileData as any).sha,
-        });
-
-        return { success: true };
-    } catch (error: any) {
-        console.error("GitHub API Error:", error);
-        return { success: false, message: error.message };
-    }
+// Legacy GitHubConfig interface - kept for compatibility but no longer used
+export interface GitHubConfig {
+    owner?: string;
+    repo?: string;
+    token?: string;
 }

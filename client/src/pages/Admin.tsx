@@ -3,28 +3,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Mail, Github, Save, CheckCircle, AlertCircle, Image as ImageIcon, Send, X, Plus, Trash2, ArrowRight, Layers, Star, PlusCircle, Pencil, Search, RefreshCw, UploadCloud, Eye, EyeOff, FileText, ChevronLeft, ChevronRight, GripVertical, Maximize2, Briefcase } from "lucide-react";
 import { siteContent, type SiteContent } from "@/data/siteContent";
 import logoImg from "@assets/logo/logo1.jpeg";
-import { updateGitHubFile, uploadGitHubImage, listGitHubFiles, deleteGitHubFile, type GitHubConfig } from "@/lib/github-api";
+import { updateGitHubFile, uploadGitHubImage, listGitHubFiles, deleteGitHubFile, login, logout, verifyAuth } from "@/lib/github-api";
 import { resolveAsset } from "@/lib/asset-utils";
 
-// Helper to resolve assets in Admin with a GitHub raw fallback for newly uploaded files
-const resolveAdminAsset = (path: string, auth?: { githubOwner: string, githubRepo: string }) => {
+// Helper to resolve assets in Admin with local fallback
+const resolveAdminAsset = (path: string) => {
   if (!path) return "https://placehold.co/600x400/0a0a0a/d4af37?text=No+Asset";
   if (path.startsWith('data:') || path.startsWith('http')) return path;
-
-  // Try local first
-  const local = resolveAsset(path);
-  // If local resolution fails (e.g. it returns a placeholder or doesn't map) 
-  // or if we want to ensure we see the LATEST version from GitHub:
-  if (auth && auth.githubOwner && auth.githubRepo) {
-    const isSpecial = (path.startsWith('OurStory/') || path.startsWith('Welcome/') || path.startsWith('Brochure/'));
-    const isAbout = path.startsWith('About/');
-    const isBg = !path.includes('/');
-
-    // Resolve relative path based on directory location
-    const repoPath = isBg ? `backgrounds/${path}` : (isSpecial ? path : (isAbout ? `gallery/${path}` : `gallery/${path}`));
-    return `https://raw.githubusercontent.com/${auth.githubOwner}/${auth.githubRepo}/main/client/src/assets/${repoPath}`;
-  }
-  return local;
+  
+  // Use local asset resolution
+  return resolveAsset(path);
 };
 
 import {
@@ -53,10 +41,6 @@ import { CSS } from '@dnd-kit/utilities';
 
 interface AuthState {
   isLoggedIn: boolean;
-  step: "credentials" | "otp";
-  githubToken: string;
-  githubOwner: string;
-  githubRepo: string;
 }
 
 type Tab = "hero" | "about" | "story" | "values" | "services" | "gallery" | "reviews" | "contact" | "socials" | "welcome";
@@ -93,7 +77,7 @@ const SortableGridItem = ({ id, path, idx, otherUsage, onRemove, onReplace, auth
     >
       <div className="w-full h-full" {...attributes} {...listeners}>
         <img
-          src={resolveAdminAsset(path, auth)}
+          src={resolveAdminAsset(path)}
           className="w-full h-full object-cover rounded-sm transition-transform duration-1000 group-hover:scale-110"
           alt="Gallery Item"
         />
@@ -193,7 +177,7 @@ const VisualImageField = ({ label, value, onBrowse, helpText }: any) => (
         </div>
       ) : (
         <img
-          src={value && (value.startsWith?.("data:") || value.startsWith?.("http")) ? value : resolveAdminAsset(value, onBrowse?.auth)}
+          src={value && (value.startsWith?.("data:") || value.startsWith?.("http")) ? value : resolveAdminAsset(value)}
           className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700"
           alt={label}
           onError={(e: any) => e.target.src = "https://placehold.co/600x400/0a0a0a/d4af37?text=Click+to+Select+Image"}
@@ -273,22 +257,7 @@ const MobileNav = ({ activeTab, setActiveTab }: any) => (
 const DeploymentStatus = ({ auth, isSaving, status }: any) => {
   const [lastCommit, setLastCommit] = useState<any>(null);
 
-  useEffect(() => {
-    if (auth?.isLoggedIn && !isSaving) {
-      const fetchLastCommit = async () => {
-        try {
-          const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
-          const OctokitClz = (await import("octokit")).Octokit;
-          const octokit = new OctokitClz({ auth: config.token });
-          const { data } = await octokit.rest.repos.listCommits({ owner: config.owner, repo: config.repo, per_page: 1 });
-          setLastCommit(data[0]);
-        } catch (e) { }
-      };
-      fetchLastCommit();
-      const interval = setInterval(fetchLastCommit, 60000);
-      return () => clearInterval(interval);
-    }
-  }, [auth?.isLoggedIn, isSaving, auth?.githubOwner, auth?.githubRepo, auth?.githubToken]);
+  // Removed fetchLastCommit - no longer needed with backend auth
 
   if (!auth?.isLoggedIn) return null;
 
@@ -543,7 +512,7 @@ const RepositoryBrowser = ({
             className={`aspect-square bg-white/[0.02] border rounded-[2rem] overflow-hidden group relative transition-all duration-500 ${isActive ? 'border-primary/60 shadow-[0_0_30px_rgba(212,175,55,0.2)]' : 'border-white/5'}`}
           >
             <img
-              src={resolveAdminAsset(fullPath, auth)}
+              src={resolveAdminAsset(fullPath)}
               className={`w-full h-full object-cover transition-all duration-700 ${isActive ? 'opacity-90 grayscale-0' : 'opacity-40 group-hover:opacity-80 grayscale-[0.5] group-hover:grayscale-0'}`}
               alt={f}
               onError={(e: any) => e.target.src = "https://placehold.co/600x400/020202/d4af37?text=Image"}
@@ -606,17 +575,11 @@ export default function Admin() {
   };
 
   const [auth, setAuth] = useState<AuthState>({
-    isLoggedIn: false,
-    step: "credentials",
-    githubToken: "",
-    githubOwner: "",
-    githubRepo: "",
+    isLoggedIn: false
   });
 
-  const [showToken, setShowToken] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("hero");
   const [otp, setOtp] = useState("");
-  const [generatedOtp, setGeneratedOtp] = useState("");
   const [formData, setFormData] = useState<SiteContent>(siteContent);
   const [isSaving, setIsSaving] = useState(false);
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
@@ -646,22 +609,13 @@ export default function Admin() {
     brochure: "Brochure"
   } as any;
 
-  // Load GitHub config and session from local storage
+  // Verify authentication on mount (check HttpOnly cookie)
   useEffect(() => {
-    const savedToken = localStorage.getItem("gh_token");
-    const savedOwner = localStorage.getItem("gh_owner");
-    const savedRepo = localStorage.getItem("gh_repo");
-    const savedLogin = localStorage.getItem("is_admin_logged_in") === "true";
-
-    if (savedToken && savedOwner && savedRepo) {
-      setAuth(prev => ({
-        ...prev,
-        githubToken: savedToken,
-        githubOwner: savedOwner,
-        githubRepo: savedRepo,
-        isLoggedIn: savedLogin
-      }));
-    }
+    const checkAuth = async () => {
+      const isAuthenticated = await verifyAuth();
+      setAuth({ isLoggedIn: isAuthenticated });
+    };
+    checkAuth();
   }, []);
 
   // Normalize uploaded filenames to a predictable, URL-friendly format
@@ -698,13 +652,12 @@ export default function Admin() {
 
   const fetchAllAssets = async () => {
     setIsFetchingFiles(true);
-    const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
     const newAssets: { [key: string]: string[] } = {};
     for (const dir of assetDirectories) {
       const path = (dir === "backgrounds" || dir === "Welcome" || dir === "OurStory" || dir === "Brochure")
         ? `client/src/assets/${dir}`
         : `client/src/assets/gallery/${dir}`;
-      const result = await listGitHubFiles(config, path);
+      const result = await listGitHubFiles(path);
       if (result.success && result.files) {
         newAssets[dir] = result.files;
       }
@@ -797,83 +750,56 @@ export default function Admin() {
 
   // --- Core Handlers ---
 
-  const sendOtp = async () => {
-    const trimmedToken = auth.githubToken.trim();
-    const trimmedOwner = auth.githubOwner.trim();
-    const trimmedRepo = auth.githubRepo.trim();
-
-    if (!trimmedToken || !trimmedOwner || !trimmedRepo) {
-      setStatus({ type: "error", message: "Missing GitHub credentials." });
+  // Handle OTP login - validates OTP with backend
+  const verifyOtp = async () => {
+    // Validate OTP format (6 digits)
+    const otpRegex = /^\d{6}$/;
+    if (!otpRegex.test(otp)) {
+      setStatus({ type: "error", message: "OTP must be exactly 6 digits" });
       return;
     }
 
     setIsSaving(true);
-    setStatus({ type: "success", message: "Validating credentials..." });
+    setStatus({ type: "success", message: "Verifying OTP..." });
 
     try {
-      // Test the token by trying to get the repo info
-      const octokit = new (await import("octokit")).Octokit({ auth: trimmedToken });
-      await octokit.rest.repos.get({
-        owner: trimmedOwner,
-        repo: trimmedRepo,
-      });
-
-      // If we reach here, credentials are valid
-      const code = Math.floor(100000 + Math.random() * 900000).toString();
-      setGeneratedOtp(code);
-      console.log("OTP code:", code);
-
-      // Update state with trimmed values
-      setAuth(prev => ({
-        ...prev,
-        githubToken: trimmedToken,
-        githubOwner: trimmedOwner,
-        githubRepo: trimmedRepo,
-        step: "otp"
-      }));
-
-      setStatus({ type: "success", message: `Activation key sent to console: ${code}` });
+      await login(otp);
+      
+      // Login successful - HttpOnly cookie is now set by backend
+      setAuth({ isLoggedIn: true });
+      setOtp(""); // Clear OTP input
+      setStatus(null);
     } catch (error: any) {
-      console.error("Validation Error:", error);
-      setStatus({
-        type: "error",
-        message: error.status === 401 ? "Bad credentials: Check your Token." :
-          error.status === 404 ? "Repository not found: Check Owner/Repo names." :
-            "Validation failed: " + error.message
+      console.error("Login error:", error);
+      setStatus({ 
+        type: "error", 
+        message: error.message || "Invalid or expired OTP. Please try again." 
       });
     } finally {
       setIsSaving(false);
     }
   };
 
-  const verifyOtp = () => {
-    if (otp === generatedOtp) {
-      setAuth(prev => ({ ...prev, isLoggedIn: true }));
-      localStorage.setItem("gh_token", auth.githubToken);
-      localStorage.setItem("gh_owner", auth.githubOwner);
-      localStorage.setItem("gh_repo", auth.githubRepo);
-      localStorage.setItem("is_admin_logged_in", "true");
-      setStatus(null);
-    } else {
-      setStatus({ type: "error", message: "Invalid key." });
+  const handleSignOut = async () => {
+    try {
+      await logout();
+      setAuth({ isLoggedIn: false });
+      setStatus({ type: "success", message: "Signed out successfully." });
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Clear state anyway
+      setAuth({ isLoggedIn: false });
     }
-  };
-
-  const handleSignOut = () => {
-    localStorage.removeItem("is_admin_logged_in");
-    setAuth(prev => ({ ...prev, isLoggedIn: false }));
-    setStatus({ type: "success", message: "Signed out successfully." });
   };
 
   const handleSave = async () => {
     setIsSaving(true);
-    const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
 
     // 0.1) Pre-flight count verification
     const affectedDirs = new Set(stagedUploads.map(s => s.targetDir));
     const preFlightCounts: Record<string, number> = {};
     Array.from(affectedDirs).forEach(dir => {
-      preFlightCounts[dir] = (assetFiles[dir] || []).length;
+      preFlightCounts[dir as string] = (assetFiles[dir] || []).length;
     });
 
     // Work on a deep copy of current content so we can safely replace previews
@@ -899,7 +825,7 @@ export default function Admin() {
     if (stagedUploads.length > 0) {
       for (const staged of stagedUploads) {
         const { targetDir, name, base64, previousPath, deleteOld } = staged;
-        const uploadRes = await uploadGitHubImage(config, targetDir, name, base64.split(",")[1], `Admin: Resource upload to ${targetDir}`);
+        const uploadRes = await uploadGitHubImage(targetDir, name, base64.split(",")[1], `Admin: Resource upload to ${targetDir}`);
         if (!uploadRes.success) {
           setIsSaving(false);
           setStatus({ type: "error", message: `Upload failed for ${name}: ${uploadRes.message}` });
@@ -913,12 +839,8 @@ export default function Admin() {
           const deletePath = (previousPath.includes('/') && !previousPath.startsWith('About/') && !previousPath.startsWith('OurStory/') && !previousPath.startsWith('Welcome/'))
             ? `client/src/assets/gallery/${previousPath}`
             : `client/src/assets/${previousPath.includes('/') ? previousPath : 'backgrounds/' + previousPath}`;
-          await deleteGitHubFile(config, deletePath, `Admin: Auto-cleanup of replaced asset ${previousPath}`);
+          await deleteGitHubFile(deletePath, `Admin: Auto-cleanup of replaced asset ${previousPath}`);
         }
-
-        // Compose repository file path and a public raw URL so the site can fetch images without a local build
-        const repoFilePath = targetDir === "backgrounds" ? `client/src/assets/backgrounds/${name}` : `client/src/assets/gallery/${targetDir}/${name}`;
-        const rawUrl = `https://raw.githubusercontent.com/${config.owner}/${config.repo}/main/${repoFilePath}`;
 
         // Replace any occurrences of the base64 placeholder in newData with the RELATIVE path
         // Storing relative paths (e.g., backgrounds/hero.webp) ensures resolveAsset works correctly
@@ -943,64 +865,15 @@ export default function Admin() {
     }
 
     // 2) Persist the content file to the repository
-    const result = await updateGitHubFile(config, "client/src/data/siteContent.json", JSON.stringify(newData, null, 2), "Admin: Comprehensive content update");
+    const result = await updateGitHubFile("client/src/data/siteContent.json", JSON.stringify(newData, null, 2), "Admin: Comprehensive content update");
 
     // 3) Update local state and UI
     if (result.success) {
       setFormData(newData);
-      // Verify that referenced assets exist in repository (catch mapping mismatches)
-      try {
-        const usage = getAssetUsageCounts(newData);
-        const used = Array.from(usage.keys());
-        const missing: string[] = [];
-        const OctokitClz = (await import("octokit")).Octokit;
-        const octokit = new OctokitClz({ auth: config.token });
-
-        await Promise.all(used.map(async (assetPath: any) => {
-          if (!assetPath || typeof assetPath !== 'string' || assetPath.startsWith('data:') || assetPath.startsWith('http')) return;
-          const repoPath = assetPath.includes('/')
-            ? `client/src/assets/${assetPath.startsWith('About/') || assetPath.startsWith('OurStory/') || assetPath.startsWith('Welcome/') || assetPath.startsWith('Brochure/') ? assetPath : 'gallery/' + assetPath}`
-            : `client/src/assets/backgrounds/${assetPath}`;
-          try {
-            await octokit.rest.repos.getContent({ owner: config.owner, repo: config.repo, path: repoPath });
-          } catch (err: any) {
-            missing.push(assetPath);
-          }
-        }));
-
-        if (missing.length) {
-          setStatus({ type: "error", message: `Sync completed but ${missing.length} mapped assets are missing: ${missing.slice(0, 5).join(', ')}${missing.length > 5 ? ', ...' : ''}` });
-        } else {
-          setStatus({ type: "success", message: "Repository synchronization successful." });
-        }
-      } catch (err: any) {
-        setStatus({ type: "success", message: "Repository synchronized. (Asset verification skipped due to check error)" });
-      }
-
-      // Refresh asset list and site content to reflect repository changes immediately
+      
+      // Refresh asset list to reflect repository changes
       await fetchAllAssets();
       setStatus({ type: "success", message: "Repository synchronization successful and UI updated." });
-
-      // Post-flight count verification report
-      const postFlightCounts: Record<string, number> = {};
-      let countReport = "Directory Snapshot: ";
-
-      // Use a standard for loop on Array.from(affectedDirs) for reliable async/await
-      const affectedDirsArray = Array.from(affectedDirs);
-      for (let i = 0; i < affectedDirsArray.length; i++) {
-        const dir = affectedDirsArray[i];
-        const path = (dir === "backgrounds" || dir === "Welcome" || dir === "About" || dir === "OurStory" || dir === "Brochure")
-          ? `client/src/assets/${dir}`
-          : `client/src/assets/gallery/${dir}`;
-        const res = await listGitHubFiles(config, path);
-        const count = res.success ? (res.files?.length || 0) : 0;
-        postFlightCounts[dir] = count;
-        countReport += `${dir}: ${preFlightCounts[dir]} -> ${count} files. `;
-      }
-      setStatus(prev => ({
-        type: "success",
-        message: `${prev?.message || "Sync successful."} ${countReport}`
-      }));
     } else {
       setStatus({ type: "error", message: `Sync failed: ${result.message}` });
     }
@@ -1060,11 +933,10 @@ export default function Admin() {
 
     if (!confirm(`Permanently delete ${fileName} from ${dir}?${isGeneralGallery ? " This action is irreversible." : ""}`)) return;
     setIsSaving(true);
-    const config: GitHubConfig = { owner: auth.githubOwner, repo: auth.githubRepo, token: auth.githubToken };
     const path = (dir === "backgrounds" || dir === "Welcome" || dir === "About" || dir === "OurStory" || dir === "Brochure")
       ? `client/src/assets/${dir}/${fileName}`
       : `client/src/assets/gallery/${dir}/${fileName}`;
-    const result = await deleteGitHubFile(config, path, `Admin: Resource removal ${fileName}`);
+    const result = await deleteGitHubFile(path, `Admin: Resource removal ${fileName}`);
     setIsSaving(false);
     if (result.success) {
       setStatus({ type: "success", message: "Asset purged from repository." });
@@ -1115,7 +987,7 @@ export default function Admin() {
     });
   };
 
-  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement> | null) => {
+  const onFileChange = async (e: any | null) => {
     if (!e) {
       setSelectedUploadFile(null);
       setIsOptimizing(false);
@@ -1254,46 +1126,7 @@ export default function Admin() {
                   exit={{ opacity: 0, x: -20 }}
                   className="space-y-6"
                 >
-                  <div className="space-y-4">
-                    <div className="relative group">
-                      <input
-                        type={showToken ? "text" : "password"}
-                        placeholder="GitHub Access Token"
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl h-16 pl-6 pr-14 text-white outline-none focus:border-primary/40 focus:bg-white/[0.05] transition-all"
-                        value={auth.githubToken}
-                        onChange={e => setAuth(p => ({ ...p, githubToken: e.target.value }))}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowToken(!showToken)}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 hover:text-primary transition-colors p-2"
-                      >
-                        {showToken ? <Eye size={18} /> : <EyeOff size={18} />}
-                      </button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <input
-                        type="text"
-                        placeholder="Owner"
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl h-14 px-5 text-white outline-none focus:border-primary/40 focus:bg-white/[0.05] transition-all"
-                        value={auth.githubOwner}
-                        onChange={e => setAuth(p => ({ ...p, githubOwner: e.target.value }))}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Repo"
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl h-14 px-5 text-white outline-none focus:border-primary/40 focus:bg-white/[0.05] transition-all"
-                        value={auth.githubRepo}
-                        onChange={e => setAuth(p => ({ ...p, githubRepo: e.target.value }))}
-                      />
-                    </div>
-                  </div>
-                  <button
-                    onClick={sendOtp}
-                    className="w-full py-5 bg-primary text-black font-black uppercase tracking-[0.4em] text-[10px] rounded-2xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all"
-                  >
-                    Authorize Access
-                  </button>
+                  {/* Old GitHub credentials UI removed - now using OTP-only */}
                 </motion.div>
               ) : (
                 <motion.div
